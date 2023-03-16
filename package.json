@@ -6,6 +6,7 @@
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/material": "^5.11.13",
+    "@mui/icons-material": "^5.11.11",
     "@reduxjs/toolkit": "^1.9.3",
     "@sentry/react": "^7.43.0",
     "@sentry/tracing": "^7.43.0",
