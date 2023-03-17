@@ -6,7 +6,7 @@ import "./Landing.scss";
 export default function Landing() {
   return (
     <Box>
-      <Typography>Landing</Typography>
+      <Typography>Testing Code Build</Typography>
     </Box>
   );
 }
