@@ -1,9 +1,15 @@
 import { Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import React from "react";
+import { useTranslation } from "react-i18next";
+import { useAppSelector } from "../../redux/store";
 import "./Footer.scss";
 
 export default function Footer() {
+  const compnayTitle = useAppSelector((state) => state.config.companyTitle);
+  const licenseText = useAppSelector((state) => state.config.licenseText);
+  const footerLogo = useAppSelector((state) => state.config.companyLogo.footerLogo);
+  const [t] = useTranslation();
   return (
     <Box
       sx={{
@@ -16,13 +22,10 @@ export default function Footer() {
     >
       <Container maxWidth="xl" sx={{ padding: "1rem 0" }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <img
-            src="https://team04-static-data.s3.ap-south-1.amazonaws.com/team04/footer-logo.png"
-            alt="logo"
-          />
+          <img src={footerLogo} alt="logo" />
           <Box sx={{ textAlign: "right" }}>
-            <Typography>&copy; Kickdrum Technology Group LLC</Typography>
-            <Typography>All Rights Reserved</Typography>
+            <Typography>&copy; {t(`${compnayTitle}`)}</Typography>
+            <Typography>{t(`${licenseText}`)}</Typography>
           </Box>
         </Box>
       </Container>

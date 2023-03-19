@@ -6,17 +6,27 @@ import LanguageIcon from "@mui/icons-material/Language";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { useTranslation } from "react-i18next";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { setSelectedCuurency } from "../../redux/reducers/currencyDataSlice";
+import { setSelectedLanguage } from "../../redux/reducers/languageDataSlice";
 
 export default function Header() {
-  const [language, setLanguage] = React.useState("en");
-  const [currency, setCurrency] = React.useState("inr");
+  const language = useAppSelector((state) => state.language.selectedLanguage);
+  const currency = useAppSelector((state) => state.currency.selectedCurrency.name);
+  const [t, i18n] = useTranslation();
+  const applicationTitle = useAppSelector((state) => state.config.applicationTitle);
+  const reduxDispatch = useAppDispatch();
+  const headerLogo = useAppSelector((state) => state.config.companyLogo.headerLogo);
 
   const handleLanguageChange = (event: SelectChangeEvent) => {
-    setLanguage(event.target.value);
+    i18n.changeLanguage(event.target.value);
+    reduxDispatch(setSelectedLanguage(event.target.value));
   };
 
+  // set the selected currency to redux store
   const handleCurrencyChnage = (event: SelectChangeEvent) => {
-    setCurrency(event.target.value);
+    reduxDispatch(setSelectedCuurency(event.target.value));
   };
 
   return (
@@ -32,19 +42,16 @@ export default function Header() {
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <img
-              src="https://team04-static-data.s3.ap-south-1.amazonaws.com/team04/header-logo.png"
-              alt=""
-            />
+            <img className="header__logo" src={headerLogo} alt="" />
             <Typography
               sx={{ paddingTop: "0.2rem", color: "#26266D", fontWeight: "600", fontSize: "1.2rem" }}
             >
-              Internet Booking Engine
+              {t(`${applicationTitle}`)}
             </Typography>
           </Box>
           <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
             <Typography fontWeight={600} color={"black"}>
-              MY BOOKINGS
+              {t("MY BOOKINGS")}
             </Typography>
             <FormControl
               sx={{
@@ -93,16 +100,16 @@ export default function Header() {
                 onChange={handleCurrencyChnage}
                 value={currency}
               >
-                <MenuItem value="inr">₹ INR</MenuItem>
-                <MenuItem value="usd">$ USD</MenuItem>
-                <MenuItem value="eur">€ EUR</MenuItem>
+                <MenuItem value="USD">$ USD</MenuItem>
+                <MenuItem value="INR">₹ INR</MenuItem>
+                <MenuItem value="EUR">€ EUR</MenuItem>
               </Select>
             </FormControl>
             <Button
               sx={{ backgroundColor: "#26266D", "&:hover": { backgroundColor: "#26266D" } }}
               variant="contained"
             >
-              Login
+              {t("LOGIN")}
             </Button>
           </Box>
         </Container>
