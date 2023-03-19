@@ -9,9 +9,10 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { setSelectedCuurency } from "../../redux/reducers/currencyDataSlice";
+import { setSelectedLanguage } from "../../redux/reducers/languageDataSlice";
 
 export default function Header() {
-  const [language, setLanguage] = React.useState(navigator.language);
+  const language = useAppSelector((state) => state.language.selectedLanguage);
   const currency = useAppSelector((state) => state.currency.selectedCurrency.name);
   const [t, i18n] = useTranslation();
   const applicationTitle = useAppSelector((state) => state.config.applicationTitle);
@@ -20,7 +21,7 @@ export default function Header() {
 
   const handleLanguageChange = (event: SelectChangeEvent) => {
     i18n.changeLanguage(event.target.value);
-    setLanguage(event.target.value);
+    reduxDispatch(setSelectedLanguage(event.target.value));
   };
 
   // set the selected currency to redux store
