@@ -1,8 +1,13 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import configDataSlice from "./reducers/configDataSlice";
+import currencyDataSlice from "./reducers/currencyDataSlice";
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    config: configDataSlice,
+    currency: currencyDataSlice,
+  },
 });
 
 export type AppDispatch = typeof store.dispatch;
