@@ -15,7 +15,9 @@ export default function Landing() {
         sx={{ display: "grid", justifyContent: "center", alignItems: "center", marginTop: "5rem" }}
         maxWidth="xl"
       >
-        <Typography fontSize={`3rem`}>{t(`${applicationTitle}`)}</Typography>
+        <Typography textAlign={"center"} fontSize={`3rem`}>
+          {t(`${applicationTitle}`)}
+        </Typography>
         <Typography mt={4} fontSize={`2rem`} textAlign={`center`}>
           {`${selectedCurrency.symbol}${selectedCurrency.rate * 5000}`}
         </Typography>

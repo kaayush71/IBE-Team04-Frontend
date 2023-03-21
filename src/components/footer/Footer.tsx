@@ -21,9 +21,18 @@ export default function Footer() {
       }}
     >
       <Container maxWidth="xl" sx={{ padding: "1rem 0" }}>
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <img src={footerLogo} alt="logo" />
-          <Box sx={{ textAlign: "right" }}>
+        <Box
+          sx={{
+            padding: "0 24px",
+            display: { xs: "block", md: "flex" },
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Box sx={{ display: { xs: "none", md: "block" } }}>
+            <img className="footer__logo" src={footerLogo} alt="logo" />
+          </Box>
+          <Box sx={{ textAlign: { xs: "center", md: "right" } }}>
             <Typography>&copy; {t(`${compnayTitle}`)}</Typography>
             <Typography>{t(`${licenseText}`)}</Typography>
           </Box>
