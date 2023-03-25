@@ -159,6 +159,10 @@ export const landingSearchFormSlice = createSlice({
       state.accessibility = action.payload.searchForm.accessibility.defaultAccessibilty;
       state.loading = false;
     });
+    builder.addCase(fetchLandingConfigData.rejected, (state) => {
+      state.loading = false;
+      throw new Error("Unable to fetch the landing config data");
+    });
   },
 });
 
