@@ -39,7 +39,7 @@ export default function Header() {
             <Typography
               sx={{
                 display: { xs: "none", md: "block" },
-                paddingTop: "0.2rem",
+                // paddingTop: "0.2rem",
                 color: "#26266D",
                 fontWeight: "600",
                 fontSize: "1.2rem",

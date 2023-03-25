@@ -1,7 +1,9 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import calendarDataSlice from "./reducers/calendarDataSlice";
 import configDataSlice from "./reducers/configDataSlice";
 import currencyDataSlice from "./reducers/currencyDataSlice";
+import landingSearchFormSlice from "./reducers/landingSearchFormSlice";
 import languageDataSlice from "./reducers/languageDataSlice";
 
 export const store = configureStore({
@@ -9,6 +11,8 @@ export const store = configureStore({
     config: configDataSlice,
     currency: currencyDataSlice,
     language: languageDataSlice,
+    landingForm: landingSearchFormSlice,
+    calendar: calendarDataSlice,
   },
 });
 
