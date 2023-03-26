@@ -31,7 +31,6 @@ export default function CalendarMenu(props: Props) {
   return (
     <FormControl fullWidth>
       <Select
-        required={true}
         IconComponent={() => null}
         sx={{
           width: "100%",
