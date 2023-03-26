@@ -6,20 +6,24 @@ import DateRangeCalendar from "./DateRangeCalendar/DateRangeCalendar";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import "./CalendarMenu.scss";
+import { useTranslation } from "react-i18next";
 
 type Props = {};
 
 export default function CalendarMenu(props: Props) {
   const landingForm = useAppSelector((state) => state.landingForm);
+  const { t } = useTranslation();
   const CalendarMenuInput = () => {
     return (
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Typography>{landingForm.showDateOnForm ? landingForm.startDate : "Check In"}</Typography>
+        <Typography>
+          {landingForm.showDateOnForm ? landingForm.startDate : t("Check In")}
+        </Typography>
         <ArrowForwardIcon fontSize="small" />
         <Typography>
           {landingForm.showDateOnForm && landingForm.endDate !== landingForm.startDate
             ? landingForm.endDate
-            : "Check Out"}
+            : t("Check Out")}
         </Typography>
         <CalendarMonthIcon fontSize="small" />
       </Box>
@@ -44,7 +48,7 @@ export default function CalendarMenu(props: Props) {
               "& .MuiMenu-list": {
                 padding: "0.3rem 0 0 0",
               },
-              top: "289px",
+              left: "121px !important",
             },
           },
         }}

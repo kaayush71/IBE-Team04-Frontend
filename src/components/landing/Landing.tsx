@@ -13,12 +13,15 @@ import {
   fetchLandingConfigData,
   setAccessibility,
 } from "../../redux/reducers/landingSearchFormSlice";
+import { useTranslation } from "react-i18next";
 
 export default function Landing() {
   const reduxDispatch = useAppDispatch();
   const loading = useAppSelector((state) => state.landingForm.loading);
   const landingConfig = useAppSelector((state) => state.landingForm.landingConfig);
+  const landingFormData = useAppSelector((state) => state.landingForm);
   const accessibility = useAppSelector((state) => state.landingForm.accessibility);
+  const { t } = useTranslation();
   useEffect(() => {
     reduxDispatch(fetchCalendarData());
     reduxDispatch(fetchLandingConfigData());
@@ -26,31 +29,41 @@ export default function Landing() {
   const handleCheckbox = () => {
     reduxDispatch(setAccessibility(!accessibility));
   };
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = {
+      property: landingFormData.propertyId,
+      startDate: landingFormData.startDate,
+      endDate: landingFormData.endDate,
+      rooms: landingFormData.numberOfRoomSelected,
+      guestDetails: landingConfig.searchForm.guest.guestTypes,
+    };
+    console.log("form submitted", formData);
+  };
   return loading ? (
     <Typography>Page is Loading</Typography>
   ) : (
     <Box
       sx={{
         backgroundImage: `url(${landingConfig.bannerImage})`,
+        backgroundSize: "cover",
         backgroundPosition: "center",
-        padding: "0 1.5rem",
+        padding: "0 3.375rem",
       }}
     >
-      <Container sx={{ padding: "2rem 0" }} maxWidth="xl">
-        <Paper sx={{ padding: "2rem", maxWidth: "25rem" }}>
+      <Container sx={{ padding: "3.5rem 0" }} maxWidth={false}>
+        <Paper sx={{ padding: "2.75rem", maxWidth: "23.75rem" }}>
           <FormGroup>
-            <form
-              style={{ rowGap: "1rem", display: "grid" }}
-              onSubmit={() => console.log("form submitted")}
-            >
+            <form style={{ rowGap: "1.15rem", display: "grid" }} onSubmit={handleSubmit}>
               <Box>
-                <Typography fontSize={".8rem"}>
-                  Propery name <sub>*</sub>
+                <Typography fontSize={".875rem"}>
+                  {t("Property name")}
+                  <sub>*</sub>
                 </Typography>
                 <PropertyMenu />
               </Box>
               <Box>
-                <Typography fontSize={".8rem"}>Select Dates</Typography>
+                <Typography fontSize={".875rem"}>{t("Select Dates")}</Typography>
                 <CalendarMenu />
               </Box>
               <Box
@@ -62,7 +75,7 @@ export default function Landing() {
               >
                 {landingConfig.searchForm.guest.showGuest ? (
                   <Box>
-                    <Typography fontSize={".8rem"}>Guests</Typography>
+                    <Typography fontSize={".875rem"}>{t("Guests")}</Typography>
                     <GuestMenu />
                   </Box>
                 ) : (
@@ -70,7 +83,7 @@ export default function Landing() {
                 )}
                 {landingConfig.searchForm.rooms.showRoom ? (
                   <Box>
-                    <Typography fontSize={".8rem"}>Rooms</Typography>
+                    <Typography fontSize={".875rem"}>{t("Rooms")}</Typography>
                     <RoomsMenu />
                   </Box>
                 ) : (
@@ -84,7 +97,7 @@ export default function Landing() {
                       sx={{ "& .MuiSvgIcon-root": { fontSize: 18 }, padding: "0" }}
                     />
                     <AccessibleIcon fontSize="small" />
-                    <Typography>I need an Accessible Room</Typography>
+                    <Typography>{t("I need an Accessible Room")}</Typography>
                   </Box>
                 ) : (
                   <></>
@@ -96,12 +109,13 @@ export default function Landing() {
                   backgroundColor: "#26266D",
                   "&:hover": { backgroundColor: "#26266D" },
                   display: "flex",
-                  margin: "5rem auto",
+                  padding: "0.75rem 1.25rem",
+                  margin: "9.18rem auto 4rem auto",
                   width: "10rem",
                 }}
                 variant="contained"
               >
-                Search
+                {t("Search")}
               </Button>
             </form>
           </FormGroup>

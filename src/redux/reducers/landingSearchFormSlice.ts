@@ -63,7 +63,7 @@ const initialState: State = {
       bookingDateRange: 14,
       rooms: {
         defaultRoomCount: 1,
-        roomCountArray: [],
+        roomCountArray: [1],
         maximumRoomOccupancy: 4,
         showRoom: true,
       },
@@ -115,6 +115,7 @@ export const landingSearchFormSlice = createSlice({
     },
     setSelectedRoom: (state, action) => {
       state.numberOfRoomSelected = action.payload;
+      state.landingConfig.searchForm.rooms.defaultRoomCount = action.payload;
     },
     setAccessibility: (state, action) => {
       state.accessibility = action.payload;

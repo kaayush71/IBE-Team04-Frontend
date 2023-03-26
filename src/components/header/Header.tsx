@@ -1,4 +1,4 @@
-import { AppBar, Box, Divider, Drawer, IconButton, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Divider, Drawer, IconButton, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useState } from "react";
 import "./Header.scss";
@@ -23,10 +23,10 @@ export default function Header() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#fff" }}>
-      <Toolbar>
+    <AppBar position="static" sx={{ backgroundColor: "#fff", height: "5.25rem" }}>
+      <Box sx={{ padding: "0 3.375rem", height: "100%", display: "flex" }}>
         <Container
-          maxWidth="xl"
+          maxWidth={false}
           sx={{
             padding: "0.7rem 0",
             display: "flex",
@@ -34,22 +34,27 @@ export default function Header() {
             alignItems: "center",
           }}
         >
-          <Box sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <img className="header__logo" src={headerLogo} alt="" />
+          <Box sx={{ display: "flex", alignItems: "center", gap: "1.06rem" }}>
+            <img
+              date-testid="header-logo"
+              className="header__logo"
+              src={headerLogo}
+              alt=""
+            />
             <Typography
+              data-testid="header-title"
               sx={{
                 display: { xs: "none", md: "block" },
-                // paddingTop: "0.2rem",
                 color: "#26266D",
-                fontWeight: "600",
-                fontSize: "1.2rem",
+                fontWeight: "700",
+                fontSize: "1.25rem",
               }}
             >
               {t(`${applicationTitle}`)}
             </Typography>
           </Box>
-          <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: "1rem" }}>
-            <Typography fontWeight={600} color={"black"}>
+          <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: "1.34rem" }}>
+            <Typography fontSize={"0.875"} fontWeight={700} color={"black"}>
               {t("MY BOOKINGS")}
             </Typography>
             <LanguageMenu />
@@ -70,7 +75,7 @@ export default function Header() {
               sx={{
                 pr: 0,
                 backgroundColor: "#26266D",
-                padding: "0.5rem",
+                padding: "0.75rem 1.25rem",
                 ":hover": {
                   backgroundColor: "#26266D",
                 },
@@ -99,10 +104,14 @@ export default function Header() {
                     <LanguageMenu />
                     <CurrencyMenu />
                     <Button
-                      sx={{ backgroundColor: "#26266D", "&:hover": { backgroundColor: "#26266D" } }}
-                      variant="contained"
+                      sx={{
+                        backgroundColor: "#26266D",
+                        width: "5.31rem !important",
+                        "&:hover": { backgroundColor: "#26266D" },
+                      }}
                     >
-                      {t("LOGIN")}
+                      LOGIN
+                      {/* {t("LOGIN")} */}
                     </Button>
                   </Box>
                 </Box>
@@ -110,7 +119,7 @@ export default function Header() {
             </Drawer>
           </Box>
         </Container>
-      </Toolbar>
+      </Box>
     </AppBar>
   );
 }

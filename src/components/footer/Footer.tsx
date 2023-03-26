@@ -18,12 +18,13 @@ export default function Footer() {
         position: "fixed",
         bottom: "0",
         width: "100%",
+        height:"5.25rem"
       }}
     >
-      <Container maxWidth="xl" sx={{ padding: "1rem 0" }}>
+      <Container maxWidth={false} sx={{ padding: "1rem 0" }}>
         <Box
           sx={{
-            padding: "0 24px",
+            padding: "0 3.375rem",
             display: { xs: "block", md: "flex" },
             justifyContent: "space-between",
             alignItems: "center",

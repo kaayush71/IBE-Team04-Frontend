@@ -8,6 +8,7 @@ import {
   decreaseGuestCount,
   increaseGuestCount,
 } from "../../../../redux/reducers/landingSearchFormSlice";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   guest: {
@@ -19,6 +20,7 @@ type Props = {
 };
 
 const GuestType = ({ guest }: Props) => {
+  const {t} = useTranslation();
   const reduxDispatch = useAppDispatch();
   const handleIncrement = () => {
     reduxDispatch(increaseGuestCount(guest));
@@ -36,8 +38,8 @@ const GuestType = ({ guest }: Props) => {
       }}
     >
       <Box>
-        <Typography>{guest.categoryName}</Typography>
-        <Typography fontSize={"0.7rem"}>{guest.ageRange}</Typography>
+        <Typography>{t(guest.categoryName)}</Typography>
+        <Typography fontSize={"0.7rem"}>{`Ages ${guest.ageRange}`}</Typography>
       </Box>
       <Box sx={{ display: "flex", gap: "1rem", alignItems: "start" }}>
         <IconButton onClick={handleDecrement} sx={{ padding: "0" }}>

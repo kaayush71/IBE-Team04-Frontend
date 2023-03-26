@@ -19,14 +19,25 @@ export default function LanguageMenu() {
         "& .MuiOutlinedInput-notchedOutline": {
           border: "0 none",
         },
+        "& .languageInput":{
+          padding:"0 !important"
+        },
         "& .MuiSelect-icon": {
           display: "none",
         },
+        display: "flex",
+        alignItems: "center",
         minWidth: 80,
+        padding: 0,
       }}
     >
       <Select
-        sx={{ color: "#26266D" }}
+        sx={{
+          color: "#26266D",
+          "& .MuiSelect-select": {
+            padding: "0 !important",
+          },
+        }}
         className="languageInput"
         labelId="language-select"
         id="language-select"

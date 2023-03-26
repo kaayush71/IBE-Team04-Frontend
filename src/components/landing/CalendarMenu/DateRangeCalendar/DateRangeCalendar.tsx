@@ -125,7 +125,7 @@ const DateRangeCalendar = () => {
           }}
         >
           <Box sx={{ display: "flex", gap: "2rem", alignItems: "start" }}>
-            <Typography>
+            <Typography marginTop={"1rem"}>
               {isSameDay(selectedDateRange[0].startDate, selectedDateRange[0].endDate)
                 ? ""
                 : `from ${selectedCurrency.symbol} ${(
@@ -138,8 +138,10 @@ const DateRangeCalendar = () => {
               sx={{
                 backgroundColor: "#26266D",
                 "&:hover": { backgroundColor: "#26266D" },
-                margin: "0 0 0.5rem",
+                margin: "1rem 0 0.5rem",
                 maxWidth: "10rem",
+                fontSize: "0.875rem",
+                padding: "0.75rem 1.25rem",
               }}
               variant="contained"
             >
@@ -148,10 +150,10 @@ const DateRangeCalendar = () => {
           </Box>
           {showAlertMessage ? (
             <Box>
-              <Typography color={"#D0182B"} fontSize={"0.7rem"}>
+              <Typography color={"#D0182B"} fontSize={"0.875rem"}>
                 Please select end date. Max.
               </Typography>
-              <Typography color={"#D0182B"} fontSize={"0.7rem"}>
+              <Typography color={"#D0182B"} fontSize={"0.875rem"}>
                 length of stay: 14 days
               </Typography>
             </Box>

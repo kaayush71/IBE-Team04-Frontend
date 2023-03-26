@@ -30,6 +30,7 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.9.0",
     "react-scripts": "5.0.1",
+    "redux-mock-store": "^1.5.4",
     "sass": "^1.59.3",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
@@ -41,7 +42,8 @@
     "build": "react-scripts build",
     "build:prod": "env-cmd -f .env.production react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "coverage": "npm test -- --coverage --watchAll --collectCoverageFrom='src/components/**/*.{ts,tsx}' --collectCoverageFrom='!src/components/**/*.{types, stories, constants, test, spec}.{ts,tsx}'"
   },
   "eslintConfig": {
     "extends": [
@@ -62,6 +64,15 @@
     ]
   },
   "devDependencies": {
-    "@types/react-date-range": "^1.4.4"
+    "@types/react-date-range": "^1.4.4",
+    "@types/redux-mock-store": "^1.0.3"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!@shotgunjed)/"
+    ]
   }
 }

@@ -3,15 +3,17 @@ import React from "react";
 import GuestType from "./GuestType/GuestType";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useAppSelector } from "../../../redux/store";
+import { useTranslation } from "react-i18next";
 
 type Props = {};
 
 const GuestMenu = (props: Props) => {
+  const { t } = useTranslation();
   const guestConfig = useAppSelector((state) => state.landingForm.landingConfig.searchForm.guest);
   const guestTypeStrings = guestConfig.guestTypes
     .filter((guestType) => guestType.count > 0)
     .map((guestType) => {
-      const countString = guestType.count + " " + guestType.categoryName;
+      const countString = guestType.count + " " + t(guestType.categoryName);
       return countString;
     });
 
