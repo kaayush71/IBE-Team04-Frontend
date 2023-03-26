@@ -39,7 +39,7 @@ export default function Header() {
             <Typography
               sx={{
                 display: { xs: "none", md: "block" },
-                paddingTop: "0.2rem",
+                // paddingTop: "0.2rem",
                 color: "#26266D",
                 fontWeight: "600",
                 fontSize: "1.2rem",
@@ -87,8 +87,8 @@ export default function Header() {
                   backgroundColor: "#eee",
                 }}
               >
-                <IconButton sx={{ mb: 2 }}>
-                  <CloseIcon onClick={toggleDrawer(false)} />
+                <IconButton onClick={toggleDrawer(false)} sx={{ mb: 2 }}>
+                  <CloseIcon />
                 </IconButton>
                 <Divider sx={{ mb: 2 }} />
                 <Box sx={{ mb: 2 }}>
