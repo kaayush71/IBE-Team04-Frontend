@@ -87,8 +87,8 @@ export default function Header() {
                   backgroundColor: "#eee",
                 }}
               >
-                <IconButton sx={{ mb: 2 }}>
-                  <CloseIcon onClick={toggleDrawer(false)} />
+                <IconButton onClick={toggleDrawer(false)} sx={{ mb: 2 }}>
+                  <CloseIcon />
                 </IconButton>
                 <Divider sx={{ mb: 2 }} />
                 <Box sx={{ mb: 2 }}>
