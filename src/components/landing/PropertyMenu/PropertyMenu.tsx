@@ -12,10 +12,12 @@ import React, { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { setPropertyId } from "../../../redux/reducers/landingSearchFormSlice";
+import { useTranslation } from "react-i18next";
 
 type Props = {};
 
 const PropertyMenu = (props: Props) => {
+  const { t } = useTranslation();
   const reduxDispatch = useAppDispatch();
   const [selected, setSelected] = useState("");
   const properties = useAppSelector(
@@ -62,7 +64,7 @@ const PropertyMenu = (props: Props) => {
                   fontStyle={"italic"}
                   fontWeight={100}
                 >
-                  Search All Properties
+                  {t("Search All Properties")}
                 </Typography>
               )
             : (selected) => <Typography>{`Property ${selected}`}</Typography>

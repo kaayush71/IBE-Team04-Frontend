@@ -29,7 +29,12 @@ export default function CurrencyMenu() {
       }}
     >
       <Select
-        sx={{ color: "#26266D" }}
+        sx={{
+          color: "#26266D",
+          "& .MuiSelect-select": {
+            padding: "0",
+          },
+        }}
         className="currencyInput"
         labelId="currency-select"
         id="currency-select"

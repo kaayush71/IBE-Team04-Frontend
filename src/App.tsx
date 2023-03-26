@@ -8,20 +8,12 @@ import { routesPath } from "./constants/routes";
 import { fetchStaticCompanyData } from "./redux/reducers/configDataSlice";
 import { fetchCurrencyData } from "./redux/reducers/currencyDataSlice";
 import { useAppDispatch, useAppSelector } from "./redux/store";
-import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { setSelectedLanguage } from "./redux/reducers/languageDataSlice";
 
 function App() {
   const reduxDispatch = useAppDispatch();
   const supportedLanguages = useAppSelector((state) => state.language.supportedLanguage);
-  const testBackend = async () => {
-    const response = await axios.get(
-      "https://95xedsf044.execute-api.ap-south-1.amazonaws.com/dev/api/v1/health"
-    );
-
-    console.log("backend api respone", response.data);
-  };
   const { i18n } = useTranslation();
   useEffect(() => {
     const browserLanguage = navigator.language;
@@ -37,7 +29,6 @@ function App() {
     }
     reduxDispatch(fetchStaticCompanyData());
     reduxDispatch(fetchCurrencyData());
-    testBackend();
   }, [reduxDispatch, i18n, supportedLanguages]);
   return (
     <div className="App">

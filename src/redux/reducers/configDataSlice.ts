@@ -44,7 +44,7 @@ export const configDataSlice = createSlice({
       state.companyLogo = action.payload.companyLogo;
       state.companyTitle = action.payload.companyTitle;
       state.licenseText = action.payload.licenseText;
-      console.log(action.payload);
+      console.log("company config data", action.payload);
     });
   },
 });

@@ -3,12 +3,12 @@
   background: none;
   color: black;
   height: 30%;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 .day-number {
   color: black;
   height: 30%;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 // ------------------------------------------------------------------------------------------
@@ -16,8 +16,12 @@
   padding: 0 !important;
   height: 30px !important;
 }
+.rdrMonths {
+  gap: 2rem ;
+}
 .rdrMonth {
   padding-bottom: 0.5rem !important;
+  width: 27rem !important;
 }
 .rdrDefinedRangesWrapper,
 .rdrDateDisplayWrapper {
@@ -27,15 +31,9 @@
   display: none !important;
 }
 
-// .rdrDays {
-//   // column-gap: 0.3rem;
-//   // row-gap: 0.3rem;
-// }
-
 .rdrDay {
-  height: 2.5rem !important;
+  height: 3rem !important;
   line-height: 0 !important;
-  // width: calc(90% / 7) !important;
 }
 .rdrDayNumber {
   flex-direction: column;
@@ -91,7 +89,7 @@
 
 .rdrWeekDays,
 .rdrMonthName {
-  font-size: 0.9rem;
+  font-size: 1.2rem;
 }
 .rdrDayDisabled {
   background: #f8f8f8 !important;
