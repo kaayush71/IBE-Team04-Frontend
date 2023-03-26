@@ -38,66 +38,72 @@ export default function Landing() {
     >
       <Container sx={{ padding: "2rem 0" }} maxWidth="xl">
         <Paper sx={{ padding: "2rem", maxWidth: "25rem" }}>
-          <FormGroup sx={{ rowGap: "1rem" }}>
-            <Box>
-              <Typography fontSize={".8rem"}>
-                Propery name <sub>*</sub>
-              </Typography>
-              <PropertyMenu />
-            </Box>
-            <Box>
-              <Typography fontSize={".8rem"}>Select Dates</Typography>
-              <CalendarMenu />
-            </Box>
-            <Box
-              className={
-                landingConfig.searchForm.guest.showGuest
-                  ? "landing__form-layout"
-                  : "landing__form-layout--reverse"
-              }
+          <FormGroup>
+            <form
+              style={{ rowGap: "1rem", display: "grid" }}
+              onSubmit={() => console.log("form submitted")}
             >
-              {landingConfig.searchForm.guest.showGuest ? (
-                <Box>
-                  <Typography fontSize={".8rem"}>Guests</Typography>
-                  <GuestMenu />
-                </Box>
-              ) : (
-                <></>
-              )}
-              {landingConfig.searchForm.rooms.showRoom ? (
-                <Box>
-                  <Typography fontSize={".8rem"}>Rooms</Typography>
-                  <RoomsMenu />
-                </Box>
-              ) : (
-                <></>
-              )}
-              {landingConfig.searchForm.accessibility.showAccessibility ? (
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Checkbox
-                    checked={accessibility}
-                    onChange={handleCheckbox}
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 18 }, padding: "0" }}
-                  />
-                  <AccessibleIcon fontSize="small" />
-                  <Typography>I need an Accessible Room</Typography>
-                </Box>
-              ) : (
-                <></>
-              )}
-            </Box>
-            <Button
-              sx={{
-                backgroundColor: "#26266D",
-                "&:hover": { backgroundColor: "#26266D" },
-                display: "flex",
-                margin: "5rem auto",
-                width: "10rem",
-              }}
-              variant="contained"
-            >
-              Search
-            </Button>
+              <Box>
+                <Typography fontSize={".8rem"}>
+                  Propery name <sub>*</sub>
+                </Typography>
+                <PropertyMenu />
+              </Box>
+              <Box>
+                <Typography fontSize={".8rem"}>Select Dates</Typography>
+                <CalendarMenu />
+              </Box>
+              <Box
+                className={
+                  landingConfig.searchForm.guest.showGuest
+                    ? "landing__form-layout"
+                    : "landing__form-layout--reverse"
+                }
+              >
+                {landingConfig.searchForm.guest.showGuest ? (
+                  <Box>
+                    <Typography fontSize={".8rem"}>Guests</Typography>
+                    <GuestMenu />
+                  </Box>
+                ) : (
+                  <></>
+                )}
+                {landingConfig.searchForm.rooms.showRoom ? (
+                  <Box>
+                    <Typography fontSize={".8rem"}>Rooms</Typography>
+                    <RoomsMenu />
+                  </Box>
+                ) : (
+                  <></>
+                )}
+                {landingConfig.searchForm.accessibility.showAccessibility ? (
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Checkbox
+                      checked={accessibility}
+                      onChange={handleCheckbox}
+                      sx={{ "& .MuiSvgIcon-root": { fontSize: 18 }, padding: "0" }}
+                    />
+                    <AccessibleIcon fontSize="small" />
+                    <Typography>I need an Accessible Room</Typography>
+                  </Box>
+                ) : (
+                  <></>
+                )}
+              </Box>
+              <Button
+                type="submit"
+                sx={{
+                  backgroundColor: "#26266D",
+                  "&:hover": { backgroundColor: "#26266D" },
+                  display: "flex",
+                  margin: "5rem auto",
+                  width: "10rem",
+                }}
+                variant="contained"
+              >
+                Search
+              </Button>
+            </form>
           </FormGroup>
         </Paper>
       </Container>
