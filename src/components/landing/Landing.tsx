@@ -37,6 +37,7 @@ export default function Landing() {
       endDate: landingFormData.endDate,
       rooms: landingFormData.numberOfRoomSelected,
       guestDetails: landingConfig.searchForm.guest.guestTypes,
+      accessibility: landingFormData.accessibility,
     };
     console.log("form submitted", formData);
   };
@@ -52,7 +53,9 @@ export default function Landing() {
       }}
     >
       <Container sx={{ padding: "3.5rem 0" }} maxWidth={false}>
-        <Paper sx={{ padding: "2.75rem", maxWidth: "23.75rem" }}>
+        <Paper
+          sx={{ padding: "2.75rem", maxWidth: "23.75rem", marginBottom: { xs: "5rem", md: "0" } }}
+        >
           <FormGroup>
             <form style={{ rowGap: "1.15rem", display: "grid" }} onSubmit={handleSubmit}>
               <Box>
@@ -97,7 +100,9 @@ export default function Landing() {
                       sx={{ "& .MuiSvgIcon-root": { fontSize: 18 }, padding: "0" }}
                     />
                     <AccessibleIcon fontSize="small" />
-                    <Typography>{t("I need an Accessible Room")}</Typography>
+                    <Typography fontSize={{ xs: "0.9rem", md: "1rem" }}>
+                      {t("I need an Accessible Room")}
+                    </Typography>
                   </Box>
                 ) : (
                   <></>
@@ -110,7 +115,7 @@ export default function Landing() {
                   "&:hover": { backgroundColor: "#26266D" },
                   display: "flex",
                   padding: "0.75rem 1.25rem",
-                  margin: "9.18rem auto 4rem auto",
+                  margin: { md: "9.18rem auto 4rem auto", xs: "4rem auto 3rem auto" },
                   width: "10rem",
                 }}
                 variant="contained"

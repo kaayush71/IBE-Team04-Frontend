@@ -38,8 +38,8 @@ const GuestType = ({ guest }: Props) => {
       }}
     >
       <Box>
-        <Typography>{t(guest.categoryName)}</Typography>
-        <Typography fontSize={"0.7rem"}>{`Ages ${guest.ageRange}`}</Typography>
+        <Typography fontWeight={700}>{t(guest.categoryName)}</Typography>
+        <Typography fontSize={"1rem"}>{`Ages ${guest.ageRange}`}</Typography>
       </Box>
       <Box sx={{ display: "flex", gap: "1rem", alignItems: "start" }}>
         <IconButton onClick={handleDecrement} sx={{ padding: "0" }}>

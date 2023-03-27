@@ -75,7 +75,7 @@ export default function Header() {
               sx={{
                 pr: 0,
                 backgroundColor: "#26266D",
-                padding: "0.75rem 1.25rem",
+                padding: "0.75rem 1rem",
                 ":hover": {
                   backgroundColor: "#26266D",
                 },
@@ -110,8 +110,7 @@ export default function Header() {
                         "&:hover": { backgroundColor: "#26266D" },
                       }}
                     >
-                      LOGIN
-                      {/* {t("LOGIN")} */}
+                      {t("LOGIN")}
                     </Button>
                   </Box>
                 </Box>
