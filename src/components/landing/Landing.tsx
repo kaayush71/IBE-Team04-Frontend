@@ -1,6 +1,6 @@
 import { Box, Button, Checkbox, FormGroup, Paper, Typography } from "@mui/material";
 import { Container } from "@mui/system";
-import React, { useEffect } from "react";
+import React from "react";
 import CalendarMenu from "./CalendarMenu/CalendarMenu";
 import "./Landing.scss";
 import PropertyMenu from "./PropertyMenu/PropertyMenu";
@@ -8,23 +8,17 @@ import AccessibleIcon from "@mui/icons-material/Accessible";
 import RoomsMenu from "./Rooms/RoomsMenu";
 import GuestMenu from "./GuestsMenu/GuestMenu";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { fetchCalendarData } from "../../redux/reducers/calendarDataSlice";
-import {
-  setAccessibility,
-} from "../../redux/reducers/landingSearchFormSlice";
+import { setAccessibility } from "../../redux/reducers/landingSearchFormSlice";
 import { useTranslation } from "react-i18next";
 
 export default function Landing() {
   const reduxDispatch = useAppDispatch();
   const bannerImage = useAppSelector((state) => state.config.bannerImage);
-  // const loading = useAppSelector((state) => state.landingForm.loading);
+  const loading = useAppSelector((state) => state.landingForm.loading);
   const landingConfig = useAppSelector((state) => state.landingForm.landingConfig);
   const landingFormData = useAppSelector((state) => state.landingForm);
   const accessibility = useAppSelector((state) => state.landingForm.accessibility);
   const { t } = useTranslation();
-  useEffect(() => {
-    reduxDispatch(fetchCalendarData());
-  }, [reduxDispatch]);
   const handleCheckbox = () => {
     reduxDispatch(setAccessibility(!accessibility));
   };
@@ -66,45 +60,50 @@ export default function Landing() {
                 <Typography fontSize={".875rem"}>{t("Select Dates")}</Typography>
                 <CalendarMenu />
               </Box>
-              <Box
-                className={
-                  landingConfig.searchForm.guest.showGuest
-                    ? "landing__form-layout"
-                    : "landing__form-layout--reverse"
-                }
-              >
-                {landingConfig.searchForm.guest.showGuest ? (
-                  <Box>
-                    <Typography fontSize={".875rem"}>{t("Guests")}</Typography>
-                    <GuestMenu />
-                  </Box>
-                ) : (
-                  <></>
-                )}
-                {landingConfig.searchForm.rooms.showRoom ? (
-                  <Box>
-                    <Typography fontSize={".875rem"}>{t("Rooms")}</Typography>
-                    <RoomsMenu />
-                  </Box>
-                ) : (
-                  <></>
-                )}
-                {landingConfig.searchForm.accessibility.showAccessibility ? (
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Checkbox
-                      checked={accessibility}
-                      onChange={handleCheckbox}
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 18 }, padding: "0" }}
-                    />
-                    <AccessibleIcon fontSize="small" />
-                    <Typography fontSize={{ xs: "0.9rem", md: "1rem" }}>
-                      {t("I need an Accessible Room")}
-                    </Typography>
-                  </Box>
-                ) : (
-                  <></>
-                )}
-              </Box>
+              {loading ? (
+                <></>
+              ) : (
+                <Box
+                  className={
+                    landingConfig.searchForm.guest.showGuest
+                      ? "landing__form-layout"
+                      : "landing__form-layout--reverse"
+                  }
+                >
+                  {landingConfig.searchForm.guest.showGuest ? (
+                    <Box>
+                      <Typography fontSize={".875rem"}>{t("Guests")}</Typography>
+                      <GuestMenu />
+                    </Box>
+                  ) : (
+                    <></>
+                  )}
+                  {landingConfig.searchForm.rooms.showRoom ? (
+                    <Box>
+                      <Typography fontSize={".875rem"}>{t("Rooms")}</Typography>
+                      <RoomsMenu />
+                    </Box>
+                  ) : (
+                    <></>
+                  )}
+                  {landingConfig.searchForm.accessibility.showAccessibility ? (
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <Checkbox
+                        checked={accessibility}
+                        onChange={handleCheckbox}
+                        sx={{ "& .MuiSvgIcon-root": { fontSize: 18 }, padding: "0" }}
+                      />
+                      <AccessibleIcon fontSize="small" />
+                      <Typography fontSize={{ xs: "0.9rem", md: "1rem" }}>
+                        {t("I need an Accessible Room")}
+                      </Typography>
+                    </Box>
+                  ) : (
+                    <></>
+                  )}
+                </Box>
+              )}
+
               <Button
                 type="submit"
                 sx={{

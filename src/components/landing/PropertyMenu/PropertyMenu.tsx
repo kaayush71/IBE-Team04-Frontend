@@ -16,6 +16,7 @@ import {
   setPropertyId,
 } from "../../../redux/reducers/landingSearchFormSlice";
 import { useTranslation } from "react-i18next";
+import { fetchCalendarData } from "../../../redux/reducers/calendarDataSlice";
 
 type Props = {};
 
@@ -27,6 +28,7 @@ const PropertyMenu = (props: Props) => {
 
   const handleChange = (event: SelectChangeEvent) => {
     reduxDispatch(fetchLandingConfigData());
+    reduxDispatch(fetchCalendarData());
     reduxDispatch(setPropertyId(event.target.value));
     setSelected(event.target.value);
   };
@@ -60,7 +62,7 @@ const PropertyMenu = (props: Props) => {
         renderValue={
           selected === ""
             ? () => (
-                <Typography sx={{ padding: "0", }} fontStyle={"italic"} fontWeight={400}>
+                <Typography sx={{ padding: "0" }} fontStyle={"italic"} fontWeight={400}>
                   {t("Search All Properties")}
                 </Typography>
               )
