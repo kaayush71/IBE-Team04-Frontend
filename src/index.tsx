@@ -39,9 +39,9 @@ Sentry.init({
   tracesSampleRate: 1.0,
 });
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store}>
       <App />
     </Provider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

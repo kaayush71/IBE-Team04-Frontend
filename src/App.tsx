@@ -10,6 +10,18 @@ import { fetchCurrencyData } from "./redux/reducers/currencyDataSlice";
 import { useAppDispatch, useAppSelector } from "./redux/store";
 import { useTranslation } from "react-i18next";
 import { setSelectedLanguage } from "./redux/reducers/languageDataSlice";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+
+const theme = createTheme({
+  typography: {
+    allVariants: {
+      fontFamily: "Lato",
+      textTransform: "none",
+      fontWeight:400,
+      fontSize: 16,
+    },
+  },
+});
 
 function App() {
   const reduxDispatch = useAppDispatch();
@@ -31,15 +43,17 @@ function App() {
     reduxDispatch(fetchCurrencyData());
   }, [reduxDispatch, i18n, supportedLanguages]);
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path={routesPath.landing} element={<Landing />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route path={routesPath.landing} element={<Landing />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </div>
+    </ThemeProvider>
   );
 }
 

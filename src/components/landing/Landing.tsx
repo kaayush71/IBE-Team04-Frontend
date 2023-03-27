@@ -10,21 +10,20 @@ import GuestMenu from "./GuestsMenu/GuestMenu";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { fetchCalendarData } from "../../redux/reducers/calendarDataSlice";
 import {
-  fetchLandingConfigData,
   setAccessibility,
 } from "../../redux/reducers/landingSearchFormSlice";
 import { useTranslation } from "react-i18next";
 
 export default function Landing() {
   const reduxDispatch = useAppDispatch();
-  const loading = useAppSelector((state) => state.landingForm.loading);
+  const bannerImage = useAppSelector((state) => state.config.bannerImage);
+  // const loading = useAppSelector((state) => state.landingForm.loading);
   const landingConfig = useAppSelector((state) => state.landingForm.landingConfig);
   const landingFormData = useAppSelector((state) => state.landingForm);
   const accessibility = useAppSelector((state) => state.landingForm.accessibility);
   const { t } = useTranslation();
   useEffect(() => {
     reduxDispatch(fetchCalendarData());
-    reduxDispatch(fetchLandingConfigData());
   }, [reduxDispatch]);
   const handleCheckbox = () => {
     reduxDispatch(setAccessibility(!accessibility));
@@ -41,12 +40,10 @@ export default function Landing() {
     };
     console.log("form submitted", formData);
   };
-  return loading ? (
-    <Typography>Page is Loading</Typography>
-  ) : (
+  return (
     <Box
       sx={{
-        backgroundImage: `url(${landingConfig.bannerImage})`,
+        backgroundImage: `url(${bannerImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         padding: "0 3.375rem",
@@ -120,7 +117,7 @@ export default function Landing() {
                 }}
                 variant="contained"
               >
-                {t("Search")}
+                {t("SEARCH")}
               </Button>
             </form>
           </FormGroup>

@@ -9,6 +9,7 @@ type Props = {};
 
 const GuestMenu = (props: Props) => {
   const { t } = useTranslation();
+  const loading = useAppSelector((state) => state.landingForm.loading);
   const guestConfig = useAppSelector((state) => state.landingForm.landingConfig.searchForm.guest);
   const guestTypeStrings = guestConfig.guestTypes
     .filter((guestType) => guestType.count > 0)
@@ -20,11 +21,12 @@ const GuestMenu = (props: Props) => {
   const guestInformation = guestTypeStrings.join(", ");
 
   const GuestMenuInput = () => {
-    return <Typography>{guestInformation}</Typography>;
+    return <Typography>{loading ? `Guests` : guestInformation}</Typography>;
   };
   return guestConfig.showGuest ? (
     <FormControl fullWidth>
       <Select
+        disabled={loading}
         sx={{
           "& .MuiSelect-select": {
             padding: "0.7rem",
@@ -33,6 +35,7 @@ const GuestMenu = (props: Props) => {
         displayEmpty={true}
         IconComponent={KeyboardArrowDownIcon}
         renderValue={() => <GuestMenuInput />}
+        value=""
       >
         {guestConfig.guestTypes.map((guest) => {
           return <GuestType key={guest.categoryName} guest={guest} />;

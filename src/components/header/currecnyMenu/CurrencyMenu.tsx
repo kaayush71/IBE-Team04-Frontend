@@ -35,6 +35,15 @@ export default function CurrencyMenu() {
             padding: "0",
           },
         }}
+        MenuProps={{
+          PaperProps: {
+            sx: {
+              "& .MuiMenuItem-root": {
+                paddingLeft: "0.1rem",
+              },
+            },
+          },
+        }}
         className="currencyInput"
         labelId="currency-select"
         id="currency-select"

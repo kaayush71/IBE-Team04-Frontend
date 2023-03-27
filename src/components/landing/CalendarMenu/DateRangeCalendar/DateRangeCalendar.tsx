@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { DateRange } from "react-date-range";
 import "./DateRangeCalendar.scss";
 import "react-date-range/dist/styles.css"; // main style file
@@ -32,20 +32,32 @@ const DateRangeCalendar = () => {
   ];
   // function to get the minimum price
   // between start-date and end-dat
-  const getMinimumNightlyPrice = (startDate: string, endDate: string) => {
-    if (startDate === endDate) {
-      return;
-    }
-    while (startDate <= endDate) {
-      const currentDateMinPrice = minRoomRates[startDate];
-      if (currentDateMinPrice !== undefined) {
-        if (currentDateMinPrice < minimumNightlyPrice) {
-          reduxDispatch(setMinimumNightlyPrice(currentDateMinPrice));
-        }
+  const getMinimumNightlyPrice = useCallback(
+    (startDate: string, endDate: string) => {
+      if (startDate === endDate) {
+        reduxDispatch(setMinimumNightlyPrice(Infinity));
+        return;
       }
-      startDate = addDays(new Date(startDate), 1).toDateString();
-    }
-  };
+      while (startDate <= endDate) {
+        const currentDateMinPrice = minRoomRates[startDate];
+        if (currentDateMinPrice !== undefined) {
+          if (currentDateMinPrice < minimumNightlyPrice) {      
+            console.log("dispatiching");
+            reduxDispatch(setMinimumNightlyPrice(currentDateMinPrice));
+          }
+        }
+        startDate = format(addDays(new Date(startDate), 1), "yyyy-MM-dd");
+      }
+    },
+    [minRoomRates, minimumNightlyPrice, reduxDispatch]
+  );
+
+  useEffect(() => {
+    getMinimumNightlyPrice(
+      format(new Date(landingForm.startDate), "yyyy-MM-dd"),
+      format(new Date(landingForm.endDate), "yyyy-MM-dd")
+    );
+  }, [getMinimumNightlyPrice, landingForm.endDate, landingForm.startDate]);
 
   // will be called when their is change
   // in start-date or end-date
@@ -154,7 +166,7 @@ const DateRangeCalendar = () => {
                 Please select end date. Max.
               </Typography>
               <Typography color={"#D0182B"} fontSize={"0.875rem"}>
-                length of stay: 14 days
+                {`length of stay: ${landingForm.landingConfig.searchForm.bookingDateRange} days`}
               </Typography>
             </Box>
           ) : (

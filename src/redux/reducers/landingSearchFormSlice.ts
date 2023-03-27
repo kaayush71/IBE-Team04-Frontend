@@ -5,9 +5,6 @@ import { addDays } from "date-fns";
 interface LandingConfig {
   bannerImage: string;
   searchForm: {
-    properties: {
-      availaibleProperties: string[];
-    };
     bookingDateRange: number;
     rooms: {
       defaultRoomCount: number;
@@ -50,17 +47,14 @@ interface State {
 const initialState: State = {
   showSearchForm: false,
   startDate: new Date().toDateString(),
-  endDate: addDays(new Date(),2).toDateString(),
+  endDate: addDays(new Date(), 2).toDateString(),
   showDateOnForm: false,
   maxBookingDuration: 14,
-  numberOfRoomSelected: 0,
+  numberOfRoomSelected: 1,
   propertyId: "",
   landingConfig: {
     bannerImage: "",
     searchForm: {
-      properties: {
-        availaibleProperties: [],
-      },
       bookingDateRange: 14,
       rooms: {
         defaultRoomCount: 1,
@@ -125,22 +119,29 @@ export const landingSearchFormSlice = createSlice({
       state.minimumNightlyPrice = action.payload;
     },
     increaseGuestCount: (state, action) => {
+      const maximumRoomOccupancy = state.landingConfig.searchForm.rooms.maximumRoomOccupancy;
+      const roomCountArray = state.landingConfig.searchForm.rooms.roomCountArray;
+      const maximumAvailaibleRoom = roomCountArray[roomCountArray.length - 1];
+      if (state.totalGuestCount === maximumAvailaibleRoom * maximumRoomOccupancy) {
+        return;
+      }
+
       const guestType = state.landingConfig.searchForm.guest.guestTypes.find(
         (guest) => guest.categoryName === action.payload.categoryName
       );
       if (guestType !== undefined) {
-        if (
-          state.totalGuestCount <
-          state.numberOfRoomSelected * state.landingConfig.searchForm.rooms.maximumRoomOccupancy
-        ) {
+        if (state.totalGuestCount < state.numberOfRoomSelected * maximumRoomOccupancy) {
           guestType.count += 1;
           state.totalGuestCount += 1;
         } else {
-          return;
+          guestType.count += 1;
+          state.totalGuestCount += 1;
+          state.numberOfRoomSelected += 1;
         }
       }
     },
     decreaseGuestCount: (state, action) => {
+      const maximumRoomOccupancy = state.landingConfig.searchForm.rooms.maximumRoomOccupancy;
       const guestType = state.landingConfig.searchForm.guest.guestTypes.find(
         (guest) => guest.categoryName === action.payload.categoryName
       );
@@ -148,6 +149,9 @@ export const landingSearchFormSlice = createSlice({
         if (guestType.count > guestType.minCount) {
           guestType.count -= 1;
           state.totalGuestCount -= 1;
+          if (state.totalGuestCount % maximumRoomOccupancy === 0) {
+            state.numberOfRoomSelected -= 1;
+          }
         } else {
           return;
         }

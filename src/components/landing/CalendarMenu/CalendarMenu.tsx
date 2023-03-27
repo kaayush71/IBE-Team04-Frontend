@@ -38,6 +38,7 @@ export default function CalendarMenu(props: Props) {
   return (
     <FormControl fullWidth>
       <Select
+        disabled={landingForm.loading}
         IconComponent={() => null}
         sx={{
           width: "100%",

@@ -54,7 +54,7 @@ export default function Header() {
             </Typography>
           </Box>
           <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: "1.34rem" }}>
-            <Typography fontSize={"0.875"} fontWeight={700} color={"black"}>
+            <Typography fontSize={"0.875rem"} fontWeight={700} color={"black"}>
               {t("MY BOOKINGS")}
             </Typography>
             <LanguageMenu />
