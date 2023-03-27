@@ -7,6 +7,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import "./CalendarMenu.scss";
 import { useTranslation } from "react-i18next";
+import { format } from "date-fns";
 
 type Props = {};
 
@@ -17,12 +18,14 @@ export default function CalendarMenu(props: Props) {
     return (
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <Typography>
-          {landingForm.showDateOnForm ? landingForm.startDate : t("Check In")}
+          {landingForm.startDate
+            ? format(new Date(landingForm.startDate), "yyyy-MM-dd")
+            : t("Check In")}
         </Typography>
         <ArrowForwardIcon fontSize="small" />
         <Typography>
-          {landingForm.showDateOnForm && landingForm.endDate !== landingForm.startDate
-            ? landingForm.endDate
+          {landingForm.endDate && landingForm.endDate !== landingForm.startDate
+            ? format(new Date(landingForm.endDate), "yyyy-MM-dd")
             : t("Check Out")}
         </Typography>
         <CalendarMonthIcon fontSize="small" />

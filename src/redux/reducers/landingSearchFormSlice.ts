@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { addDays } from "date-fns";
 
 interface LandingConfig {
   bannerImage: string;
@@ -49,7 +50,7 @@ interface State {
 const initialState: State = {
   showSearchForm: false,
   startDate: new Date().toDateString(),
-  endDate: new Date().toDateString(),
+  endDate: addDays(new Date(),2).toDateString(),
   showDateOnForm: false,
   maxBookingDuration: 14,
   numberOfRoomSelected: 0,
