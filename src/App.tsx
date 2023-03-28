@@ -4,6 +4,7 @@ import "./App.scss";
 import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
 import Landing from "./components/landing/Landing";
+import RoomResults from "./components/results/RoomResults";
 import { routesPath } from "./constants/routes";
 import { fetchStaticCompanyData } from "./redux/reducers/configDataSlice";
 import { fetchCurrencyData } from "./redux/reducers/currencyDataSlice";
@@ -49,6 +50,7 @@ function App() {
           <Header />
           <Routes>
             <Route path={routesPath.landing} element={<Landing />} />
+            <Route path={routesPath.roomResults} element={<RoomResults />} />
           </Routes>
           <Footer />
         </BrowserRouter>

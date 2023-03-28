@@ -5,6 +5,7 @@ import configDataSlice from "./reducers/configDataSlice";
 import currencyDataSlice from "./reducers/currencyDataSlice";
 import landingSearchFormSlice from "./reducers/landingSearchFormSlice";
 import languageDataSlice from "./reducers/languageDataSlice";
+import roomResultsDataSlice from "./reducers/roomResultsDataSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     language: languageDataSlice,
     landingForm: landingSearchFormSlice,
     calendar: calendarDataSlice,
+    results : roomResultsDataSlice
   },
 });
 

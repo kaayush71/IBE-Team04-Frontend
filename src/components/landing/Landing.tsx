@@ -10,9 +10,12 @@ import GuestMenu from "./GuestsMenu/GuestMenu";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { setAccessibility } from "../../redux/reducers/landingSearchFormSlice";
 import { useTranslation } from "react-i18next";
+import { setEndDate, setGuest, setRooms, setStartDate } from "../../redux/reducers/roomResultsDataSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Landing() {
   const reduxDispatch = useAppDispatch();
+  const navigate = useNavigate();
   const bannerImage = useAppSelector((state) => state.config.bannerImage);
   const loading = useAppSelector((state) => state.landingForm.loading);
   const landingConfig = useAppSelector((state) => state.landingForm.landingConfig);
@@ -32,7 +35,12 @@ export default function Landing() {
       guestDetails: landingConfig.searchForm.guest.guestTypes,
       accessibility: landingFormData.accessibility,
     };
-    console.log("form submitted", formData);
+    reduxDispatch(setStartDate(formData.startDate));
+    reduxDispatch(setEndDate(formData.endDate));
+    reduxDispatch(setRooms(formData.rooms));
+    reduxDispatch(setGuest(formData.guestDetails));
+    navigate("/room-search-results");
+
   };
   return (
     <Box

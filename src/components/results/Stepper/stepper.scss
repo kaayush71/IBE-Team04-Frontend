@@ -1,0 +1,18 @@
+@import "../../../sass/Variables.scss";
+
+.main-stepper-section{
+    display: grid;
+    height : 5.75rem;
+    grid-template-columns: 1fr;
+    place-items: center;
+    background-color: $STEPPER_BACKGROUND_COLOR;
+   .step-label{
+    color: $NON_ACTIVE_FONT_COLOR;
+   }
+   .Mui-completed{
+    .step-label{
+     color : $NON_ACTIVE_FONT_COLOR;   
+    }
+   }
+    
+}
