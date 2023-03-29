@@ -44,7 +44,7 @@ export const roomResultsDataSlice = createSlice({
         state.guest = action.payload;
     },
     setBedCount:(state, action) => {
-        state.bed = action.payload;
+        state.bed.bedCountSelected = action.payload;
     }
   },
   

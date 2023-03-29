@@ -1,14 +1,14 @@
 import { Box, Button } from "@mui/material";
 import React, { useEffect } from "react";
-import { fetchCalendarData } from "../../../redux/reducers/calendarDataSlice";
-import { useAppDispatch } from "../../../redux/store";
-import CalendarMenu from "../../landing/CalendarMenu/CalendarMenu";
-import GuestMenu from "../../landing/GuestsMenu/GuestMenu";
-import RoomsMenu from "../../landing/Rooms/RoomsMenu";
+import { fetchCalendarData } from "../../../../redux/reducers/calendarDataSlice";
+import { useAppDispatch } from "../../../../redux/store";
+import CalendarMenu from "../../../landing/CalendarMenu/CalendarMenu";
+import GuestMenu from "../../../landing/GuestsMenu/GuestMenu";
+import RoomsMenu from "../../../landing/Rooms/RoomsMenu";
 import BedMenu from "./Beds/BedMenu";
-import "./results.scss";
+import "./searchBar.scss";
 
-const Results = () => {
+const SearchBar = () => {
   const reduxDispatch = useAppDispatch();
   useEffect(() => {
     reduxDispatch(fetchCalendarData());
@@ -17,6 +17,9 @@ const Results = () => {
     <Box
       sx={{
         padding: "0 3.375rem",
+        display:"grid",
+        gridTemplateColumns : "1fr",
+        placeItems : "center"
       }}
       className={"main-result-section"}
     >
@@ -53,4 +56,4 @@ const Results = () => {
   );
 };
 
-export default Results;
+export default SearchBar;

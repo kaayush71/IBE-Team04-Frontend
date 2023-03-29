@@ -6,6 +6,9 @@
   grid-template-columns: 1fr;
   place-items: center;
   background-color: $STEPPER_BACKGROUND_COLOR;
+  .starter-stepper-section{
+    width: 31.5%;
+  }
   .MuiSvgIcon-root {
     color: $NON_ACTIVE_FONT_COLOR !important;
   }
@@ -35,5 +38,17 @@
   
   path {
     color: $COMPLETED_ICON_COLOR !important;
+  }
+}
+
+
+@media  screen and (max-width: 769px) {
+  .main-stepper-section{
+    .starter-stepper-section{
+      width: 81%;
+    } 
+    .MuiStepLabel-label{
+      font-size: 0.475rem;
+    }
   }
 }

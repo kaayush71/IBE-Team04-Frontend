@@ -11,3 +11,11 @@
     }
     
 }
+@media screen and (max-width: 769px) {
+    .room-results-page{
+       display: block;
+        .banner-section{
+            display: none;
+        }
+    }
+}

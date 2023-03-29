@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { getLocalstorageFormData } from "../../redux/reducers/landingSearchFormSlice";
 import { useAppDispatch } from "../../redux/store";
 import Banner from "./Banner/Banner";
-import Results from "./Results/Results";
+import ResultSection from "./ResultSection/ResultSection";
 import "./roomResults.scss";
 import Stepper from "./Stepper/Steps";
 
@@ -21,7 +21,7 @@ export default function RoomResults() {
         <Stepper />
       </Box>
       <Box sx={{ width: "100%" }} className={"results-section"}>
-        <Results />
+        <ResultSection/>
       </Box>
     </Box>
   );

@@ -1,7 +1,7 @@
 import { Box, FormControl, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
 import React from "react";
-import { setBedCount } from "../../../../redux/reducers/roomResultsDataSlice";
-import { useAppDispatch, useAppSelector } from "../../../../redux/store";
+import { setBedCount } from "../../../../../redux/reducers/roomResultsDataSlice";
+import { useAppDispatch, useAppSelector } from "../../../../../redux/store";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const BedMenu = () => {
