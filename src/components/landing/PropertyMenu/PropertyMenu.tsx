@@ -8,11 +8,12 @@ import {
   SelectChangeEvent,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import {
   fetchLandingConfigData,
+  setIsLandingFormDisbale,
   setPropertyId,
 } from "../../../redux/reducers/landingSearchFormSlice";
 import { useTranslation } from "react-i18next";
@@ -23,14 +24,17 @@ type Props = {};
 const PropertyMenu = (props: Props) => {
   const { t } = useTranslation();
   const reduxDispatch = useAppDispatch();
-  const [selected, setSelected] = useState("");
+  const selectedProperty = useAppSelector((state)=>state.landingForm.propertyId);
   const properties = useAppSelector((state) => state.config.properties);
+  useEffect(()=> {
+    reduxDispatch(setPropertyId(""));
+  },[reduxDispatch])
 
   const handleChange = (event: SelectChangeEvent) => {
     reduxDispatch(fetchLandingConfigData());
     reduxDispatch(fetchCalendarData());
+    reduxDispatch(setIsLandingFormDisbale(false));
     reduxDispatch(setPropertyId(event.target.value));
-    setSelected(event.target.value);
   };
   return (
     <FormControl fullWidth>
@@ -54,25 +58,26 @@ const PropertyMenu = (props: Props) => {
             },
           },
         }}
-        value={selected}
+        value={selectedProperty}
         onChange={handleChange}
         displayEmpty={true}
         required={true}
+        defaultValue=""
         IconComponent={KeyboardArrowDownIcon}
         renderValue={
-          selected === ""
+          selectedProperty === ""
             ? () => (
                 <Typography sx={{ padding: "0" }} fontStyle={"italic"} fontWeight={400}>
                   {t("Search All Properties")}
                 </Typography>
               )
-            : (selected) => <Typography>{`Property ${selected}`}</Typography>
+            : (selectedProperty) => <Typography>{`Property ${selectedProperty}`}</Typography>
         }
       >
         {properties.availaibleProperties.map((option) => (
           <MenuItem disabled={option !== "4"} key={option} value={option}>
             <ListItemIcon>
-              <Checkbox checked={selected.includes(option)} />
+              <Checkbox checked={selectedProperty===option} />
             </ListItemIcon>
             <ListItemText primary={`Property ${option}`} />
           </MenuItem>

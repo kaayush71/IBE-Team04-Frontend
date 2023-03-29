@@ -42,7 +42,11 @@ interface State {
   totalGuestCount: number;
   accessibility: boolean;
   minimumNightlyPrice: number;
+  isLandingFormDisable: boolean;
 }
+
+const formData = JSON.parse(localStorage.getItem("formData") || "{}");
+console.log("form-data", formData);
 
 const initialState: State = {
   showSearchForm: false,
@@ -76,6 +80,7 @@ const initialState: State = {
   totalGuestCount: 1,
   accessibility: true,
   minimumNightlyPrice: Infinity,
+  isLandingFormDisable: localStorage.getItem("isLandingFormDisable") === "true" ? true : false,
 };
 
 export const fetchLandingConfigData = createAsyncThunk(
@@ -84,7 +89,6 @@ export const fetchLandingConfigData = createAsyncThunk(
     const response = await axios.get(
       "https://95xedsf044.execute-api.ap-south-1.amazonaws.com/dev/api/v1/configuration?tenantName=Kickdrum&property=Team-04%23landingPage"
     );
-    console.log("landing config data", JSON.parse(response.data.landingPage));
     return JSON.parse(response.data.landingPage);
   }
 );
@@ -117,6 +121,9 @@ export const landingSearchFormSlice = createSlice({
     },
     setMinimumNightlyPrice: (state, action) => {
       state.minimumNightlyPrice = action.payload;
+    },
+    setIsLandingFormDisbale: (state, action) => {
+      state.isLandingFormDisable = action.payload;
     },
     increaseGuestCount: (state, action) => {
       const maximumRoomOccupancy = state.landingConfig.searchForm.rooms.maximumRoomOccupancy;
@@ -157,6 +164,18 @@ export const landingSearchFormSlice = createSlice({
         }
       }
     },
+
+    // update the state with localstorage data
+    // for persistence data store.
+    getLocalstorageFormData: (state) => {
+      const formData = JSON.parse(localStorage.getItem("formData") || "{}");
+      state.startDate = formData.startDate;
+      state.numberOfRoomSelected = formData.rooms;
+      state.landingConfig.searchForm.guest.guestTypes = formData.guestDetails;
+      state.landingConfig.searchForm.rooms.defaultRoomCount = formData.defaultRoomCount;
+      state.landingConfig.searchForm.rooms.roomCountArray = formData.roomCountArray;
+      console.log("form-data", formData);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchLandingConfigData.fulfilled, (state, action) => {
@@ -184,4 +203,6 @@ export const {
   decreaseGuestCount,
   setAccessibility,
   setMinimumNightlyPrice,
+  setIsLandingFormDisbale,
+  getLocalstorageFormData,
 } = landingSearchFormSlice.actions;

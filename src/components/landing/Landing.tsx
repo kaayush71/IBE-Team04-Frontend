@@ -1,6 +1,6 @@
 import { Box, Button, Checkbox, FormGroup, Paper, Typography } from "@mui/material";
 import { Container } from "@mui/system";
-import React from "react";
+import React, { useEffect } from "react";
 import CalendarMenu from "./CalendarMenu/CalendarMenu";
 import "./Landing.scss";
 import PropertyMenu from "./PropertyMenu/PropertyMenu";
@@ -8,13 +8,23 @@ import AccessibleIcon from "@mui/icons-material/Accessible";
 import RoomsMenu from "./Rooms/RoomsMenu";
 import GuestMenu from "./GuestsMenu/GuestMenu";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { setAccessibility } from "../../redux/reducers/landingSearchFormSlice";
+import {
+  setAccessibility,
+  setIsLandingFormDisbale,
+} from "../../redux/reducers/landingSearchFormSlice";
 import { useTranslation } from "react-i18next";
+import {
+  setEndDate,
+  setGuest,
+  setRooms,
+  setStartDate,
+} from "../../redux/reducers/roomResultsDataSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Landing() {
   const reduxDispatch = useAppDispatch();
+  const navigate = useNavigate();
   const bannerImage = useAppSelector((state) => state.config.bannerImage);
-  const loading = useAppSelector((state) => state.landingForm.loading);
   const landingConfig = useAppSelector((state) => state.landingForm.landingConfig);
   const landingFormData = useAppSelector((state) => state.landingForm);
   const accessibility = useAppSelector((state) => state.landingForm.accessibility);
@@ -22,8 +32,13 @@ export default function Landing() {
   const handleCheckbox = () => {
     reduxDispatch(setAccessibility(!accessibility));
   };
+  useEffect(() => {
+    localStorage.clear();
+      reduxDispatch(setIsLandingFormDisbale(true));
+  }, [reduxDispatch]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    localStorage.setItem("isFormDisable", String(landingFormData.isLandingFormDisable));
     const formData = {
       property: landingFormData.propertyId,
       startDate: landingFormData.startDate,
@@ -31,8 +46,15 @@ export default function Landing() {
       rooms: landingFormData.numberOfRoomSelected,
       guestDetails: landingConfig.searchForm.guest.guestTypes,
       accessibility: landingFormData.accessibility,
+      maximumRoomOccupancy: landingConfig.searchForm.rooms.maximumRoomOccupancy,
+      roomCountArray:landingConfig.searchForm.rooms.roomCountArray,
     };
-    console.log("form submitted", formData);
+    localStorage.setItem("formData", JSON.stringify(formData));
+    reduxDispatch(setStartDate(formData.startDate));
+    reduxDispatch(setEndDate(formData.endDate));
+    reduxDispatch(setRooms(formData.rooms));
+    reduxDispatch(setGuest(formData.guestDetails));
+    navigate("/room-search-results");
   };
   return (
     <Box
@@ -58,9 +80,9 @@ export default function Landing() {
               </Box>
               <Box>
                 <Typography fontSize={".875rem"}>{t("Select Dates")}</Typography>
-                <CalendarMenu />
+                <CalendarMenu onRoomResultsPage={false} />
               </Box>
-              {loading ? (
+              {landingFormData.isLandingFormDisable ? (
                 <></>
               ) : (
                 <Box
@@ -73,7 +95,7 @@ export default function Landing() {
                   {landingConfig.searchForm.guest.showGuest ? (
                     <Box>
                       <Typography fontSize={".875rem"}>{t("Guests")}</Typography>
-                      <GuestMenu />
+                      <GuestMenu onRoomResultsPage={false} />
                     </Box>
                   ) : (
                     <></>
@@ -81,7 +103,7 @@ export default function Landing() {
                   {landingConfig.searchForm.rooms.showRoom ? (
                     <Box>
                       <Typography fontSize={".875rem"}>{t("Rooms")}</Typography>
-                      <RoomsMenu />
+                      <RoomsMenu onRoomResultsPage={false} />
                     </Box>
                   ) : (
                     <></>

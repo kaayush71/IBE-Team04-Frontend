@@ -1,0 +1,21 @@
+.room-results-page{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 12rem 5.75rem 1fr;
+    place-items: center;
+    .banner-section{
+        width: 100%;
+    }
+    .stepper-section{
+        width: 100%;
+    }
+    
+}
+@media screen and (max-width: 769px) {
+    .room-results-page{
+       display: block;
+        .banner-section{
+            display: none;
+        }
+    }
+}

@@ -38,7 +38,6 @@ export const fetchStaticCompanyData = createAsyncThunk(
     const respone = await axios.get(
       "https://ag7cd1h6xc.execute-api.ap-south-1.amazonaws.com/development/companydetails?tenantName=Kickdrum&propertyConfiguration=Team-04%23companyDetails#companyDetails"
     );
-    console.log(JSON.parse(respone.data.Item.companyDetails));
     return JSON.parse(respone.data.Item.companyDetails);
   }
 );
@@ -49,7 +48,6 @@ export const configDataSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchStaticCompanyData.fulfilled, (state, action) => {
-      console.log("company config data", action.payload);
       state.applicationTitle = action.payload.applicationTitle;
       state.companyLogo = action.payload.companyLogo;
       state.companyTitle = action.payload.companyTitle;
