@@ -9,28 +9,60 @@ import "./CalendarMenu.scss";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 
-type Props = {};
+type Props = {
+  onRoomResultsPage: boolean;
+};
 
 export default function CalendarMenu(props: Props) {
   const landingForm = useAppSelector((state) => state.landingForm);
+  const isLandingFormDisable = useAppSelector((state) => state.landingForm.isLandingFormDisable);
   const { t } = useTranslation();
   const CalendarMenuInput = () => {
-    return (
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Typography>
-          {landingForm.startDate
-            ? format(new Date(landingForm.startDate), "yyyy-MM-dd")
-            : t("Check In")}
-        </Typography>
-        <ArrowForwardIcon fontSize="small" />
-        <Typography>
-          {landingForm.endDate && landingForm.endDate !== landingForm.startDate
-            ? format(new Date(landingForm.endDate), "yyyy-MM-dd")
-            : t("Check Out")}
-        </Typography>
-        <CalendarMonthIcon fontSize="small" />
-      </Box>
-    );
+    if (props.onRoomResultsPage) {
+      return (
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <Box>
+            <Typography fontSize={"0.875rem"} color={"#858685"}>
+              Check in between
+            </Typography>
+            <Typography fontWeight={700}>
+              {landingForm.startDate !== landingForm.endDate
+                ? format(new Date(landingForm.startDate), "yyyy-MM-dd")
+                : t("Any Date")}
+            </Typography>
+          </Box>
+          <ArrowForwardIcon fontSize="small" />
+          <Box>
+            <Typography fontSize={"0.875rem"} color={"#858685"}>
+              Check out between
+            </Typography>
+            <Typography fontWeight={700}>
+              {landingForm.endDate && landingForm.endDate !== landingForm.startDate
+                ? format(new Date(landingForm.endDate), "yyyy-MM-dd")
+                : t("Any Date")}
+            </Typography>
+          </Box>
+          <CalendarMonthIcon fontSize="medium" />
+        </Box>
+      );
+    } else {
+      return (
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <Typography>
+            {landingForm.startDate !== landingForm.endDate
+              ? format(new Date(landingForm.startDate), "yyyy-MM-dd")
+              : t("Check In")}
+          </Typography>
+          <ArrowForwardIcon fontSize="small" />
+          <Typography>
+            {landingForm.endDate && landingForm.endDate !== landingForm.startDate
+              ? format(new Date(landingForm.endDate), "yyyy-MM-dd")
+              : t("Check Out")}
+          </Typography>
+          <CalendarMonthIcon fontSize="small" />
+        </Box>
+      );
+    }
   };
 
   const showSearchForm = useAppSelector((state) => state.landingForm.showSearchForm);
@@ -38,7 +70,7 @@ export default function CalendarMenu(props: Props) {
   return (
     <FormControl fullWidth>
       <Select
-        disabled={landingForm.loading}
+        disabled={isLandingFormDisable}
         IconComponent={() => null}
         sx={{
           width: "100%",
@@ -52,7 +84,15 @@ export default function CalendarMenu(props: Props) {
               "& .MuiMenu-list": {
                 padding: "0.3rem 0 0 0",
               },
-              left: "121px !important",
+              // left: "121px !important",
+              anchorOrigin: {
+                vertical: "bottom",
+                horizontal: "left",
+              },
+              transformOrigin: {
+                vertical: "top",
+                horizontal: "left",
+              },
             },
           },
         }}

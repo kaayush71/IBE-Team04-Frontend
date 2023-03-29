@@ -1,11 +1,17 @@
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useEffect } from "react";
+import { getLocalstorageFormData } from "../../redux/reducers/landingSearchFormSlice";
+import { useAppDispatch } from "../../redux/store";
 import Banner from "./Banner/Banner";
 import Results from "./Results/Results";
 import "./roomResults.scss";
 import Stepper from "./Stepper/Steps";
 
 export default function RoomResults() {
+  const reduxDispatch = useAppDispatch();
+  useEffect(() => {
+    reduxDispatch(getLocalstorageFormData());
+  }, [reduxDispatch]);
   return (
     <Box className={"room-results-page"}>
       <Box className={"banner-section"}>
@@ -14,7 +20,7 @@ export default function RoomResults() {
       <Box className={"stepper-section"}>
         <Stepper />
       </Box>
-      <Box className={"results-section"}>
+      <Box sx={{ width: "100%" }} className={"results-section"}>
         <Results />
       </Box>
     </Box>

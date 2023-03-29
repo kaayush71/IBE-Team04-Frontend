@@ -8,11 +8,12 @@ import {
   SelectChangeEvent,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import {
   fetchLandingConfigData,
+  setIsLandingFormDisbale,
   setPropertyId,
 } from "../../../redux/reducers/landingSearchFormSlice";
 import { useTranslation } from "react-i18next";
@@ -24,11 +25,16 @@ const PropertyMenu = (props: Props) => {
   const { t } = useTranslation();
   const reduxDispatch = useAppDispatch();
   const [selected, setSelected] = useState("");
+  const selectedProperty = useAppSelector((state)=>state.landingForm.propertyId);
   const properties = useAppSelector((state) => state.config.properties);
+  useEffect(()=> {
+    reduxDispatch(setPropertyId(""));
+  },[reduxDispatch])
 
   const handleChange = (event: SelectChangeEvent) => {
     reduxDispatch(fetchLandingConfigData());
     reduxDispatch(fetchCalendarData());
+    reduxDispatch(setIsLandingFormDisbale(false));
     reduxDispatch(setPropertyId(event.target.value));
     setSelected(event.target.value);
   };
@@ -54,7 +60,7 @@ const PropertyMenu = (props: Props) => {
             },
           },
         }}
-        value={selected}
+        value={selectedProperty}
         onChange={handleChange}
         displayEmpty={true}
         required={true}

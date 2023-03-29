@@ -1,30 +1,53 @@
-import { FormControl, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
+import { Box, FormControl, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
 import React from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { setSelectedRoom } from "../../../redux/reducers/landingSearchFormSlice";
 
-type Props = {};
+type Props = {
+  onRoomResultsPage: boolean;
+};
 
 const RoomsMenu = (props: Props) => {
-  const loading = useAppSelector((state) => state.landingForm.loading);
+  const isLandingFormDisable = useAppSelector((state) => state.landingForm.isLandingFormDisable);
   const rooms = useAppSelector((state) => state.landingForm.landingConfig.searchForm.rooms);
   const numberOfRoomsSelected = useAppSelector((state) => state.landingForm.numberOfRoomSelected);
   const reduxDispatch = useAppDispatch();
   const handleChange = (event: SelectChangeEvent) => {
     reduxDispatch(setSelectedRoom(Number(event.target.value)));
   };
+
+  const RoomsMenuInput = () => {
+    if (props.onRoomResultsPage) {
+      return (
+        <Box>
+          <Typography fontSize={"0.875rem"} color={"#858685"}>
+            Rooms
+          </Typography>
+          <Typography fontWeight={700}>{numberOfRoomsSelected}</Typography>
+        </Box>
+      );
+    } else {
+      return (
+        <Typography>
+          {isLandingFormDisable ? `Rooms` : `${String(numberOfRoomsSelected)}`}
+        </Typography>
+      );
+    }
+  };
   return (
     <FormControl fullWidth>
       <Select
-        disabled={loading}
+        disabled={isLandingFormDisable}
         sx={{
           width: "100%",
           "& .MuiSelect-select": {
             padding: "0.7rem",
           },
         }}
-        value={String(numberOfRoomsSelected)}
+        defaultValue=""
+        displayEmpty={true}
+        renderValue={() => <RoomsMenuInput />}
         onChange={handleChange}
         IconComponent={KeyboardArrowDownIcon}
       >

@@ -17,7 +17,7 @@ const Steps = () => {
         {steps.map((label, index) => (
           <Step sx={{}} className={"step-size"} key={label}>
             <StepLabel
-              sx={{ "& .MuiStepLabel-label.MuiCompleted": { color: "white" } }}
+              sx={{ "& .MuiStepLabel-label": { color: "white",marginTop:"0.1rem !important" }}}
               className={"step-label"}
             >
               {label}
