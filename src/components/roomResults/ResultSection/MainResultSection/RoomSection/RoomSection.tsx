@@ -1,4 +1,4 @@
-import { Box} from "@mui/material";
+import { Box, Typography} from "@mui/material";
 import React from "react";
 import { roomCard } from "../../../../../constants/types";
 import RoomCard from "./RoomCard/RoomCard";
@@ -10,9 +10,9 @@ const RoomSection = () => {
       title: "Luxury Suite",
       address: "1234 Example St, Los Angeles, CA",
       roomImageArray: [
-        "https://wakefitdev.gumlet.io/img/engineered-wood-bed/petra-king/storage/1.jpg?w=1700",
-        "https://cdn.shopify.com/s/files/1/0085/5513/5039/products/01_2f252fa4-d6e1-4e43-8dd8-54af32d2581d_1024x1024.jpg?v=1581528005",
-        "https://pbs.twimg.com/media/CVSuDxZUsAA4AYk?format=jpg&name=small",
+        "https://shorturl.at/jqxLT",
+        "https://shorturl.at/kxFIY",
+        "https://shorturl.at/kDJOX",
       ],
       breakfastOptions: "Buffet",
       area: "50 ft",
@@ -34,9 +34,9 @@ const RoomSection = () => {
       title: "Deluxe Room",
       address: "5678 Example St, New York, NY",
       roomImageArray: [
-        "https://wakefitdev.gumlet.io/img/engineered-wood-bed/petra-king/storage/1.jpg?w=1700",
-        "https://cdn.shopify.com/s/files/1/0085/5513/5039/products/01_2f252fa4-d6e1-4e43-8dd8-54af32d2581d_1024x1024.jpg?v=1581528005",
-        "https://pbs.twimg.com/media/CVSuDxZUsAA4AYk?format=jpg&name=small",
+        "https://shorturl.at/jqxLT",
+        "https://shorturl.at/kxFIY",
+        "https://shorturl.at/kDJOX",
       ],
       breakfastOptions: "Continental",
       area: "30 ft",
@@ -48,8 +48,8 @@ const RoomSection = () => {
       },
       bedType: "Queen",
       promotion: {
-        showPromotion: false,
-        promotionDescription: "",
+        showPromotion: true,
+        promotionDescription: "Get 20% off for 3 nights or more!",
         discountPercentage: 0,
       },
       roomPrice: 120,
@@ -58,9 +58,9 @@ const RoomSection = () => {
       title: "Standard Room",
       address: "9012 Example St, Chicago, IL",
       roomImageArray: [
-        "https://wakefitdev.gumlet.io/img/engineered-wood-bed/petra-king/storage/1.jpg?w=1700",
-        "https://cdn.shopify.com/s/files/1/0085/5513/5039/products/01_2f252fa4-d6e1-4e43-8dd8-54af32d2581d_1024x1024.jpg?v=1581528005",
-        "https://pbs.twimg.com/media/CVSuDxZUsAA4AYk?format=jpg&name=small",
+        "https://shorturl.at/jqxLT",
+        "https://shorturl.at/kxFIY",
+        "https://shorturl.at/kDJOX",
       ],
       breakfastOptions: "None",
       area: "25 ft",
@@ -72,8 +72,8 @@ const RoomSection = () => {
       },
       bedType: "Twin",
       promotion: {
-        showPromotion: false,
-        promotionDescription: "",
+        showPromotion: true,
+        promotionDescription: "Get 20% off for 3 nights or more!",
         discountPercentage: 0,
       },
       roomPrice: 80,
@@ -82,9 +82,9 @@ const RoomSection = () => {
       title: "Executive Suite",
       address: "3456 Example St, San Francisco, CA",
       roomImageArray: [
-        "https://wakefitdev.gumlet.io/img/engineered-wood-bed/petra-king/storage/1.jpg?w=1700",
-        "https://cdn.shopify.com/s/files/1/0085/5513/5039/products/01_2f252fa4-d6e1-4e43-8dd8-54af32d2581d_1024x1024.jpg?v=1581528005",
-        "https://pbs.twimg.com/media/CVSuDxZUsAA4AYk?format=jpg&name=small",
+        "https://shorturl.at/jqxLT",
+        "https://shorturl.at/kxFIY",
+        "https://shorturl.at/kDJOX",
       ],
       breakfastOptions: "Full American",
       area: "70 ft",
@@ -106,9 +106,9 @@ const RoomSection = () => {
       title: "Standard Room",
       address: "7890 Example St, Miami, FL",
       roomImageArray: [
-        "https://wakefitdev.gumlet.io/img/engineered-wood-bed/petra-king/storage/1.jpg?w=1700",
-        "https://cdn.shopify.com/s/files/1/0085/5513/5039/products/01_2f252fa4-d6e1-4e43-8dd8-54af32d2581d_1024x1024.jpg?v=1581528005",
-        "https://pbs.twimg.com/media/CVSuDxZUsAA4AYk?format=jpg&name=small",
+        "https://shorturl.at/jqxLT",
+        "https://shorturl.at/kxFIY",
+        "https://shorturl.at/kDJOX",
       ],
       breakfastOptions: "Continental",
       area: "25 ft",
@@ -120,8 +120,8 @@ const RoomSection = () => {
       },
       bedType: "Twin",
       promotion: {
-        showPromotion: false,
-        promotionDescription: "",
+        showPromotion: true,
+        promotionDescription: "Get 20% off for 3 nights or more!",
         discountPercentage: 0,
       },
       roomPrice: 75,
@@ -130,9 +130,9 @@ const RoomSection = () => {
       title: "Junior Suite",
       address: "2345 Example St, Seattle, WA",
       roomImageArray: [
-        'https://wakefitdev.gumlet.io/img/engineered-wood-bed/petra-king/storage/1.jpg?w=1700',
-        'https://cdn.shopify.com/s/files/1/0085/5513/5039/products/01_2f252fa4-d6e1-4e43-8dd8-54af32d2581d_1024x1024.jpg?v=1581528005',
-        'https://pbs.twimg.com/media/CVSuDxZUsAA4AYk?format=jpg&name=small',
+        "https://shorturl.at/jqxLT",
+        "https://shorturl.at/kxFIY",
+        "https://shorturl.at/kDJOX",
       ],
       breakfastOptions: "Buffet",
       area: "40 ft",
@@ -153,17 +153,26 @@ const RoomSection = () => {
   ];
 
   return (
-    <Box
-      sx={{ width : "100%" , display: "grid", gridTemplateColumns: "1fr" }}
-      className={"room-section"}
-    >
-      <Box className={"room-title"}>Room Results</Box>
+    <Box sx={{ width: "100%" }} className={"room-section"}>
+      <Box className={"room-title"} sx={{display:"flex",justifyContent:"space-between"}}>
+        <Typography fontWeight={700} fontSize="1.25rem" sx={{ padding: "0.5rem 0" }}>
+          Room Results
+        </Typography>
+        <Typography fontWeight={700} fontSize="1" sx={{ padding: "0.5rem 0" }}>
+          Showing 1-4 of 5 Results
+        </Typography>
+      </Box>
       <Box
-        sx={{ width : "50%" ,  display: "grid", gridTemplateColumns: "1fr 1fr 1fr" , gap : "1.55rem !important"}}
+        sx={{
+          width: "50%",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr 1fr",
+          gap: "1.55rem !important",
+        }}
         className={"room-card-list"}
       >
-        {rooms.map((room , index) => (
-          <RoomCard key = {index} room={room} />
+        {rooms.map((room, index) => (
+          <RoomCard key={index} room={room} />
         ))}
       </Box>
     </Box>

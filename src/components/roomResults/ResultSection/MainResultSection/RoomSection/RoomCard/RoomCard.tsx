@@ -19,11 +19,11 @@ interface RoomCardProps {
 const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
   const settings = {
     autoplay: true,
-    autoplaySpeed: 1500,
+    autoplaySpeed: 5000,
     arrows: true,
     dots: true,
     infinite: true,
-    speed: 1500,
+    speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
   };
@@ -77,14 +77,14 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
                 className={"review-section"}
               >
                 <Box sx={{ placeSelf: "end" }} className={"average-ratings"}>
-                  <Typography
+                  <Box
                     sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}
                   >
                     <Box className="rating-star">{<StarRateIcon />}</Box>
                     <Box className="rating-number">
                       {room.ratings.averageRatings}
                     </Box>
-                  </Typography>
+                  </Box>
                 </Box>
                 <Box className={"total-reviews"}>
                   {room.ratings.totalReviews} reviews

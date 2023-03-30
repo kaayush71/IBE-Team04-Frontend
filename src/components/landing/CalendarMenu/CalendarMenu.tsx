@@ -1,4 +1,4 @@
-import { Box, FormControl, Select, Typography } from "@mui/material";
+import { Box, Divider, FormControl, Select, Typography } from "@mui/material";
 import React from "react";
 import { setShowSearchForm } from "../../../redux/reducers/landingSearchFormSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
@@ -31,7 +31,15 @@ export default function CalendarMenu(props: Props) {
                 : t("Any Date")}
             </Typography>
           </Box>
-          <ArrowForwardIcon fontSize="small" />
+          <Divider
+            sx={{
+              width: "2.5rem",
+              transform: "rotate(90deg)",
+              borderColor: "#C1C2C2",
+              borderWidth: "1px",
+            }}
+            orientation="vertical"
+          ></Divider>
           <Box>
             <Typography fontSize={"0.875rem"} color={"#858685"}>
               Check out between

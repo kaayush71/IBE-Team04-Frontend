@@ -10,6 +10,8 @@
   height: 2rem;
   width: 7.548rem;
   background: $COMPLETED_ICON_COLOR;
+  display: flex;
+  align-items: center;
 }
 .offer-bar:before {
   content: "";
@@ -17,7 +19,7 @@
   right: 0;
   top: 0;
   border-style: solid;
-  border-width: 0 0 1.045rem 0.8rem;
+  border-width: 0 0 1.7rem 0.8rem;
   border-color: #FFFFFF transparent #FFFFFF transparent;
   display: block;
   width: 0;
@@ -35,7 +37,7 @@
   right: 0;
   bottom: 0;
   border-style: solid;
-  border-width: 1.04166rem 0 0 0.8rem;
+  border-width: 1.5rem 0 0 0.8rem;
   border-color: #FFFFFF transparent #FFFFFF transparent;
   display: block;
   width: 0;

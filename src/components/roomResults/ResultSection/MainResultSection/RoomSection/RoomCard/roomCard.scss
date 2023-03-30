@@ -1,7 +1,7 @@
 @mixin commonArrowProperty() {
     font-size: 1.8rem;
     font-weight: 600;
-    color:rgb(101, 101, 101);
+    color:#ffffff;
     background-color: transparent !important;
 }
 .room-card {
@@ -37,7 +37,7 @@
   }
   .slick-active {
     button::before {
-      color: rgb(22, 22, 22) !important;
+      color: #ffffff !important;
     }
   }
   .room-card {

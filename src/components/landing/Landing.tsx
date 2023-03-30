@@ -34,7 +34,7 @@ export default function Landing() {
   };
   useEffect(() => {
     localStorage.clear();
-      reduxDispatch(setIsLandingFormDisbale(true));
+    reduxDispatch(setIsLandingFormDisbale(true));
   }, [reduxDispatch]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,7 +47,8 @@ export default function Landing() {
       guestDetails: landingConfig.searchForm.guest.guestTypes,
       accessibility: landingFormData.accessibility,
       maximumRoomOccupancy: landingConfig.searchForm.rooms.maximumRoomOccupancy,
-      roomCountArray:landingConfig.searchForm.rooms.roomCountArray,
+      roomCountArray: landingConfig.searchForm.rooms.roomCountArray,
+      bannerImage: bannerImage,
     };
     localStorage.setItem("formData", JSON.stringify(formData));
     reduxDispatch(setStartDate(formData.startDate));
@@ -60,9 +61,10 @@ export default function Landing() {
     <Box
       sx={{
         backgroundImage: `url(${bannerImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundSize: "100% 75vh",
+        backgroundRepeat: "no-repeat",
         padding: "0 3.375rem",
+        height: "83vh",
       }}
     >
       <Container sx={{ padding: "3.5rem 0" }} maxWidth={false}>
@@ -133,7 +135,7 @@ export default function Landing() {
                   "&:hover": { backgroundColor: "#26266D" },
                   display: "flex",
                   padding: "0.75rem 1.25rem",
-                  margin: { md: "9.18rem auto 4rem auto", xs: "4rem auto 3rem auto" },
+                  margin: { md: "5rem auto 3rem auto", xs: "4rem auto 3rem auto" },
                   width: "10rem",
                 }}
                 variant="contained"

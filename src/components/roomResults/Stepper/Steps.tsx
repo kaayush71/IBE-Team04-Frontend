@@ -10,7 +10,7 @@ const Steps = () => {
   return (
     <Box className={"main-stepper-section"}>
       <Stepper
-        sx={{ "& .MuiSvgIcon-root": { color: "white" }}}
+        sx={{ "& .MuiSvgIcon-root": { color: "white" },height:"30px",width:"30px"}}
         activeStep={1}
         className={"starter-stepper-section"}
         alternativeLabel

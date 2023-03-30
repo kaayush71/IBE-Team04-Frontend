@@ -17,18 +17,15 @@ const SearchBar = () => {
     <Box
       sx={{
         padding: "0 3.375rem",
-        display:"grid",
-        gridTemplateColumns : "1fr",
-        placeItems : "center"
       }}
       className={"main-result-section"}
     >
       <Box
         sx={{
           div: { height: "100%" },
-          padding: "3.5rem 2.75rem",
+          padding: "3.5rem 1.5rem",
           display: "grid",
-          gridTemplateColumns: "16.5rem 8.25rem 8.25rem 1fr 1fr",
+          gridTemplateColumns: "1fr 0.7fr 0.7fr 2fr 1fr",
           columnGap: "1rem",
         }}
         className={"search-section"}
@@ -45,7 +42,7 @@ const SearchBar = () => {
             display: "flex",
             padding: "0.75rem 1.25rem",
             height: "4.125rem",
-            width: "10.5rem",
+            width: "100%",
           }}
           variant="contained"
         >
