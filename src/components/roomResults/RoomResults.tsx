@@ -1,7 +1,8 @@
 import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import { getLocalstorageFormData } from "../../redux/reducers/landingSearchFormSlice";
-import { useAppDispatch } from "../../redux/store";
+import { fetchResultsConfigData } from "../../redux/reducers/roomResultConfigDataSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 import Banner from "./Banner/Banner";
 import ResultSection from "./ResultSection/ResultSection";
 import "./roomResults.scss";
@@ -11,7 +12,13 @@ export default function RoomResults() {
   const reduxDispatch = useAppDispatch();
   useEffect(() => {
     reduxDispatch(getLocalstorageFormData());
+    reduxDispatch(fetchResultsConfigData())
   }, [reduxDispatch]);
+
+  const resultConfigData = useAppSelector((state) => state.resultsConfiguration);
+  console.log("ResultsConfigData : "+ JSON.stringify(resultConfigData.filters.numberOfBedsFilter));
+
+
   return (
     <Box className={"room-results-page"}>
       <Box className={"banner-section"}>

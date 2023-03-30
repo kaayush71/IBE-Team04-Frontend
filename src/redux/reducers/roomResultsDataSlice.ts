@@ -1,8 +1,6 @@
-// import axios from "axios";
 import { bed, guest, rooms } from "../../constants/types";
 import { addDays } from "date-fns";
 import { createSlice } from "@reduxjs/toolkit";
-// import RoomResults from "../../components/results/RoomResults";
 
 interface formSubmitData {
   startDate: string;
