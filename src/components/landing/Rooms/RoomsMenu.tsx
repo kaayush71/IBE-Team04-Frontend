@@ -10,6 +10,7 @@ type Props = {
 
 const RoomsMenu = (props: Props) => {
   const isLandingFormDisable = useAppSelector((state) => state.landingForm.isLandingFormDisable);
+  const state = useAppSelector((state)=>state.landingForm);
   const rooms = useAppSelector((state) => state.landingForm.landingConfig.searchForm.rooms);
   const numberOfRoomsSelected = useAppSelector((state) => state.landingForm.numberOfRoomSelected);
   const reduxDispatch = useAppDispatch();
@@ -53,7 +54,7 @@ const RoomsMenu = (props: Props) => {
       >
         {rooms.roomCountArray.map((room) => {
           return (
-            <MenuItem disabled={room < numberOfRoomsSelected} key={room} value={room}>
+            <MenuItem disabled={( state.totalGuestCount /  rooms.maximumRoomOccupancy > room) } key={room} value={room}>
               <Typography data-testid="room-count" id="room-count">
                 {room}
               </Typography>

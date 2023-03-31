@@ -3,7 +3,7 @@ import "./itinerary.scss";
 
 const Itinerary = ()  =>{
   return (
-    <div>Itinerary</div>
+    <p>Itinerary</p>
   )
 }
 

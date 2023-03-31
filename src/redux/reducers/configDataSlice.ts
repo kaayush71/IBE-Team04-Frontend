@@ -29,9 +29,7 @@ const initialState: State = {
   },
 };
 
-// fetching the company details configurable
-// data from the api gateway which is invoking
-// a lambda and getting the data from dynamodb
+
 export const fetchStaticCompanyData = createAsyncThunk(
   "companyData/fetchCompnayData",
   async (req, thunkApi) => {

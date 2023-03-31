@@ -45,8 +45,8 @@ interface State {
   isLandingFormDisable: boolean;
 }
 
-const formData = JSON.parse(localStorage.getItem("formData") || "{}");
-console.log("form-data", formData);
+// const formData = JSON.parse(localStorage.getItem("formData") || "{}");
+// console.log("form-data", formData);
 
 const initialState: State = {
   showSearchForm: false,
@@ -157,7 +157,7 @@ export const landingSearchFormSlice = createSlice({
           guestType.count -= 1;
           state.totalGuestCount -= 1;
           if (state.totalGuestCount % maximumRoomOccupancy === 0) {
-            state.numberOfRoomSelected -= 1;
+            state.numberOfRoomSelected = state.totalGuestCount / maximumRoomOccupancy;
           }
         } else {
           return;
@@ -174,6 +174,7 @@ export const landingSearchFormSlice = createSlice({
       state.landingConfig.searchForm.guest.guestTypes = formData.guestDetails;
       state.landingConfig.searchForm.rooms.defaultRoomCount = formData.defaultRoomCount;
       state.landingConfig.searchForm.rooms.roomCountArray = formData.roomCountArray;
+      state.landingConfig.bannerImage = formData.bannerImage;
       console.log("form-data", formData);
     },
   },

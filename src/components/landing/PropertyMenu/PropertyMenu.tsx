@@ -5,7 +5,6 @@ import {
   ListItemText,
   MenuItem,
   Select,
-  SelectChangeEvent,
   Typography,
 } from "@mui/material";
 import React, { useEffect } from "react";
@@ -24,18 +23,24 @@ type Props = {};
 const PropertyMenu = (props: Props) => {
   const { t } = useTranslation();
   const reduxDispatch = useAppDispatch();
-  const selectedProperty = useAppSelector((state)=>state.landingForm.propertyId);
+  const selectedProperty = useAppSelector((state) => state.landingForm.propertyId);
   const properties = useAppSelector((state) => state.config.properties);
-  useEffect(()=> {
+  useEffect(() => {
     reduxDispatch(setPropertyId(""));
-  },[reduxDispatch])
+  }, [reduxDispatch]);
 
-  const handleChange = (event: SelectChangeEvent) => {
-    reduxDispatch(fetchLandingConfigData());
-    reduxDispatch(fetchCalendarData());
-    reduxDispatch(setIsLandingFormDisbale(false));
-    reduxDispatch(setPropertyId(event.target.value));
+  const handleClick = (property: String) => {
+    if (selectedProperty !== "") {
+      reduxDispatch(setPropertyId(""));
+      reduxDispatch(setIsLandingFormDisbale(true));
+    } else {
+      reduxDispatch(fetchLandingConfigData());
+      reduxDispatch(fetchCalendarData());
+      reduxDispatch(setIsLandingFormDisbale(false));
+      reduxDispatch(setPropertyId(property));
+    }
   };
+
   return (
     <FormControl fullWidth>
       <Select
@@ -59,7 +64,6 @@ const PropertyMenu = (props: Props) => {
           },
         }}
         value={selectedProperty}
-        onChange={handleChange}
         displayEmpty={true}
         required={true}
         defaultValue=""
@@ -75,9 +79,14 @@ const PropertyMenu = (props: Props) => {
         }
       >
         {properties.availaibleProperties.map((option) => (
-          <MenuItem disabled={option !== "4"} key={option} value={option}>
+          <MenuItem
+            onClick={() => handleClick(option)}
+            disabled={option !== "4"}
+            key={option}
+            value={option}
+          >
             <ListItemIcon>
-              <Checkbox checked={selectedProperty===option} />
+              <Checkbox checked={selectedProperty === option} />
             </ListItemIcon>
             <ListItemText primary={`Property ${option}`} />
           </MenuItem>

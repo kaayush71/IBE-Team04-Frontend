@@ -23,7 +23,7 @@ export default function Header() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#fff", height: "5.25rem" }}>
+    <AppBar position="static" sx={{ backgroundColor: "#fff", height: "5.25rem",position:"sticky",top:"0",zIndex:"2" }}>
       <Box sx={{ padding: "0 3.375rem", height: "100%", display: "flex" }}>
         <Container
           maxWidth={false}

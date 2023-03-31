@@ -43,6 +43,9 @@ function App() {
     reduxDispatch(fetchStaticCompanyData());
     reduxDispatch(fetchCurrencyData());
   }, [reduxDispatch, i18n, supportedLanguages]);
+
+
+  
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
