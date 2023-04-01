@@ -1,6 +1,6 @@
 import { Box, Button, Checkbox, FormGroup, Paper, Typography } from "@mui/material";
 import { Container } from "@mui/system";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import CalendarMenu from "./CalendarMenu/CalendarMenu";
 import "./Landing.scss";
 import PropertyMenu from "./PropertyMenu/PropertyMenu";
@@ -9,17 +9,15 @@ import RoomsMenu from "./Rooms/RoomsMenu";
 import GuestMenu from "./GuestsMenu/GuestMenu";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import {
+  fetchLandingConfigData,
+  getLocalstorageFormData,
   setAccessibility,
   setIsLandingFormDisbale,
+  setPropertyId,
 } from "../../redux/reducers/landingSearchFormSlice";
 import { useTranslation } from "react-i18next";
-import {
-  setEndDate,
-  setGuest,
-  setRooms,
-  setStartDate,
-} from "../../redux/reducers/roomResultsDataSlice";
 import { useNavigate } from "react-router-dom";
+import { format } from "date-fns";
 
 export default function Landing() {
   const reduxDispatch = useAppDispatch();
@@ -32,12 +30,25 @@ export default function Landing() {
   const handleCheckbox = () => {
     reduxDispatch(setAccessibility(!accessibility));
   };
-  useEffect(() => {
-    localStorage.clear();
-    reduxDispatch(setIsLandingFormDisbale(true));
+
+  const fetchData = useCallback(async () => {
+    await reduxDispatch(fetchLandingConfigData());
+    reduxDispatch(getLocalstorageFormData());
   }, [reduxDispatch]);
+
+  useEffect(() => {
+    const formData = JSON.parse(localStorage.getItem("formData") || "{}");
+    if (JSON.stringify(formData) === "{}") {
+      reduxDispatch(setIsLandingFormDisbale(true));
+      reduxDispatch(setPropertyId(""));
+    } else {
+      fetchData();
+    }
+  }, [fetchData, reduxDispatch]);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const searchParams = new URLSearchParams();
     localStorage.setItem("isFormDisable", String(landingFormData.isLandingFormDisable));
     const formData = {
       property: landingFormData.propertyId,
@@ -46,16 +57,19 @@ export default function Landing() {
       rooms: landingFormData.numberOfRoomSelected,
       guestDetails: landingConfig.searchForm.guest.guestTypes,
       accessibility: landingFormData.accessibility,
-      maximumRoomOccupancy: landingConfig.searchForm.rooms.maximumRoomOccupancy,
-      roomCountArray: landingConfig.searchForm.rooms.roomCountArray,
-      bannerImage: bannerImage,
+      totalGuestCount: landingFormData.totalGuestCount,
     };
     localStorage.setItem("formData", JSON.stringify(formData));
-    reduxDispatch(setStartDate(formData.startDate));
-    reduxDispatch(setEndDate(formData.endDate));
-    reduxDispatch(setRooms(formData.rooms));
-    reduxDispatch(setGuest(formData.guestDetails));
-    navigate("/room-search-results");
+    searchParams.set("propertyId", formData.property);
+    searchParams.set("startDate", format(new Date(formData.startDate), "yyyy-MM-dd"));
+    searchParams.set("endDate", format(new Date(formData.endDate), "yyyy-MM-dd"));
+    formData.guestDetails.forEach((guest) => {
+      if (guest.show === true) {
+        searchParams.set(`${guest.categoryName}`, `${guest.count}`);
+      }
+    });
+    searchParams.set("rooms", `${formData.rooms}`);
+    navigate(`/room-search-results?${searchParams.toString()}`);
   };
   return (
     <Box

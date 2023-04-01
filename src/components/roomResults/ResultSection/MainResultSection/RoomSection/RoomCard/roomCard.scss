@@ -1,11 +1,15 @@
 @mixin commonArrowProperty() {
-    font-size: 1.8rem;
-    font-weight: 600;
+    font-size: 2rem;
+    font-weight: 800;
     color:#ffffff;
     background-color: transparent !important;
 }
 .room-card {
     .slick-slider {
+      .slick-list {
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+      }
       .slick-next:before {
         content: ">";
         @include commonArrowProperty();
@@ -32,7 +36,7 @@
   }
   .slick-slider {
     .room-image {
-      height: 9.063rem;
+      height: 12.063rem;
     }
   }
   .slick-active {

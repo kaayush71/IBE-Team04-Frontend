@@ -4,13 +4,13 @@ import { useAppSelector } from "../../../redux/store";
 import "./banner.scss";
 
 const Banner = () => {
-  const bannerImage = useAppSelector((state) => state.landingForm.landingConfig.bannerImage);
+  const bannerImage = useAppSelector((state) => state.config.bannerImage);
   return (
     <Box
       sx={{
         backgroundImage: `url(${bannerImage})`,
         backgroundSize: "cover",
-        backgroundPosition:"center",
+        backgroundPosition:"100% 60%",
         backgroundRepeat: "no-repeat",
       }}
       className={"main-banner-section"}

@@ -42,7 +42,6 @@ const DateRangeCalendar = () => {
         const currentDateMinPrice = minRoomRates[startDate];
         if (currentDateMinPrice !== undefined) {
           if (currentDateMinPrice < minimumNightlyPrice) {      
-            console.log("dispatiching");
             reduxDispatch(setMinimumNightlyPrice(currentDateMinPrice));
           }
         }

@@ -1,20 +1,30 @@
-import { Box, Typography} from "@mui/material";
+import { Box, FormControl, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
 import React from "react";
 import { roomCard } from "../../../../../constants/types";
+import { setSortToSend } from "../../../../../redux/reducers/roomResultConfigDataSlice";
+import { useAppDispatch, useAppSelector } from "../../../../../redux/store";
 import RoomCard from "./RoomCard/RoomCard";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import "./roomSection.scss";
 
 const RoomSection = () => {
+  const sorts = useAppSelector((state) => state.resultsConfiguration.sorts);
+  const roomResults = useAppSelector((state) => state.resultsConfiguration);
+  const reduxDispatch = useAppDispatch();
+  const handleChange = (event: SelectChangeEvent) => {
+    console.log("sort value", event.target.value);
+    reduxDispatch(setSortToSend(event.target.value));
+  };
   const rooms: roomCard[] = [
     {
       title: "Luxury Suite",
-      address: "1234 Example St, Los Angeles, CA",
+      address: "Near city center",
       roomImageArray: [
-        "https://shorturl.at/jqxLT",
-        "https://shorturl.at/kxFIY",
-        "https://shorturl.at/kDJOX",
+        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-1.avif",
+        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-2.jpeg",
+        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-3.jpeg",
       ],
-      breakfastOptions: "Buffet",
+      breakfastOptions: "Inclusive",
       area: "50 ft",
       personCapacity: 2,
       ratings: {
@@ -32,13 +42,13 @@ const RoomSection = () => {
     },
     {
       title: "Deluxe Room",
-      address: "5678 Example St, New York, NY",
+      address: "Near city center",
       roomImageArray: [
-        "https://shorturl.at/jqxLT",
-        "https://shorturl.at/kxFIY",
-        "https://shorturl.at/kDJOX",
+        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-1.avif",
+        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-2.jpeg",
+        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-3.jpeg",
       ],
-      breakfastOptions: "Continental",
+      breakfastOptions: "Inclusive",
       area: "30 ft",
       personCapacity: 2,
       ratings: {
@@ -56,19 +66,19 @@ const RoomSection = () => {
     },
     {
       title: "Standard Room",
-      address: "9012 Example St, Chicago, IL",
+      address: "Near city center",
       roomImageArray: [
-        "https://shorturl.at/jqxLT",
-        "https://shorturl.at/kxFIY",
-        "https://shorturl.at/kDJOX",
+        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-1.avif",
+        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-2.jpeg",
+        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-3.jpeg",
       ],
-      breakfastOptions: "None",
+      breakfastOptions: "Inclusive",
       area: "25 ft",
       personCapacity: 1,
       ratings: {
-        showRatings: false,
-        averageRatings: 0,
-        totalReviews: 0,
+        showRatings: true,
+        averageRatings: 3.9,
+        totalReviews: 40,
       },
       bedType: "Twin",
       promotion: {
@@ -80,13 +90,13 @@ const RoomSection = () => {
     },
     {
       title: "Executive Suite",
-      address: "3456 Example St, San Francisco, CA",
+      address: "Near city center",
       roomImageArray: [
-        "https://shorturl.at/jqxLT",
-        "https://shorturl.at/kxFIY",
-        "https://shorturl.at/kDJOX",
+        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-1.avif",
+        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-2.jpeg",
+        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-3.jpeg",
       ],
-      breakfastOptions: "Full American",
+      breakfastOptions: "Inclusive",
       area: "70 ft",
       personCapacity: 4,
       ratings: {
@@ -104,13 +114,13 @@ const RoomSection = () => {
     },
     {
       title: "Standard Room",
-      address: "7890 Example St, Miami, FL",
+      address: "Near city center",
       roomImageArray: [
-        "https://shorturl.at/jqxLT",
-        "https://shorturl.at/kxFIY",
-        "https://shorturl.at/kDJOX",
+        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-1.avif",
+        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-2.jpeg",
+        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-3.jpeg",
       ],
-      breakfastOptions: "Continental",
+      breakfastOptions: "Inclusive",
       area: "25 ft",
       personCapacity: 1,
       ratings: {
@@ -128,13 +138,13 @@ const RoomSection = () => {
     },
     {
       title: "Junior Suite",
-      address: "2345 Example St, Seattle, WA",
+      address: "Near city center",
       roomImageArray: [
-        "https://shorturl.at/jqxLT",
-        "https://shorturl.at/kxFIY",
-        "https://shorturl.at/kDJOX",
+        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-1.avif",
+        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-2.jpeg",
+        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-3.jpeg",
       ],
-      breakfastOptions: "Buffet",
+      breakfastOptions: "Inclusive",
       area: "40 ft",
       personCapacity: 2,
       ratings: {
@@ -154,20 +164,66 @@ const RoomSection = () => {
 
   return (
     <Box sx={{ width: "100%" }} className={"room-section"}>
-      <Box className={"room-title"} sx={{display:"flex",justifyContent:"space-between"}}>
+      <Box
+        className={"room-title"}
+        sx={{ display: "flex", justifyContent: "space-between", marginBottom: "0.7rem" }}
+      >
         <Typography fontWeight={700} fontSize="1.25rem" sx={{ padding: "0.5rem 0" }}>
           Room Results
         </Typography>
-        <Typography fontWeight={700} fontSize="1" sx={{ padding: "0.5rem 0" }}>
-          Showing 1-4 of 5 Results
-        </Typography>
+        <Box sx={{ display: "flex", gap: "2rem", alignItems: "center" }}>
+          <Typography fontWeight={700} fontSize="1" sx={{ padding: "0.5rem 0" }}>
+            Showing 1-4 of 5 Results
+          </Typography>
+          <FormControl
+            sx={{ width: roomResults.sortToSend === "" ? "5rem" : "9rem" }}
+            variant="outlined"
+          >
+            <Select
+              className="sorting"
+              name="sort"
+              displayEmpty={true}
+              defaultValue=""
+              IconComponent={KeyboardArrowDownIcon}
+              renderValue={
+                roomResults.sortToSend === ""
+                  ? () => <Typography fontWeight={700}>Sort</Typography>
+                  : () => (
+                      <Typography
+                        fontWeight={700}
+                      >{`${roomResults.selectedSortName}->${roomResults.selectedSortValue}`}</Typography>
+                    )
+              }
+              onChange={handleChange}
+              style={{ width: "100%", height: "30px" }}
+              sx={{
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: "0 none",
+                },
+              }}
+            >
+              {sorts.map((sort) => {
+                return (
+                  sort.show &&
+                  sort.options.map((option) => {
+                    return (
+                      <MenuItem
+                        key={`${sort.sortName}+${option}`}
+                        value={`${sort.sortName}#${option}`}
+                      >{`${sort.sortName} -> ${option}`}</MenuItem>
+                    );
+                  })
+                );
+              })}
+            </Select>
+          </FormControl>
+        </Box>
       </Box>
       <Box
         sx={{
-          width: "50%",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr 1fr",
-          gap: "1.55rem !important",
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "2rem",
         }}
         className={"room-card-list"}
       >

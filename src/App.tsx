@@ -18,7 +18,7 @@ const theme = createTheme({
     allVariants: {
       fontFamily: "Lato",
       textTransform: "none",
-      fontWeight:400,
+      fontWeight: 400,
       fontSize: 16,
     },
   },
@@ -27,25 +27,30 @@ const theme = createTheme({
 function App() {
   const reduxDispatch = useAppDispatch();
   const supportedLanguages = useAppSelector((state) => state.language.supportedLanguage);
+  const selectedLanguage = useAppSelector((state) => state.language.selectedLanguage);
   const { i18n } = useTranslation();
   useEffect(() => {
     const browserLanguage = navigator.language;
     // checking if the user default browser
     // language is supported by our application
     // or not.
-    if (supportedLanguages.includes(browserLanguage)) {
-      reduxDispatch(setSelectedLanguage(browserLanguage));
-      i18n.changeLanguage(browserLanguage);
+    if (selectedLanguage === "") {
+      if (supportedLanguages.includes(browserLanguage)) {
+        reduxDispatch(setSelectedLanguage(browserLanguage));
+        i18n.changeLanguage(browserLanguage);
+      } else {
+        reduxDispatch(setSelectedLanguage("en"));
+        i18n.changeLanguage("en");
+      }
     } else {
-      reduxDispatch(setSelectedLanguage("en"));
-      i18n.changeLanguage("en");
+      reduxDispatch(setSelectedLanguage(selectedLanguage));
+      i18n.changeLanguage(`${selectedLanguage}`);
     }
+
     reduxDispatch(fetchStaticCompanyData());
     reduxDispatch(fetchCurrencyData());
-  }, [reduxDispatch, i18n, supportedLanguages]);
+  }, [reduxDispatch, i18n, supportedLanguages, selectedLanguage]);
 
-
-  
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
