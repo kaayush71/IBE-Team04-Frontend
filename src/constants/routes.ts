@@ -1,4 +1,5 @@
 export const routesPath = {
   landing: "/",
-  roomResults: "/room-search-results"
+  roomResults: "/room-search-results",
+  login: "/login",
 };

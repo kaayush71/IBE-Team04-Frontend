@@ -12,6 +12,9 @@ import { useAppDispatch, useAppSelector } from "./redux/store";
 import { useTranslation } from "react-i18next";
 import { setSelectedLanguage } from "./redux/reducers/languageDataSlice";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import "@aws-amplify/ui-react/styles.css";
+
+import Login from "./components/login/Login";
 
 const theme = createTheme({
   typography: {
@@ -59,6 +62,7 @@ function App() {
           <Routes>
             <Route path={routesPath.landing} element={<Landing />} />
             <Route path={routesPath.roomResults} element={<RoomResults />} />
+            <Route path={routesPath.login} element={<Login />} />
           </Routes>
           <Footer />
         </BrowserRouter>

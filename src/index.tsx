@@ -11,6 +11,17 @@ import HttpBackend from "i18next-http-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 import { PersistGate } from "redux-persist/integration/react";
+import { Amplify } from "aws-amplify";
+import { AmplifyProvider } from "@aws-amplify/ui-react";
+
+Amplify.configure({
+  Auth: {
+    region: `ap-south-1`,
+    userPoolId: `ap-south-1_kGYoiBnaC`,
+    userPoolWebClientId: `11m0od7tf2kthnqgrdqemooc2a`,
+    mandatorySignIn: true,
+  },
+});
 
 const apiKey = "V-mVKAEuQEtfzNK-KL5x6Q";
 const loadPath = `https://api.i18nexus.com/project_resources/translations/{{lng}}/{{ns}}.json?api_key=${apiKey}`;
@@ -41,10 +52,12 @@ Sentry.init({
 });
 root.render(
   <Suspense fallback={<></>}>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <App />
-      </PersistGate>
-    </Provider>
+    <AmplifyProvider>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+        </PersistGate>
+      </Provider>
+    </AmplifyProvider>
   </Suspense>
 );

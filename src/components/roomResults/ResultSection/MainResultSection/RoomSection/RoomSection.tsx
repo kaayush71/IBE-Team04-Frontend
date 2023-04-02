@@ -1,166 +1,55 @@
-import { Box, FormControl, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
-import React from "react";
-import { roomCard } from "../../../../../constants/types";
-import { setSortToSend } from "../../../../../redux/reducers/roomResultConfigDataSlice";
+import {
+  Alert,
+  Box,
+  CircularProgress,
+  FormControl,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Typography,
+} from "@mui/material";
+import React, { useMemo } from "react";
+import { setPageNumber, setSort } from "../../../../../redux/reducers/roomResultConfigDataSlice";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/store";
-import RoomCard from "./RoomCard/RoomCard";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import "./roomSection.scss";
+import RoomCardNew from "./RoomCard/RoomCardNew";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const RoomSection = () => {
   const sorts = useAppSelector((state) => state.resultsConfiguration.sorts);
   const roomResults = useAppSelector((state) => state.resultsConfiguration);
+  const { t } = useTranslation();
+  // console.log("sort to send", roomResults.sortToSend);
+  const roomData = useAppSelector((state) => state.resultsConfiguration.roomTypeList);
+  // console.log("room Data from graphql", roomData);
+  const currentPageNumber = roomResults.selectedPage;
+  const navigate = useNavigate();
   const reduxDispatch = useAppDispatch();
-  const handleChange = (event: SelectChangeEvent) => {
-    console.log("sort value", event.target.value);
-    reduxDispatch(setSortToSend(event.target.value));
+  const location = useLocation();
+  const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
+  const handleForward = () => {
+    let pageNumber = currentPageNumber + 1;
+    params.set("page", `${pageNumber}`);
+    localStorage.setItem("page", `${pageNumber}`);
+    reduxDispatch(setPageNumber(currentPageNumber + 1));
+    navigate(`/room-search-results?${params.toString()}`);
   };
-  const rooms: roomCard[] = [
-    {
-      title: "Luxury Suite",
-      address: "Near city center",
-      roomImageArray: [
-        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-1.avif",
-        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-2.jpeg",
-        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-3.jpeg",
-      ],
-      breakfastOptions: "Inclusive",
-      area: "50 ft",
-      personCapacity: 2,
-      ratings: {
-        showRatings: true,
-        averageRatings: 4.5,
-        totalReviews: 100,
-      },
-      bedType: "King",
-      promotion: {
-        showPromotion: true,
-        promotionDescription: "Get 20% off for 3 nights or more!",
-        discountPercentage: 20,
-      },
-      roomPrice: 150,
-    },
-    {
-      title: "Deluxe Room",
-      address: "Near city center",
-      roomImageArray: [
-        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-1.avif",
-        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-2.jpeg",
-        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-3.jpeg",
-      ],
-      breakfastOptions: "Inclusive",
-      area: "30 ft",
-      personCapacity: 2,
-      ratings: {
-        showRatings: true,
-        averageRatings: 4.2,
-        totalReviews: 80,
-      },
-      bedType: "Queen",
-      promotion: {
-        showPromotion: true,
-        promotionDescription: "Get 20% off for 3 nights or more!",
-        discountPercentage: 0,
-      },
-      roomPrice: 120,
-    },
-    {
-      title: "Standard Room",
-      address: "Near city center",
-      roomImageArray: [
-        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-1.avif",
-        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-2.jpeg",
-        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-3.jpeg",
-      ],
-      breakfastOptions: "Inclusive",
-      area: "25 ft",
-      personCapacity: 1,
-      ratings: {
-        showRatings: true,
-        averageRatings: 3.9,
-        totalReviews: 40,
-      },
-      bedType: "Twin",
-      promotion: {
-        showPromotion: true,
-        promotionDescription: "Get 20% off for 3 nights or more!",
-        discountPercentage: 0,
-      },
-      roomPrice: 80,
-    },
-    {
-      title: "Executive Suite",
-      address: "Near city center",
-      roomImageArray: [
-        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-1.avif",
-        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-2.jpeg",
-        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-3.jpeg",
-      ],
-      breakfastOptions: "Inclusive",
-      area: "70 ft",
-      personCapacity: 4,
-      ratings: {
-        showRatings: true,
-        averageRatings: 4.8,
-        totalReviews: 120,
-      },
-      bedType: "Two King",
-      promotion: {
-        showPromotion: true,
-        promotionDescription: "Get 15% off for 4 nights or more!",
-        discountPercentage: 15,
-      },
-      roomPrice: 250,
-    },
-    {
-      title: "Standard Room",
-      address: "Near city center",
-      roomImageArray: [
-        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-1.avif",
-        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-2.jpeg",
-        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-3.jpeg",
-      ],
-      breakfastOptions: "Inclusive",
-      area: "25 ft",
-      personCapacity: 1,
-      ratings: {
-        showRatings: true,
-        averageRatings: 4.0,
-        totalReviews: 60,
-      },
-      bedType: "Twin",
-      promotion: {
-        showPromotion: true,
-        promotionDescription: "Get 20% off for 3 nights or more!",
-        discountPercentage: 0,
-      },
-      roomPrice: 75,
-    },
-    {
-      title: "Junior Suite",
-      address: "Near city center",
-      roomImageArray: [
-        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-1.avif",
-        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-2.jpeg",
-        "https://d2rvepoyu8e9fg.cloudfront.net/team04/HotelImage-3.jpeg",
-      ],
-      breakfastOptions: "Inclusive",
-      area: "40 ft",
-      personCapacity: 2,
-      ratings: {
-        showRatings: true,
-        averageRatings: 4.3,
-        totalReviews: 90,
-      },
-      bedType: "Queen",
-      promotion: {
-        showPromotion: true,
-        promotionDescription: "Get 25% off for 5 nights or more!",
-        discountPercentage: 25,
-      },
-      roomPrice: 180,
-    },
-  ];
+  const handleBackward = () => {
+    if (currentPageNumber > 1) {
+      let pageNumber = currentPageNumber - 1;
+      params.set("page", `${pageNumber}`);
+      localStorage.setItem("page", `${pageNumber}`);
+      reduxDispatch(setPageNumber(currentPageNumber - 1));
+      navigate(`/room-search-results?${params.toString()}`);
+    }
+  };
+  const handleChange = (event: SelectChangeEvent) => {
+    reduxDispatch(setSort(event.target.value));
+  };
 
   return (
     <Box sx={{ width: "100%" }} className={"room-section"}>
@@ -169,14 +58,21 @@ const RoomSection = () => {
         sx={{ display: "flex", justifyContent: "space-between", marginBottom: "0.7rem" }}
       >
         <Typography fontWeight={700} fontSize="1.25rem" sx={{ padding: "0.5rem 0" }}>
-          Room Results
+          {t("Room Results")}
         </Typography>
         <Box sx={{ display: "flex", gap: "2rem", alignItems: "center" }}>
+          <Box onClick={handleBackward}>
+            <ChevronLeftIcon fontSize="small" />
+          </Box>
           <Typography fontWeight={700} fontSize="1" sx={{ padding: "0.5rem 0" }}>
-            Showing 1-4 of 5 Results
+            {`Page ${roomResults.selectedPage} of  ${roomResults.totalNumberOfData} Results`}
           </Typography>
+          <Box onClick={handleForward}>
+            <ChevronRightIcon fontSize="small" />
+          </Box>
+          <Typography fontWeight={400} fontSize={"1.5rem"} color={"#5d5d5d"}>|</Typography>
           <FormControl
-            sx={{ width: roomResults.sortToSend === "" ? "5rem" : "9rem" }}
+            sx={{ width: roomResults.selectedSortName === "" ? "5rem" : "9rem" }}
             variant="outlined"
           >
             <Select
@@ -186,7 +82,7 @@ const RoomSection = () => {
               defaultValue=""
               IconComponent={KeyboardArrowDownIcon}
               renderValue={
-                roomResults.sortToSend === ""
+                roomResults.selectedSortName === ""
                   ? () => <Typography fontWeight={700}>Sort</Typography>
                   : () => (
                       <Typography
@@ -227,9 +123,21 @@ const RoomSection = () => {
         }}
         className={"room-card-list"}
       >
-        {rooms.map((room, index) => (
-          <RoomCard key={index} room={room} />
-        ))}
+        {roomResults.roomResultsLoading ? (
+          <Box sx={{ height: "30vh" }}>
+            <CircularProgress />
+          </Box>
+        ) : roomResults.isError || roomResults.roomTypeList.length === 0 ? (
+          <Box sx={{ height: "25vh", width: "100%" }}>
+            <Alert severity="error">
+              Unable to get the Room Result data. Please modify your search.
+            </Alert>
+          </Box>
+        ) : (
+          roomData.map((room, index) => {
+            return <RoomCardNew key={index} room={room} />;
+          })
+        )}
       </Box>
     </Box>
   );

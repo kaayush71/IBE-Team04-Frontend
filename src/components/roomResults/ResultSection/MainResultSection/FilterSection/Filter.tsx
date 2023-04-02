@@ -7,14 +7,14 @@ import React from "react";
 import "./filter.scss";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/store";
 import { setFilter } from "../../../../../redux/reducers/roomResultConfigDataSlice";
+import { useTranslation } from "react-i18next";
 
 const Filter = () => {
   const filters = useAppSelector((state) => state.resultsConfiguration.filters);
   const reduxDispatch = useAppDispatch();
-  console.log("filters", filters);
+  const { t } = useTranslation();
   const handleClick = (filterData: any) => {
     reduxDispatch(setFilter(filterData));
-    console.log("filter clicked", filterData);
   };
 
   return (
@@ -26,45 +26,47 @@ const Filter = () => {
       }}
     >
       <Typography fontWeight={700} fontSize="1.25rem">
-        Narrow Your Results
+        {t("Narrow Your Results")}
       </Typography>
       <div>
         {filters.map((filter) => {
           return (
-            <Accordion
-              key={filter.filterName}
-              sx={{ boxShadow: "none", backgroundColor: "transparent" }}
-            >
-              <AccordionSummary
-                sx={{ padding: 0 }}
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
+            filter.show && (
+              <Accordion
+                key={filter.filterName}
+                sx={{ boxShadow: "none", backgroundColor: "transparent" }}
               >
-                <Typography>{filter.filterName}</Typography>
-              </AccordionSummary>
-              <AccordionDetails sx={{ padding: "0" }}>
-                {filter.options.map((option) => {
-                  return (
-                    <MenuItem key={option}>
-                      <ListItemIcon>
-                        <Checkbox
-                          onClick={() =>
-                            handleClick({
-                              filterName: filter.filterName,
-                              option: option,
-                            })
-                          }
-                          disabled={false}
-                          checked={filter.selectedOptions?.includes(option)}
-                        />
-                      </ListItemIcon>
-                      <ListItemText primary={`${option}`} />
-                    </MenuItem>
-                  );
-                })}
-              </AccordionDetails>
-            </Accordion>
+                <AccordionSummary
+                  sx={{ padding: 0 }}
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography>{t(filter.filterName)}</Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ padding: "0" }}>
+                  {filter.options.map((option) => {
+                    return (
+                      <MenuItem key={option}>
+                        <ListItemIcon>
+                          <Checkbox
+                            onClick={() =>
+                              handleClick({
+                                filterName: filter.filterName,
+                                option: option,
+                              })
+                            }
+                            disabled={false}
+                            checked={filter.selectedOptions?.includes(option)}
+                          />
+                        </ListItemIcon>
+                        <ListItemText primary={t(`${option.replaceAll("_", " ")}`)} />
+                      </MenuItem>
+                    );
+                  })}
+                </AccordionDetails>
+              </Accordion>
+            )
           );
         })}
       </div>

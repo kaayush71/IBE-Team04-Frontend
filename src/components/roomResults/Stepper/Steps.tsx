@@ -5,8 +5,10 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import { steps } from "../../../constants/constStepText";
 import "./stepper.scss";
+import { useTranslation } from "react-i18next";
 
 const Steps = () => {
+  const {t} = useTranslation();
   return (
     <Box className={"main-stepper-section"}>
       <Stepper
@@ -21,7 +23,7 @@ const Steps = () => {
               sx={{ "& .MuiStepLabel-label": { color: "white",marginTop:"0.1rem !important" }}}
               className={"step-label"}
             >
-              {label}
+              {t(label)}
             </StepLabel>
             {index < steps.length - 1 && <div className="step-connector" />}
           </Step>

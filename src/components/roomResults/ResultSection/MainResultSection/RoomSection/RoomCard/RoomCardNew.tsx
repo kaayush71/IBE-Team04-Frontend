@@ -1,7 +1,6 @@
 import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import { roomCard } from "../../../../../../constants/types";
 import "./roomCard.scss";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -10,12 +9,19 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import BedIcon from "@mui/icons-material/Bed";
+import { RoomType } from "../../../../../../redux/reducers/roomResultConfigDataSlice";
+import { useAppSelector } from "../../../../../../redux/store";
+import { useTranslation } from "react-i18next";
 
 interface RoomCardProps {
-  room: roomCard;
+  room: RoomType;
 }
 
-const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
+const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
+  const roomTypeList = useAppSelector((state) => state.resultsConfiguration.roomTypeList);
+  const roomTypeImages = useAppSelector((state) => state.resultsConfiguration.roomType);
+  const selectedCurrency = useAppSelector((state) => state.currency.selectedCurrency);
+  const { t } = useTranslation();
   const settings = {
     autoplay: true,
     autoplaySpeed: 5000,
@@ -30,15 +36,15 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
     <Box
       className="room-card"
       sx={{
-        width: "18vw",
+        width: "20.9vw",
         borderRadius: "5px",
-        flexGrow: "1",
+        flexGrow: roomTypeList.length === 3 ? "1" : "0",
         boxShadow: "0px 4px 25px rgba(0, 0, 0, 0.15)",
       }}
     >
       <Box sx={{ borderRadius: "5px" }}>
         <Slider className="slick-slider" {...settings}>
-          {room.roomImageArray.map((image, index) => (
+          {roomTypeImages["GRAND_DELUXE"].map((image, index) => (
             <img className="room-image" key={index} src={image} alt="roomImage" />
           ))}
         </Slider>
@@ -60,55 +66,30 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
           className={"title-review-section"}
         >
           <Box className={"title"}>
-            <Typography fontWeight={700}>{room.title}</Typography>
+            <Typography fontWeight={700}>{t(room.roomTypeName.replaceAll("_", " "))}</Typography>
           </Box>
-          {room.ratings.showRatings ? (
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "1fr",
-                placeSelf: "end",
-              }}
-              className={"review-section"}
-            >
-              <Box sx={{ placeSelf: "end" }} className={"average-ratings"}>
-                <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-                  <Box className="rating-star">
-                    {<StarRateIcon sx={{ color: "#26266D" }} fontSize="small" />}
-                  </Box>
-                  <Box className="rating-number">{room.ratings.averageRatings}</Box>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "1fr",
+              placeSelf: "end",
+            }}
+            className={"review-section"}
+          >
+            <Box sx={{ placeSelf: "end" }} className={"average-ratings"}>
+              <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+                <Box className="rating-star">
+                  {<StarRateIcon sx={{ color: "#26266D" }} fontSize="small" />}
                 </Box>
-              </Box>
-              <Box className={"total-reviews"}>
-                <Typography fontSize={"0.875rem"} color={"#5D5D5D"} fontWeight={400}>
-                  {room.ratings.totalReviews} reviews
-                </Typography>
+                <Box className="rating-number">{"3.7"}</Box>
               </Box>
             </Box>
-          ) : (
-            <Box
-              sx={{
-                width: "6.1875rem",
-                height: "1.4375rem",
-                placeSelf: "end",
-                paddingTop: "0.5rem",
-                backgroundColor: "#ccd0e8",
-                borderRadius: "5px",
-                paddingBottom: "0.35rem",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: "0.875rem",
-                  fontWeight: "400",
-                  display: "grid",
-                  placeItems: "center",
-                }}
-              >
-                New Property
+            <Box className={"total-reviews"}>
+              <Typography fontSize={"0.875rem"} color={"#5D5D5D"} fontWeight={400}>
+                {"200"} {t("reviews")}
               </Typography>
             </Box>
-          )}
+          </Box>
         </Box>
         <Box
           sx={{
@@ -119,10 +100,12 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
           className={"address-section"}
         >
           <Box className="address-icon">
-            <LocationOnIcon />
+            <LocationOnIcon sx={{ color: "#5D5D5D" }} />
           </Box>
           <Box sx={{ width: "7.0625rem" }} className="address-text">
-            <Typography sx={{ fontSize: "0.875rem" }}>{room.address}</Typography>
+            <Typography fontSize={"0.875rem"} color={"#5D5D5D"} fontWeight={400}>
+              {room.propertyAddress}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -134,10 +117,14 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
           }}
         >
           <Box className="breakfastOption">
-            <Typography sx={{ fontSize: "0.875rem" }}>{room.breakfastOptions}</Typography>
+            <Typography fontSize={"0.875rem"} color={"#5D5D5D"} fontWeight={400}>
+              {t("Inclusive")}
+            </Typography>
           </Box>
-          <Box sx={{ width: "4rem" }} className="areaSection">
-            <Typography sx={{ fontSize: "0.875rem" }}>{room.area}</Typography>
+          <Box sx={{ width: "2rem" }} className="areaSection">
+            <Typography fontSize={"0.875rem"} color={"#5D5D5D"} fontWeight={400}>
+              {`${room.areaInSquareFeet}ft`}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -149,10 +136,12 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
           className={"capacity-section"}
         >
           <Box className="icon">
-            <PersonIcon />
+            <PersonIcon sx={{ color: "#5d5d5d" }} />
           </Box>
           <Box className="capacity-number">
-            <Typography>1-{room.personCapacity}</Typography>
+            <Typography fontSize={"0.875rem"} color={"#5D5D5D"} fontWeight={400}>
+              1-{room.maxCapacity}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -165,36 +154,28 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
           className="bed-type-section"
         >
           <Box className="icon">
-            <BedIcon />
+            <BedIcon sx={{ color: "#5d5d5d" }} />
           </Box>
           <Box className="capacity-number">
-            <Typography sx={{ width: "9rem" }}>{room.bedType}</Typography>
+            <Typography
+              fontSize={"0.875rem"}
+              color={"#5D5D5D"}
+              fontWeight={400}
+              sx={{ width: "10rem" }}
+            >
+              {room.bedType}
+            </Typography>
           </Box>
         </Box>
-        {room.promotion.showPromotion ? (
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "1fr",
-              gap: "0.5rem",
-            }}
-          >
-            <Typography>{room.promotion.promotionDescription}</Typography>
-          </Box>
-        ) : (
-          <></>
-        )}
         <Box className="price-section">
-          <Typography sx={{ fontWeight: "bolder", fontSize: "1rem" }}>${room.roomPrice}</Typography>
-          <Typography>per night</Typography>
+          <Typography sx={{ fontWeight: "bolder", fontSize: "1rem" }}>{`${
+            selectedCurrency.symbol
+          } ${(selectedCurrency.rate * room.roomRate).toFixed(1)} `}</Typography>
+          <Typography fontSize={"0.875rem"} color={"#5D5D5D"} fontWeight={400}>
+            {t("per night")}
+          </Typography>
         </Box>
         <Box className="button-section" sx={{ placeSelf: "end" }}>
-          {room.promotion.showPromotion === false ? (
-            <Box sx={{ paddingTop: "6.1rem" }}></Box>
-          ) : (
-            <></>
-          )}
-
           <Button
             type="submit"
             sx={{
@@ -208,7 +189,9 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
             }}
             variant="contained"
           >
-            <Typography sx={{ fontWeight: "700", fontSize: "0.775rem" }}>SELECT ROOM</Typography>
+            <Typography sx={{ fontWeight: "700", fontSize: "0.775rem" }}>
+              {t("SELECT ROOM")}
+            </Typography>
           </Button>
         </Box>
       </Box>
@@ -216,4 +199,4 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
   );
 };
 
-export default RoomCard;
+export default RoomCardNew;

@@ -7,7 +7,7 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import {
@@ -29,6 +29,16 @@ const PropertyMenu = (props: Props) => {
   const reduxDispatch = useAppDispatch();
   const selectedProperty = useAppSelector((state) => state.landingForm.propertyId);
   const properties = useAppSelector((state) => state.config.properties);
+  const formData = JSON.parse(localStorage.getItem("formData") || "{}");
+
+  useEffect(() => {
+    if (formData.property === "") {
+      reduxDispatch(setPropertyId(""));
+      localStorage.clear();
+      reduxDispatch(setIsLandingFormDisbale(true));
+      reduxDispatch(resetStateToDefault());
+    }
+  }, [formData.property, reduxDispatch]);
 
   const handleClick = (property: String) => {
     if (selectedProperty !== "") {

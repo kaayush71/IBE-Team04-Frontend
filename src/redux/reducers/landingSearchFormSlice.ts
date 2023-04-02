@@ -179,13 +179,12 @@ export const landingSearchFormSlice = createSlice({
     // for persistence data store.
     getLocalstorageFormData: (state) => {
       const formData = JSON.parse(localStorage.getItem("formData") || "{}");
-      console.log("form", formData);
 
       // if (JSON.stringify(formData) === "{}") return;
       state.startDate = formData.startDate;
       state.endDate = formData.endDate;
       state.numberOfRoomSelected = Number(formData.rooms);
-      if (formData.beds) {
+      if (formData.beds !== null) {
         state.numberOfBedsSelected = Number(formData.beds);
       }
       state.landingConfig.searchForm.guest.guestTypes = formData.guestDetails;
@@ -201,7 +200,7 @@ export const landingSearchFormSlice = createSlice({
       state.numberOfRoomSelected = action.payload.searchForm.rooms.defaultRoomCount;
       state.accessibility = action.payload.searchForm.accessibility.defaultAccessibilty;
       state.loading = false;
-      console.log("fetch landing config completed");
+      // console.log("fetch landing config completed");
       const formData = {
         property: state.propertyId,
         startDate: state.startDate,

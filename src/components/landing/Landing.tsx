@@ -23,6 +23,8 @@ export default function Landing() {
   const reduxDispatch = useAppDispatch();
   const navigate = useNavigate();
   const bannerImage = useAppSelector((state) => state.config.bannerImage);
+  const currency = useAppSelector((state)=>state.currency);
+  const language = useAppSelector((state)=>state.language);
   const landingConfig = useAppSelector((state) => state.landingForm.landingConfig);
   const landingFormData = useAppSelector((state) => state.landingForm);
   const accessibility = useAppSelector((state) => state.landingForm.accessibility);
@@ -68,6 +70,8 @@ export default function Landing() {
         searchParams.set(`${guest.categoryName}`, `${guest.count}`);
       }
     });
+    searchParams.set("currency",currency.selectedCurrency.name);
+    searchParams.set("lang",language.selectedLanguage);
     searchParams.set("rooms", `${formData.rooms}`);
     navigate(`/room-search-results?${searchParams.toString()}`);
   };
@@ -83,7 +87,7 @@ export default function Landing() {
     >
       <Container sx={{ padding: "3.5rem 0" }} maxWidth={false}>
         <Paper
-          sx={{ padding: "2.75rem", maxWidth: "23.75rem", marginBottom: { xs: "5rem", md: "0" } }}
+          sx={{ padding: "2.75rem", maxWidth: "25.75rem", marginBottom: { xs: "5rem", md: "0" } }}
         >
           <FormGroup>
             <form style={{ rowGap: "1.15rem", display: "grid" }} onSubmit={handleSubmit}>

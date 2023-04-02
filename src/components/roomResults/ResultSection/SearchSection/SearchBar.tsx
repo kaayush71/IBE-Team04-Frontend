@@ -1,8 +1,10 @@
 import { Box, Button } from "@mui/material";
 import { format } from "date-fns";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { fetchCalendarData } from "../../../../redux/reducers/calendarDataSlice";
+import { setSortToSend } from "../../../../redux/reducers/roomResultConfigDataSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 import CalendarMenu from "../../../landing/CalendarMenu/CalendarMenu";
 import GuestMenu from "../../../landing/GuestsMenu/GuestMenu";
@@ -16,7 +18,11 @@ const SearchBar = () => {
   const landingFormData = useAppSelector((state) => state.landingForm);
   const sortName = useAppSelector((state) => state.resultsConfiguration.selectedSortName);
   const sortValue = useAppSelector((state) => state.resultsConfiguration.selectedSortValue);
+  const filters = useAppSelector((state) => state.resultsConfiguration.filters);
+  const currency = useAppSelector((state) => state.currency);
+  const language = useAppSelector((state) => state.language);
   const paramsSort = `${sortName}#${sortValue}`;
+  const { t } = useTranslation();
   const searchParams = new URLSearchParams();
   const navigate = useNavigate();
   const handleSubmit = () => {
@@ -30,7 +36,9 @@ const SearchBar = () => {
       totalGuestCount: landingFormData.totalGuestCount,
       beds: landingFormData.numberOfBedsSelected,
       sort: paramsSort,
+      filters: filters,
     };
+    reduxDispatch(setSortToSend(paramsSort));
     localStorage.setItem("formData", JSON.stringify(formData));
     searchParams.set("propertyId", formData.property);
     searchParams.set("startDate", format(new Date(formData.startDate), "yyyy-MM-dd"));
@@ -40,9 +48,18 @@ const SearchBar = () => {
         searchParams.set(`${guest.categoryName}`, `${guest.count}`);
       }
     });
+    formData.filters.forEach((filter) => {
+      if (filter.show === true) {
+        if (filter.selectedOptions.length !== 0)
+          searchParams.set(`${filter.filterName}`, `${filter.selectedOptions}`);
+      }
+    });
     searchParams.set("rooms", `${formData.rooms}`);
     searchParams.set("beds", `${formData.beds}`);
     searchParams.set("sort", paramsSort);
+
+    searchParams.set("currency", currency.selectedCurrency.name);
+    searchParams.set("lang", language.selectedLanguage);
     navigate(`/room-search-results?${searchParams.toString()}`);
   };
   useEffect(() => {
@@ -82,7 +99,7 @@ const SearchBar = () => {
           }}
           variant="contained"
         >
-          {"SEARCH DATES"}
+          {t("SEARCH DATES")}
         </Button>
       </Box>
     </Box>
