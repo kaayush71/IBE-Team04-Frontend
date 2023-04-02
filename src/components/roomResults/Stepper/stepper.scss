@@ -1,0 +1,54 @@
+@import "../../../sass/Variables.scss";
+
+.main-stepper-section {
+  display: grid;
+  height: 5.75rem;
+  grid-template-columns: 1fr;
+  place-items: center;
+  background-color: $STEPPER_BACKGROUND_COLOR;
+  .starter-stepper-section{
+    width: 31.5%;
+  }
+  .MuiSvgIcon-root {
+    color: $NON_ACTIVE_FONT_COLOR !important;
+  }
+  .Mui-completed {
+    color: $NON_ACTIVE_FONT_COLOR !important;
+  }
+  .Mui-active {
+    color: $COMPLETED_ICON_COLOR !important;
+    circle {
+      color: $CURRENT_ICON_COLOR !important;
+    }
+    .MuiStepConnector-lineHorizontal{
+        color : $COMPLETED_ICON_COLOR !important;
+        border-top: 1px solid;
+    }
+    
+  }
+  .MuiStepLabel-label{
+    font-size: 0.875rem;
+  }
+  .Mui-disabled {
+    color: $NON_ACTIVE_FONT_COLOR !important;
+    .MuiStepConnector-lineHorizontal{
+        color : $NON_ACTIVE_FONT_COLOR !important;
+    }
+  }
+  
+  path {
+    color: $COMPLETED_ICON_COLOR !important;
+  }
+}
+
+
+@media  screen and (max-width: 769px) {
+  .main-stepper-section{
+    .starter-stepper-section{
+      width: 81%;
+    } 
+    .MuiStepLabel-label{
+      font-size: 0.475rem;
+    }
+  }
+}
