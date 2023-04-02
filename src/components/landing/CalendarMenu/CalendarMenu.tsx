@@ -23,7 +23,7 @@ export default function CalendarMenu(props: Props) {
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Box>
             <Typography fontSize={"0.875rem"} color={"#858685"}>
-              Check in between
+              {t("Check in between")}
             </Typography>
             <Typography fontWeight={700}>
               {landingForm.startDate !== landingForm.endDate
@@ -42,7 +42,7 @@ export default function CalendarMenu(props: Props) {
           ></Divider>
           <Box>
             <Typography fontSize={"0.875rem"} color={"#858685"}>
-              Check out between
+              {t("Check out between")}
             </Typography>
             <Typography fontWeight={700}>
               {landingForm.endDate && landingForm.endDate !== landingForm.startDate

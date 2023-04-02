@@ -9,9 +9,14 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import LanguageMenu from "./languageMenu/LanguageMenu";
 import CurrencyMenu from "./currecnyMenu/CurrencyMenu";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const [t] = useTranslation();
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/login");
+  };
   const applicationTitle = useAppSelector((state) => state.config.applicationTitle);
   const headerLogo = useAppSelector((state) => state.config.companyLogo.headerLogo);
   const [open, setOpenState] = useState(false);
@@ -23,7 +28,10 @@ export default function Header() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#fff", height: "5.25rem",position:"sticky",top:"0",zIndex:"2" }}>
+    <AppBar
+      position="static"
+      sx={{ backgroundColor: "#fff", height: "5.25rem", position: "sticky", top: "0", zIndex: "2" }}
+    >
       <Box sx={{ padding: "0 3.375rem", height: "100%", display: "flex" }}>
         <Container
           maxWidth={false}
@@ -35,12 +43,7 @@ export default function Header() {
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: "1.06rem" }}>
-            <img
-              date-testid="header-logo"
-              className="header__logo"
-              src={headerLogo}
-              alt=""
-            />
+            <img date-testid="header-logo" className="header__logo" src={headerLogo} alt="" />
             <Typography
               data-testid="header-title"
               sx={{
@@ -60,6 +63,7 @@ export default function Header() {
             <LanguageMenu />
             <CurrencyMenu />
             <Button
+              onClick={handleClick}
               sx={{ backgroundColor: "#26266D", "&:hover": { backgroundColor: "#26266D" } }}
               variant="contained"
             >
@@ -104,6 +108,7 @@ export default function Header() {
                     <LanguageMenu />
                     <CurrencyMenu />
                     <Button
+                      onClick={handleClick}
                       sx={{
                         backgroundColor: "#26266D",
                         width: "5.31rem !important",

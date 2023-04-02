@@ -43,6 +43,7 @@ interface State {
   accessibility: boolean;
   minimumNightlyPrice: number;
   isLandingFormDisable: boolean;
+  numberOfBedsSelected: number;
 }
 
 // const formData = JSON.parse(localStorage.getItem("formData") || "{}");
@@ -81,6 +82,7 @@ const initialState: State = {
   accessibility: true,
   minimumNightlyPrice: Infinity,
   isLandingFormDisable: localStorage.getItem("isLandingFormDisable") === "true" ? true : false,
+  numberOfBedsSelected: 1,
 };
 
 export const fetchLandingConfigData = createAsyncThunk(
@@ -123,7 +125,11 @@ export const landingSearchFormSlice = createSlice({
       state.minimumNightlyPrice = action.payload;
     },
     setIsLandingFormDisbale: (state, action) => {
+      console.log("In landing form disbale");
       state.isLandingFormDisable = action.payload;
+    },
+    setNumberOfBeds: (state, action) => {
+      state.numberOfBedsSelected = action.payload;
     },
     increaseGuestCount: (state, action) => {
       const maximumRoomOccupancy = state.landingConfig.searchForm.rooms.maximumRoomOccupancy;
@@ -138,10 +144,10 @@ export const landingSearchFormSlice = createSlice({
       );
       if (guestType !== undefined) {
         if (state.totalGuestCount < state.numberOfRoomSelected * maximumRoomOccupancy) {
-          guestType.count += 1;
+          guestType.count = Number(guestType.count) + 1;
           state.totalGuestCount += 1;
         } else {
-          guestType.count += 1;
+          guestType.count = Number(guestType.count) + 1;
           state.totalGuestCount += 1;
           state.numberOfRoomSelected += 1;
         }
@@ -154,7 +160,7 @@ export const landingSearchFormSlice = createSlice({
       );
       if (guestType !== undefined) {
         if (guestType.count > guestType.minCount) {
-          guestType.count -= 1;
+          guestType.count = Number(guestType.count) - 1;
           state.totalGuestCount -= 1;
           if (state.totalGuestCount % maximumRoomOccupancy === 0) {
             state.numberOfRoomSelected = state.totalGuestCount / maximumRoomOccupancy;
@@ -165,25 +171,51 @@ export const landingSearchFormSlice = createSlice({
       }
     },
 
+    resetStateToDefault: (state) => {
+      state.totalGuestCount = 1;
+    },
+
     // update the state with localstorage data
     // for persistence data store.
     getLocalstorageFormData: (state) => {
       const formData = JSON.parse(localStorage.getItem("formData") || "{}");
+
+      // if (JSON.stringify(formData) === "{}") return;
       state.startDate = formData.startDate;
-      state.numberOfRoomSelected = formData.rooms;
+      state.endDate = formData.endDate;
+      state.numberOfRoomSelected = Number(formData.rooms);
+      if (formData.beds !== null) {
+        state.numberOfBedsSelected = Number(formData.beds);
+      }
       state.landingConfig.searchForm.guest.guestTypes = formData.guestDetails;
-      state.landingConfig.searchForm.rooms.defaultRoomCount = formData.defaultRoomCount;
-      state.landingConfig.searchForm.rooms.roomCountArray = formData.roomCountArray;
       state.landingConfig.bannerImage = formData.bannerImage;
-      console.log("form-data", formData);
+      state.propertyId = formData.property;
+      state.totalGuestCount = formData.totalGuestCount;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchLandingConfigData.fulfilled, (state, action) => {
+      console.log("in landing config data");
       state.landingConfig = action.payload;
       state.numberOfRoomSelected = action.payload.searchForm.rooms.defaultRoomCount;
       state.accessibility = action.payload.searchForm.accessibility.defaultAccessibilty;
       state.loading = false;
+      // console.log("fetch landing config completed");
+      const formData = {
+        property: state.propertyId,
+        startDate: state.startDate,
+        endDate: state.endDate,
+        rooms: state.numberOfRoomSelected,
+        guestDetails: state.landingConfig.searchForm.guest.guestTypes,
+        accessibility: state.accessibility,
+        totalGuestCount: state.totalGuestCount,
+      };
+      const setFormData = JSON.parse(localStorage.getItem("formData") || "{}");
+      if (JSON.stringify(setFormData) === "{}") {
+        localStorage.setItem("formData", JSON.stringify(formData));
+      } else {
+        return;
+      }
     });
     builder.addCase(fetchLandingConfigData.rejected, (state) => {
       state.loading = false;
@@ -206,4 +238,6 @@ export const {
   setMinimumNightlyPrice,
   setIsLandingFormDisbale,
   getLocalstorageFormData,
+  resetStateToDefault,
+  setNumberOfBeds,
 } = landingSearchFormSlice.actions;

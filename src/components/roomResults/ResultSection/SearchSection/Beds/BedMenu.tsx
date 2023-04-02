@@ -1,21 +1,24 @@
 import { Box, FormControl, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
 import React from "react";
-import { setBedCount } from "../../../../../redux/reducers/roomResultsDataSlice";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/store";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { setNumberOfBeds } from "../../../../../redux/reducers/landingSearchFormSlice";
+import { useTranslation } from "react-i18next";
 
 const BedMenu = () => {
-  const numberOfBedsSelected = useAppSelector((state) => state.results.bed.bedCountSelected);
   const reduxDispatch = useAppDispatch();
   const handleChange = (event: SelectChangeEvent) => {
-    reduxDispatch(setBedCount(Number(event.target.value)));
+    reduxDispatch(setNumberOfBeds(Number(event.target.value)));
   };
-  const beds = useAppSelector((state) => state.results.bed.bedCountArray);
+  const { t } = useTranslation();
+  const beds = useAppSelector((state) => state.resultsConfiguration.beds.bedCountArray);
+  const numberOfBedsSelected = useAppSelector((state) => state.landingForm.numberOfBedsSelected);
+
   const BedMenuInput = () => {
     return (
       <Box>
         <Typography fontSize={"0.875rem"} color={"#858685"}>
-          Beds
+          {t("Beds")}
         </Typography>
         <Typography fontWeight={700}>{numberOfBedsSelected}</Typography>
       </Box>

@@ -3,6 +3,7 @@ import React from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { setSelectedRoom } from "../../../redux/reducers/landingSearchFormSlice";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   onRoomResultsPage: boolean;
@@ -10,7 +11,8 @@ type Props = {
 
 const RoomsMenu = (props: Props) => {
   const isLandingFormDisable = useAppSelector((state) => state.landingForm.isLandingFormDisable);
-  const state = useAppSelector((state)=>state.landingForm);
+  const state = useAppSelector((state) => state.landingForm);
+  const { t } = useTranslation();
   const rooms = useAppSelector((state) => state.landingForm.landingConfig.searchForm.rooms);
   const numberOfRoomsSelected = useAppSelector((state) => state.landingForm.numberOfRoomSelected);
   const reduxDispatch = useAppDispatch();
@@ -23,7 +25,7 @@ const RoomsMenu = (props: Props) => {
       return (
         <Box>
           <Typography fontSize={"0.875rem"} color={"#858685"}>
-            Rooms
+            {t("Rooms")}
           </Typography>
           <Typography fontWeight={700}>{numberOfRoomsSelected}</Typography>
         </Box>
@@ -54,7 +56,11 @@ const RoomsMenu = (props: Props) => {
       >
         {rooms.roomCountArray.map((room) => {
           return (
-            <MenuItem disabled={( state.totalGuestCount /  rooms.maximumRoomOccupancy > room) } key={room} value={room}>
+            <MenuItem
+              disabled={state.totalGuestCount / rooms.maximumRoomOccupancy > room}
+              key={room}
+              value={room}
+            >
               <Typography data-testid="room-count" id="room-count">
                 {room}
               </Typography>

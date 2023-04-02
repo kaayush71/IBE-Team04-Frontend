@@ -12,11 +12,15 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import {
   fetchLandingConfigData,
+  resetStateToDefault,
+  setEndDate,
   setIsLandingFormDisbale,
   setPropertyId,
+  setStartDate,
 } from "../../../redux/reducers/landingSearchFormSlice";
 import { useTranslation } from "react-i18next";
 import { fetchCalendarData } from "../../../redux/reducers/calendarDataSlice";
+import { addDays } from "date-fns";
 
 type Props = {};
 
@@ -25,17 +29,28 @@ const PropertyMenu = (props: Props) => {
   const reduxDispatch = useAppDispatch();
   const selectedProperty = useAppSelector((state) => state.landingForm.propertyId);
   const properties = useAppSelector((state) => state.config.properties);
+  const formData = JSON.parse(localStorage.getItem("formData") || "{}");
+
   useEffect(() => {
-    reduxDispatch(setPropertyId(""));
-  }, [reduxDispatch]);
+    if (formData.property === "") {
+      reduxDispatch(setPropertyId(""));
+      localStorage.clear();
+      reduxDispatch(setIsLandingFormDisbale(true));
+      reduxDispatch(resetStateToDefault());
+    }
+  }, [formData.property, reduxDispatch]);
 
   const handleClick = (property: String) => {
     if (selectedProperty !== "") {
       reduxDispatch(setPropertyId(""));
+      localStorage.clear();
       reduxDispatch(setIsLandingFormDisbale(true));
+      reduxDispatch(resetStateToDefault());
     } else {
       reduxDispatch(fetchLandingConfigData());
       reduxDispatch(fetchCalendarData());
+      reduxDispatch(setStartDate(new Date().toDateString()));
+      reduxDispatch(setEndDate(addDays(new Date(), 2).toDateString()));
       reduxDispatch(setIsLandingFormDisbale(false));
       reduxDispatch(setPropertyId(property));
     }

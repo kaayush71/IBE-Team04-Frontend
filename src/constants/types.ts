@@ -13,7 +13,7 @@ export interface guest {
 }
 export interface bed {
   bedCountSelected: number;
-  bedCountArray: [number];
+  bedCountArray: number[];
 }
 
 export interface roomCard {

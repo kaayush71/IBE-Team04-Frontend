@@ -27,7 +27,7 @@ const GuestMenu = (props: Props) => {
       return (
         <Box>
           <Typography fontSize={"0.875rem"} color={"#858685"}>
-            Guests
+            {t("Guests")}
           </Typography>
           <Typography fontWeight={700}>{guestInformation}</Typography>
         </Box>
