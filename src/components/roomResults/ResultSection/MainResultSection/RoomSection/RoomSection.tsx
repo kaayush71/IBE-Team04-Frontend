@@ -67,14 +67,18 @@ const RoomSection = () => {
           flexDirection: { xs: "column", sm: "row" },
         }}
       >
-        <Typography fontWeight={700} fontSize="1.25rem" sx={{ padding: "0.5rem 0",textAlign:"center" }}>
+        <Typography
+          fontWeight={700}
+          fontSize="1.25rem"
+          sx={{ padding: "0.5rem 0", textAlign: "center" }}
+        >
           {t("Room Results")}
         </Typography>
         <Box
           sx={{
             display: "flex",
             columnGap: "1rem",
-            rowGap:"0",
+            rowGap: "0",
             alignItems: "center",
             flexDirection: { xs: "column", sm: "row" },
           }}
@@ -146,32 +150,40 @@ const RoomSection = () => {
           </FormControl>
         </Box>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", md: "row" },
-          alignItems: "center",
-          gap: "4rem",
-          justifyContent: "space-between",
-        }}
-        className={"room-card-list"}
-      >
-        {roomResults.roomResultsLoading ? (
-          <Box sx={{ height: "30vh" }}>
-            <CircularProgress />
-          </Box>
-        ) : roomResults.isError || roomResults.roomTypeList.length === 0 ? (
-          <Box sx={{ height: "25vh", width: "100%" }}>
-            <Alert severity="error">
-              Unable to get the Room Result data. Please modify your search.
-            </Alert>
-          </Box>
-        ) : (
-          roomData.map((room, index) => {
-            return <RoomCardNew key={index} room={room} />;
-          })
-        )}
-      </Box>
+      {/* <Box sx={{ display: "grid", gridTemplateColumns: "60% 1fr", gap: "3rem" }}> */}
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            flexDirection: { xs: "column", md: "row" },
+            alignItems: "center",
+            columnGap: "3rem",
+            rowGap: "2rem",
+            justifyContent: "space-between",
+          }}
+          className={"room-card-list"}
+        >
+          {roomResults.roomResultsLoading ? (
+            <Box sx={{ height: "30vh" }}>
+              <CircularProgress />
+            </Box>
+          ) : roomResults.isError || roomResults.roomTypeList.length === 0 ? (
+            <Box sx={{ height: "25vh", width: "100%" }}>
+              <Alert severity="error">
+                Unable to get the Room Result data. Please modify your search.
+              </Alert>
+            </Box>
+          ) : (
+            roomData.map((room, index) => {
+              return <RoomCardNew key={index} room={room} />;
+            })
+          )}
+        </Box>
+        {/* <Box>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatibus tempora laudantium
+          quis delectus soluta error, molestiae officiis eaque rem quod?
+        </Box>
+      </Box> */}
     </Box>
   );
 };

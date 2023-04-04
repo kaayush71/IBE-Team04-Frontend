@@ -136,7 +136,7 @@ export default function RoomResults() {
       }
     });
     localStorage.setItem("formData", JSON.stringify(formData));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, params, reduxDispatch]);
 
   type Filters = {
@@ -189,8 +189,8 @@ export default function RoomResults() {
       }
     }
     fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getSearchParams, reduxDispatch, sortToSend]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getSearchParams, reduxDispatch]);
 
   return (
     <Box className={"room-results-page"}>

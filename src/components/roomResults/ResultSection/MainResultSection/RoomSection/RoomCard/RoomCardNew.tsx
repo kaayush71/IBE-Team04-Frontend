@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Button, Modal, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import "./roomCard.scss";
@@ -12,12 +12,24 @@ import BedIcon from "@mui/icons-material/Bed";
 import { RoomType } from "../../../../../../redux/reducers/roomResultConfigDataSlice";
 import { useAppSelector } from "../../../../../../redux/store";
 import { useTranslation } from "react-i18next";
+import RoomCardModal from "../../../../RoomCardModal/RoomCardModal";
 
 interface RoomCardProps {
   room: RoomType;
 }
 
 const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
+  const style = {
+    margin: "5rem auto 0 auto",
+    maxWidth: "90vw",
+    bgcolor: "background.paper",
+    boxShadow: 24,
+  };
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const roomTypeImages = useAppSelector((state) => state.resultsConfiguration.roomType);
   const selectedCurrency = useAppSelector((state) => state.currency.selectedCurrency);
   const { t } = useTranslation();
@@ -35,14 +47,14 @@ const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
     <Box
       className="room-card"
       sx={{
-        width: { lg: "20.8vw", md: "24vw", sm: "50.8vw", xs: "64vw" },
+        width: { lg: "19vw", md: "23vw", sm: "50.8vw", xs: "64vw" },
         borderRadius: "5px",
         boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
       }}
     >
       <Box sx={{ borderRadius: "5px" }}>
         <Slider className="slick-slider" {...settings}>
-          {roomTypeImages["GRAND_DELUXE"].map((image, index) => (
+          {roomTypeImages[`${room.roomTypeName}`].images.map((image, index) => (
             <img className="room-image" key={index} src={image} alt="roomImage" />
           ))}
         </Slider>
@@ -176,6 +188,7 @@ const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
         <Box className="button-section" sx={{ placeSelf: "end" }}>
           <Button
             type="submit"
+            onClick={handleOpen}
             sx={{
               backgroundColor: "#26266D",
               "&:hover": { backgroundColor: "#26266D" },
@@ -192,6 +205,19 @@ const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
             </Typography>
           </Button>
         </Box>
+      </Box>
+      <Box>
+        <Modal
+          sx={{ overflowY: "scroll" }}
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <RoomCardModal handleClose={handleClose} room={room}></RoomCardModal>
+          </Box>
+        </Modal>
       </Box>
     </Box>
   );
