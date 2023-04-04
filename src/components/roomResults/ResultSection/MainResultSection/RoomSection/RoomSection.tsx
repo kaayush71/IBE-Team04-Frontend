@@ -149,11 +149,10 @@ const RoomSection = () => {
       <Box
         sx={{
           display: "flex",
-          flexWrap: "wrap",
           flexDirection: { xs: "column", md: "row" },
           alignItems: "center",
           gap: "4rem",
-          justifyContent: "space-evenly",
+          justifyContent: "space-between",
         }}
         className={"room-card-list"}
       >
