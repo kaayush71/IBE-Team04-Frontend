@@ -18,7 +18,6 @@ interface RoomCardProps {
 }
 
 const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
-  const roomTypeList = useAppSelector((state) => state.resultsConfiguration.roomTypeList);
   const roomTypeImages = useAppSelector((state) => state.resultsConfiguration.roomType);
   const selectedCurrency = useAppSelector((state) => state.currency.selectedCurrency);
   const { t } = useTranslation();
@@ -36,10 +35,9 @@ const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
     <Box
       className="room-card"
       sx={{
-        width: "20.9vw",
+        width: { lg: "20.8vw", md: "20vw", sm: "50.8vw", xs: "64vw" },
         borderRadius: "5px",
-        flexGrow: roomTypeList.length === 3 ? "1" : "0",
-        boxShadow: "0px 4px 25px rgba(0, 0, 0, 0.15)",
+        boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
       }}
     >
       <Box sx={{ borderRadius: "5px" }}>

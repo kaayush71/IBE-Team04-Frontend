@@ -116,11 +116,9 @@ export const roomResultsConfigDataSlice = createSlice({
       }
     },
     setExistingFilters: (state, action) => {
-      // console.log("action payload", action.payload);
       const { filterName, option } = action.payload;
       const selectedFilter = state.filters.find((filter) => filter.filterName === filterName);
       if (selectedFilter !== undefined) {
-        // console.log("filter found");
         selectedFilter.selectedOptions = option;
       }
     },
@@ -149,15 +147,11 @@ export const roomResultsConfigDataSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchResultsConfigData.fulfilled, (state, action) => {
-      // console.log(action.payload);
-      // console.log("room results data");
       state.filters = action.payload.filters;
       state.sorts = action.payload.sorts;
       state.roomType = action.payload.roomType;
       state.beds = action.payload.beds;
-      // console.log("room results completed");
       const formData = JSON.parse(localStorage.getItem("formData") || "{}");
-      // console.log("formData", formData.filters);
       localStorage.setItem("page", `${state.selectedPage}`);
       if (formData.filters === undefined) {
         formData.filters = state.filters;

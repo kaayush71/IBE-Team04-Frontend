@@ -77,8 +77,9 @@ const SearchBar = () => {
           div: { height: "100%" },
           padding: "3.5rem 1.5rem",
           display: "grid",
-          gridTemplateColumns: "1fr 0.7fr 0.7fr 2fr 1fr",
+          gridTemplateColumns: { md: "1fr 0.7fr 0.7fr 2fr 1fr", xs: "1fr" },
           columnGap: "1rem",
+          rowGap: "1rem",
         }}
         className={"search-section"}
       >
