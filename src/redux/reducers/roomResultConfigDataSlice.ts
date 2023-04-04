@@ -35,7 +35,11 @@ interface RoomResultsConfig {
     showBed: boolean;
   };
   roomType: {
-    [key: string]: string[];
+    [key: string]: {
+      images: string[];
+      ammenities: string[];
+      description: string;
+    };
   };
   numberOfBedsSelected: number;
   sortToSend: string;
@@ -56,7 +60,11 @@ const initialState: RoomResultsConfig = {
     bedCountArray: [1],
     showBed: true,
   },
-  roomType: {},
+  roomType: {
+    // images: [],
+    // ammenities: [],
+    // description: "",
+  },
   numberOfBedsSelected: 1,
   sortToSend: "",
   selectedSortName: "",
