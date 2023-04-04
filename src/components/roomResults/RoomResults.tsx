@@ -1,7 +1,6 @@
 import { Box } from "@mui/system";
-import { format } from "date-fns";
 import React, { useCallback, useEffect, useMemo } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { setSelectedCuurency } from "../../redux/reducers/currencyDataSlice";
 import {
   fetchLandingConfigData,
@@ -28,6 +27,7 @@ export default function RoomResults() {
   const landingFormData = useAppSelector((state) => state.landingForm);
   const filters = useAppSelector((state) => state.resultsConfiguration.filters);
   const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
+  const navigate = useNavigate();
 
   const getSearchParams = useCallback(() => {
     const formData = JSON.parse(localStorage.getItem("formData") || "{}");
@@ -36,6 +36,9 @@ export default function RoomResults() {
     const propertyId = params.get("propertyId");
     if (propertyId !== null && propertyId === "4") {
       formData.property = propertyId;
+    } else if (formData.property === "") {
+      console.log("navigate");
+      navigate("/");
     }
 
     // for startDate
@@ -133,8 +136,8 @@ export default function RoomResults() {
       }
     });
     localStorage.setItem("formData", JSON.stringify(formData));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params, reduxDispatch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate, params, reduxDispatch]);
 
   type Filters = {
     [key: string]: string[];
@@ -156,8 +159,6 @@ export default function RoomResults() {
       try {
         await reduxDispatch(fetchLandingConfigData());
         await reduxDispatch(fetchResultsConfigData());
-        const startTime = format(new Date(landingFormData.startDate), "yyyy-MM-dd");
-        const endTime = format(new Date(landingFormData.endDate), "yyyy-MM-dd");
         getSearchParams();
         reduxDispatch(getLocalstorageFormData());
         console.log("SORT TO SEND", sortToSend);
@@ -165,6 +166,8 @@ export default function RoomResults() {
         const pageNumber = Number(localStorage.getItem("page"));
         console.log("pageNumber", pageNumber);
         const formData = JSON.parse(localStorage.getItem("formData") || "{}");
+        const startTime = formData.startDate;
+        const endTime = formData.endDate;
         const requestBody: RequestBody = {
           sortType: sortToSend,
           numberOfRooms: formData.rooms,
@@ -186,7 +189,7 @@ export default function RoomResults() {
       }
     }
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getSearchParams, reduxDispatch, sortToSend]);
 
   return (

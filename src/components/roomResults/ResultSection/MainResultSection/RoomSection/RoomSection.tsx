@@ -9,7 +9,10 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useMemo } from "react";
-import { setPageNumber, setSort } from "../../../../../redux/reducers/roomResultConfigDataSlice";
+import {
+  setPageNumber,
+  setSortToSend,
+} from "../../../../../redux/reducers/roomResultConfigDataSlice";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/store";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -23,20 +26,20 @@ const RoomSection = () => {
   const sorts = useAppSelector((state) => state.resultsConfiguration.sorts);
   const roomResults = useAppSelector((state) => state.resultsConfiguration);
   const { t } = useTranslation();
-  // console.log("sort to send", roomResults.sortToSend);
   const roomData = useAppSelector((state) => state.resultsConfiguration.roomTypeList);
-  // console.log("room Data from graphql", roomData);
   const currentPageNumber = roomResults.selectedPage;
   const navigate = useNavigate();
   const reduxDispatch = useAppDispatch();
   const location = useLocation();
   const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const handleForward = () => {
-    let pageNumber = currentPageNumber + 1;
-    params.set("page", `${pageNumber}`);
-    localStorage.setItem("page", `${pageNumber}`);
-    reduxDispatch(setPageNumber(currentPageNumber + 1));
-    navigate(`/room-search-results?${params.toString()}`);
+    let pageNumber = currentPageNumber;
+    if (pageNumber * 3 <= roomResults.totalNumberOfData) {
+      params.set("page", `${pageNumber + 1}`);
+      localStorage.setItem("page", `${pageNumber}`);
+      reduxDispatch(setPageNumber(currentPageNumber + 1));
+      navigate(`/room-search-results?${params.toString()}`);
+    }
   };
   const handleBackward = () => {
     if (currentPageNumber > 1) {
@@ -47,30 +50,58 @@ const RoomSection = () => {
       navigate(`/room-search-results?${params.toString()}`);
     }
   };
-  const handleChange = (event: SelectChangeEvent) => {
-    reduxDispatch(setSort(event.target.value));
+  const handleChange = async (event: SelectChangeEvent) => {
+    reduxDispatch(setSortToSend(event.target.value));
+    params.set("sort", event.target.value);
+    navigate(`/room-search-results?${params.toString()}`);
   };
 
   return (
     <Box sx={{ width: "100%" }} className={"room-section"}>
       <Box
         className={"room-title"}
-        sx={{ display: "flex", justifyContent: "space-between", marginBottom: "0.7rem" }}
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: "0.7rem",
+          flexDirection: { xs: "column", sm: "row" },
+        }}
       >
-        <Typography fontWeight={700} fontSize="1.25rem" sx={{ padding: "0.5rem 0" }}>
+        <Typography fontWeight={700} fontSize="1.25rem" sx={{ padding: "0.5rem 0",textAlign:"center" }}>
           {t("Room Results")}
         </Typography>
-        <Box sx={{ display: "flex", gap: "2rem", alignItems: "center" }}>
-          <Box onClick={handleBackward}>
-            <ChevronLeftIcon fontSize="small" />
+        <Box
+          sx={{
+            display: "flex",
+            columnGap: "1rem",
+            rowGap:"0",
+            alignItems: "center",
+            flexDirection: { xs: "column", sm: "row" },
+          }}
+        >
+          <Box
+            sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}
+          >
+            <Box onClick={handleBackward}>
+              <ChevronLeftIcon sx={{ paddingTop: "0.4rem", height: "3rem" }} fontSize="medium" />
+            </Box>
+            <Typography fontWeight={700} fontSize="1" sx={{ padding: "0.5rem 0" }}>
+              {`Showing ${roomResults.selectedPage} - ${
+                roomResults.roomTypeList.length * roomResults.selectedPage
+              } of  ${roomResults.totalNumberOfData} Results`}
+            </Typography>
+            <Box onClick={handleForward}>
+              <ChevronRightIcon sx={{ paddingTop: "0.4rem", height: "3rem" }} fontSize="medium" />
+            </Box>
           </Box>
-          <Typography fontWeight={700} fontSize="1" sx={{ padding: "0.5rem 0" }}>
-            {`Page ${roomResults.selectedPage} of  ${roomResults.totalNumberOfData} Results`}
+          <Typography
+            sx={{ display: { xs: "none", sm: "block" } }}
+            fontWeight={400}
+            fontSize={"1.5rem"}
+            color={"#5d5d5d"}
+          >
+            |
           </Typography>
-          <Box onClick={handleForward}>
-            <ChevronRightIcon fontSize="small" />
-          </Box>
-          <Typography fontWeight={400} fontSize={"1.5rem"} color={"#5d5d5d"}>|</Typography>
           <FormControl
             sx={{ width: roomResults.selectedSortName === "" ? "5rem" : "9rem" }}
             variant="outlined"
@@ -119,7 +150,10 @@ const RoomSection = () => {
         sx={{
           display: "flex",
           flexWrap: "wrap",
-          gap: "2rem",
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: "center",
+          gap: "4rem",
+          justifyContent: "space-evenly",
         }}
         className={"room-card-list"}
       >

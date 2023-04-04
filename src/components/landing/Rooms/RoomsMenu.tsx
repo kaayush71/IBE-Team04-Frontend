@@ -24,7 +24,7 @@ const RoomsMenu = (props: Props) => {
     if (props.onRoomResultsPage) {
       return (
         <Box>
-          <Typography fontSize={"0.875rem"} color={"#858685"}>
+          <Typography fontSize={{ md: "0.7rem", xs: "0.875rem", lg: "0.875rem" }} color={"#858685"}>
             {t("Rooms")}
           </Typography>
           <Typography fontWeight={700}>{numberOfRoomsSelected}</Typography>

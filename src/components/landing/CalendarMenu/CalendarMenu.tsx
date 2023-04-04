@@ -22,7 +22,10 @@ export default function CalendarMenu(props: Props) {
       return (
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Box>
-            <Typography fontSize={"0.875rem"} color={"#858685"}>
+            <Typography
+              fontSize={{ md: "0.7rem", xs: "0.675rem", lg: "0.875rem" }}
+              color={"#858685"}
+            >
               {t("Check in between")}
             </Typography>
             <Typography fontWeight={700}>
@@ -41,7 +44,10 @@ export default function CalendarMenu(props: Props) {
             orientation="vertical"
           ></Divider>
           <Box>
-            <Typography fontSize={"0.875rem"} color={"#858685"}>
+            <Typography
+              fontSize={{ md: "0.7rem", xs: "0.675rem", lg: "0.875rem" }}
+              color={"#858685"}
+            >
               {t("Check out between")}
             </Typography>
             <Typography fontWeight={700}>

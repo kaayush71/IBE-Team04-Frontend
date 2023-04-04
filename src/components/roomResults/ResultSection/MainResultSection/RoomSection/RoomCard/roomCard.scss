@@ -1,65 +1,62 @@
 @mixin commonArrowProperty() {
-    font-size: 2rem;
-    font-weight: 800;
-    color:#ffffff;
-    background-color: transparent !important;
+  font-size: 2.7rem;
+  font-weight: 800;
+  color: #ffffff;
 }
 .room-card {
-    .slick-slider {
-      .slick-list {
-        border-top-right-radius: 5px;
-        border-top-left-radius: 5px;
-      }
-      .slick-next:before {
-        content: ">";
-        @include commonArrowProperty();
-      }
-      .slick-prev:before {
-        content: "<";
-        @include commonArrowProperty();
-      }
-      .slick-prev,
-      .slick-next {
-        z-index: 1;
-        cursor: pointer;
-        &:hover {
-          opacity: 1;
-        }
-      }
-      .slick-prev {
-        left: 1rem;
-      }
-      .slick-next {
-        right: 1rem;
-      }
-    }
-  }
   .slick-slider {
-    .room-image {
-      height: 12.063rem;
+    .slick-list {
+      border-top-right-radius: 5px;
+      border-top-left-radius: 5px;
+    }
+    .slick-next:before {
+      content: ">";
+      @include commonArrowProperty();
+    }
+    .slick-prev:before {
+      content: "<";
+      @include commonArrowProperty();
+    }
+    .slick-prev,
+    .slick-next {
+      z-index: 1;
+      cursor: pointer;
+      &:hover {
+        opacity: 1;
+      }
+    }
+    .slick-prev {
+      left: 1rem;
+    }
+    .slick-next {
+      right: 1rem;
     }
   }
-  .slick-active {
-    button::before {
-      color: #ffffff !important;
-    }
+}
+.slick-slider {
+  .room-image {
+    height: 12.063rem;
   }
-  .room-card {
-    .slick-slider {
-      .slick-dots {
-        position: absolute;
-        bottom: 0;
-        li {
-          bottom: 0.3rem;
-          button::before {
-            background-color: transparent;
-          }
+}
+.slick-active {
+  button::before {
+    color: #ffffff !important;
+  }
+}
+.room-card {
+  .slick-slider {
+    .slick-dots {
+      position: absolute;
+      bottom: 0;
+      li {
+        bottom: 0.3rem;
+        button::before {
+          background-color: transparent;
         }
       }
     }
-    .slick-arrow {
-      margin-bottom: 2rem !important;
-    }
-
-    
+  }
+  .slick-arrow {
+    margin-bottom: 2rem !important;
+  }
 }

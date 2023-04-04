@@ -3,7 +3,7 @@ import { DateRange } from "react-date-range";
 import "./DateRangeCalendar.scss";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { Box, Button, Divider, Typography } from "@mui/material";
+import { Box, Button, Divider, Typography, useMediaQuery } from "@mui/material";
 import { addDays, format, isSameDay } from "date-fns";
 import isBefore from "date-fns/isBefore";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
@@ -23,6 +23,7 @@ const DateRangeCalendar = () => {
   const landingForm = useAppSelector((state) => state.landingForm);
   const [showAlertMessage, setShowAlertMessage] = useState(false);
   const minimumNightlyPrice = useAppSelector((state) => state.landingForm.minimumNightlyPrice);
+  const isSmallScreen = useMediaQuery("(max-width: 770px)");
   const selectedDateRange = [
     {
       startDate: new Date(landingForm.startDate),
@@ -41,7 +42,7 @@ const DateRangeCalendar = () => {
       while (startDate <= endDate) {
         const currentDateMinPrice = minRoomRates[startDate];
         if (currentDateMinPrice !== undefined) {
-          if (currentDateMinPrice < minimumNightlyPrice) {      
+          if (currentDateMinPrice < minimumNightlyPrice) {
             reduxDispatch(setMinimumNightlyPrice(currentDateMinPrice));
           }
         }
@@ -102,7 +103,7 @@ const DateRangeCalendar = () => {
         <DateRange
           editableDateInputs={true}
           onChange={handleSelect}
-          months={2}
+          months={isSmallScreen ? 1 : 2}
           ranges={selectedDateRange}
           minDate={
             selectedDateRange[0].startDate.getTime() === selectedDateRange[0].endDate.getTime()

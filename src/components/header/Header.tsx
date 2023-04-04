@@ -9,7 +9,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import LanguageMenu from "./languageMenu/LanguageMenu";
 import CurrencyMenu from "./currecnyMenu/CurrencyMenu";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Header() {
   const [t] = useTranslation();
@@ -43,7 +43,9 @@ export default function Header() {
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: "1.06rem" }}>
-            <img date-testid="header-logo" className="header__logo" src={headerLogo} alt="" />
+            <Link style={{ padding: "0" }} to="/">
+              <img date-testid="header-logo" className="header__logo" src={headerLogo} alt="" />
+            </Link>
             <Typography
               data-testid="header-title"
               sx={{

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { addDays } from "date-fns";
+import { addDays, isValid } from "date-fns";
 
 interface LandingConfig {
   bannerImage: string;
@@ -181,8 +181,12 @@ export const landingSearchFormSlice = createSlice({
       const formData = JSON.parse(localStorage.getItem("formData") || "{}");
 
       // if (JSON.stringify(formData) === "{}") return;
-      state.startDate = formData.startDate;
-      state.endDate = formData.endDate;
+      if (isValid(new Date(formData.startDate))) {
+        state.startDate = formData.startDate;
+      }
+      if (isValid(new Date(formData.endDate))) {
+        state.endDate = formData.endDate;
+      }
       state.numberOfRoomSelected = Number(formData.rooms);
       if (formData.beds !== null) {
         state.numberOfBedsSelected = Number(formData.beds);
@@ -195,12 +199,10 @@ export const landingSearchFormSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchLandingConfigData.fulfilled, (state, action) => {
-      console.log("in landing config data");
       state.landingConfig = action.payload;
       state.numberOfRoomSelected = action.payload.searchForm.rooms.defaultRoomCount;
       state.accessibility = action.payload.searchForm.accessibility.defaultAccessibilty;
       state.loading = false;
-      // console.log("fetch landing config completed");
       const formData = {
         property: state.propertyId,
         startDate: state.startDate,
