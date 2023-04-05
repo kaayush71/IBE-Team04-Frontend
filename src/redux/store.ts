@@ -18,6 +18,7 @@ import {
   REGISTER,
   persistStore,
 } from "redux-persist";
+import checkoutDataSlice from "./reducers/checkoutDataSlice";
 const persistConfig = {
   key: "counter",
   storage,
@@ -35,6 +36,7 @@ const reducers = combineReducers({
   landingForm: landingSearchFormSlice,
   calendar: calendarDataSlice,
   resultsConfiguration: roomResultConfigDataSlice,
+  checkout: checkoutDataSlice,
 });
 
 // const persistedReducer = persistReducer(persistConfig, reducers);

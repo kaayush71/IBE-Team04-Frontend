@@ -79,7 +79,7 @@ const RoomCardModal = ({ room, handleClose }: Props) => {
         <Box
           sx={{
             display: { md: "grid", xs: "flex" },
-            gridTemplateColumns: { lg: "70% 1fr", md: "65% 1fr" },
+            gridTemplateColumns: { lg: "60% 1fr", md: "65% 1fr" },
             gap: "5rem",
             flexDirection: "column-reverse",
           }}

@@ -60,11 +60,7 @@ const initialState: RoomResultsConfig = {
     bedCountArray: [1],
     showBed: true,
   },
-  roomType: {
-    // images: [],
-    // ammenities: [],
-    // description: "",
-  },
+  roomType: {},
   numberOfBedsSelected: 1,
   sortToSend: "",
   selectedSortName: "",

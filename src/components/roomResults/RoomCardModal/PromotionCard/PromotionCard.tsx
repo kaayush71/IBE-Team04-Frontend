@@ -1,12 +1,12 @@
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
 import { useAppSelector } from "../../../../redux/store";
 
 type Props = {};
 
 const PromotionCard = (props: Props) => {
   const selectedCurrency = useAppSelector((state) => state.currency.selectedCurrency);
-
   return (
     <Box
       mt={"1rem"}
@@ -15,7 +15,7 @@ const PromotionCard = (props: Props) => {
         gridTemplateColumns: "70% 1fr",
         boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.1)",
         border: "1px solid #EFF0F1",
-        maxWidth: { lg: "40vw", md: "60vw" },
+        maxWidth: { xl: "45w", lg: "50vw", md: "60vw" },
       }}
     >
       <Box
@@ -35,22 +35,24 @@ const PromotionCard = (props: Props) => {
         <Typography color={"#858685"} textAlign={"end"}>
           per night
         </Typography>
-        <Button
-          type="submit"
-          sx={{
-            backgroundColor: "#26266D",
-            "&:hover": { backgroundColor: "#26266D" },
-            padding: "0.75rem 1.25rem",
-            width: "100%",
-            marginTop: "0.5rem",
-            fontSize: "0.875rem",
-          }}
-          variant="contained"
-        >
-          <Typography sx={{ fontWeight: "700", fontSize: "0.875rem" }}>
-            {"SELECT PACKAGE"}
-          </Typography>
-        </Button>
+        <Link to={"/checkout"}>
+          <Button
+            type="submit"
+            sx={{
+              backgroundColor: "#26266D",
+              "&:hover": { backgroundColor: "#26266D" },
+              padding: "0.75rem 1.25rem",
+              width: "100%",
+              marginTop: "0.5rem",
+              fontSize: "0.875rem",
+            }}
+            variant="contained"
+          >
+            <Typography sx={{ fontWeight: "700", fontSize: "0.875rem" }}>
+              {"SELECT PACKAGE"}
+            </Typography>
+          </Button>
+        </Link>
       </Box>
     </Box>
   );
