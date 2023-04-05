@@ -165,9 +165,9 @@ const RoomCardModal = ({ room, handleClose }: Props) => {
                 gap: "0.3rem",
               }}
             >
-              {roomType[`${room.roomTypeName}`].ammenities.map((ammenity) => {
+              {roomType[`${room.roomTypeName}`].ammenities.map((ammenity,index) => {
                 return (
-                  <Box sx={{ display: "flex", gap: "0.5rem" }}>
+                  <Box key={index} sx={{ display: "flex", gap: "0.5rem" }}>
                     <CheckCircleOutlineIcon />
                     <Typography>{ammenity}</Typography>
                   </Box>

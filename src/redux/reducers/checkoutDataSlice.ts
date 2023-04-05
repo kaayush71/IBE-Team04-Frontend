@@ -3,6 +3,7 @@ import { RoomType } from "./roomResultConfigDataSlice";
 
 interface Checkout {
   room: RoomType;
+  showItineraryCard: boolean;
 }
 
 const initialState: Checkout = {
@@ -18,12 +19,19 @@ const initialState: Checkout = {
     bedType: "",
     priceType: "",
   },
+  showItineraryCard: false,
 };
 
 export const checkoutDataSlice = createSlice({
   name: "checkoutDataSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    setShowItineraryCard: (state, action) => {
+      state.showItineraryCard = action.payload;
+    },
+  },
 });
+
+export const { setShowItineraryCard } = checkoutDataSlice.actions;
 
 export default checkoutDataSlice.reducer;

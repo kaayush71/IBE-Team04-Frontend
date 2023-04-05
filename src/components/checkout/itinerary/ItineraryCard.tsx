@@ -2,12 +2,23 @@ import { Box, Button, Divider, Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-type Props = {};
+import { useAppDispatch } from "../../../redux/store";
+import { setShowItineraryCard } from "../../../redux/reducers/checkoutDataSlice";
+type Props = {
+  buttonText: string;
+};
 
-const ItineraryCard = (props: Props) => {
+const ItineraryCard = ({ buttonText }: Props) => {
+  const reduxDispatch = useAppDispatch();
   const navigate = useNavigate();
+  const handleClick = () => {
+    if (buttonText === "CONTINUE SHOPPING") navigate("/room-search-results");
+    else if (buttonText === "CHECKOUT") navigate("/checkout");
+  };
   const hnadleRemove = () => {
-    navigate("/room-search-results");
+    reduxDispatch(setShowItineraryCard(false));
+    if (buttonText === "CONTINUE SHOPPING") navigate("/");
+    else if (buttonText === "CHECKOUT") navigate("/room-search-results");
   };
   return (
     <Box sx={{ background: "#EFF0F1", padding: "1.43rem" }}>
@@ -15,9 +26,9 @@ const ItineraryCard = (props: Props) => {
         <Typography fontWeight={"700"} fontSize={"1.5rem"}>
           Your Trip Itinerary
         </Typography>
-        <Typography onClick={hnadleRemove} sx={{ cursor: "pointer" }} color={"#006EFF"}>
+        <Button onClick={hnadleRemove} sx={{ cursor: "pointer", color: "#006EFF" }}>
           Remove
-        </Typography>
+        </Button>
       </Box>
       <Box mt={"1rem"}>
         <Typography fontWeight={"700"} fontSize={"20px"}>
@@ -66,7 +77,7 @@ const ItineraryCard = (props: Props) => {
         <Typography fontSize={"1.25rem"}>$XXX.xx</Typography>
       </Box>
       <Button
-        onClick={() => navigate("/room-search-results")}
+        onClick={handleClick}
         type="submit"
         sx={{
           display: "flex",
@@ -76,13 +87,11 @@ const ItineraryCard = (props: Props) => {
           fontSize: "0.875rem",
           color: "#26266D",
           border: "3px solid #26266D ",
-          "&:hover": { color: "#26266D", background: "none", border: "3px solid #26266D " },
+          "&:hover": { color: "#fff", backgroundColor: "#26266D", border: "3px solid #26266D " },
         }}
         variant="outlined"
       >
-        <Typography sx={{ fontWeight: "700", fontSize: "0.875rem" }}>
-          {"CONTINUE SHOPPING"}
-        </Typography>
+        <Typography sx={{ fontWeight: "700", fontSize: "0.875rem" }}>{`${buttonText}`}</Typography>
       </Button>
     </Box>
   );

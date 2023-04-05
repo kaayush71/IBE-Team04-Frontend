@@ -24,11 +24,11 @@ const Checkout = (props: Props) => {
           }}
         >
           <Box>
-            <Typography sx={{}}>Checkout Form Section</Typography>
+            <Typography sx={{}}></Typography>
           </Box>
           {/* ---------------------------------------------- Itinerary section ------------------------------------------ */}
           <Box sx={{ display: "grid", gap: "2.5rem" }}>
-            <ItineraryCard />
+            <ItineraryCard buttonText="CONTINUE SHOPPING" />
             <HelpCard />
           </Box>
         </Box>

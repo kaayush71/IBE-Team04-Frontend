@@ -21,6 +21,7 @@ import "./roomSection.scss";
 import RoomCardNew from "./RoomCard/RoomCardNew";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import ItineraryCard from "../../../../checkout/itinerary/ItineraryCard";
 
 const RoomSection = () => {
   const sorts = useAppSelector((state) => state.resultsConfiguration.sorts);
@@ -30,6 +31,7 @@ const RoomSection = () => {
   const currentPageNumber = roomResults.selectedPage;
   const navigate = useNavigate();
   const reduxDispatch = useAppDispatch();
+  const showItineraryCard = useAppSelector((state) => state.checkout.showItineraryCard);
   const location = useLocation();
   const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const handleForward = () => {
@@ -150,7 +152,14 @@ const RoomSection = () => {
           </FormControl>
         </Box>
       </Box>
-      {/* <Box sx={{ display: "grid", gridTemplateColumns: "60% 1fr", gap: "3rem" }}> */}
+      <Box
+        sx={{
+          display: showItineraryCard ? { sm: "flex", md: "grid" } : "initial",
+          gridTemplateColumns: "60% 1fr",
+          gap: "3rem",
+          flexDirection: "column-reverse",
+        }}
+      >
         <Box
           sx={{
             display: "flex",
@@ -179,11 +188,12 @@ const RoomSection = () => {
             })
           )}
         </Box>
-        {/* <Box>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatibus tempora laudantium
-          quis delectus soluta error, molestiae officiis eaque rem quod?
-        </Box>
-      </Box> */}
+        {showItineraryCard && (
+          <Box>
+            <ItineraryCard buttonText="CHECKOUT" />
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 };

@@ -47,7 +47,7 @@ const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
     <Box
       className="room-card"
       sx={{
-        width: { lg: "19vw", md: "23vw", sm: "50.8vw", xs: "64vw" },
+        width: { lg: "18vw", md: "23vw", sm: "50.8vw", xs: "64vw" },
         borderRadius: "5px",
         boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
       }}

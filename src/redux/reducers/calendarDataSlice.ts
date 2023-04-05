@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+// backend response in the form of hashmap
+// with key as date and value as min-nightly-rates.
 interface DataState {
   [date: string]: number;
 }
@@ -9,9 +11,12 @@ interface State {
   data: DataState;
 }
 
+// initialState for the slice.
 const initialState: State = {
   data: {},
 };
+
+
 
 export const fetchCalendarData = createAsyncThunk(
   "calendarData/fetchCalendarData",

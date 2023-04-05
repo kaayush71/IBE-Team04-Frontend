@@ -1,12 +1,17 @@
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../../../redux/store";
+import { setShowItineraryCard } from "../../../../redux/reducers/checkoutDataSlice";
+import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 
 type Props = {};
 
 const PromotionCard = (props: Props) => {
   const selectedCurrency = useAppSelector((state) => state.currency.selectedCurrency);
+  const reduxDispatch = useAppDispatch();
+  const handleSubmit = () => {
+    reduxDispatch(setShowItineraryCard(true));
+  };
   return (
     <Box
       mt={"1rem"}
@@ -38,6 +43,7 @@ const PromotionCard = (props: Props) => {
         <Link to={"/checkout"}>
           <Button
             type="submit"
+            onClick={handleSubmit}
             sx={{
               backgroundColor: "#26266D",
               "&:hover": { backgroundColor: "#26266D" },
