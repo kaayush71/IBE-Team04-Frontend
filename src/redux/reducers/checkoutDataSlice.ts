@@ -26,12 +26,17 @@ export const checkoutDataSlice = createSlice({
   name: "checkoutDataSlice",
   initialState,
   reducers: {
+    setCheckoutRoom: (state, action) => {
+      console.log("hello");
+      console.log("checkout room", action.payload);
+      state.room = action.payload;
+    },
     setShowItineraryCard: (state, action) => {
       state.showItineraryCard = action.payload;
     },
   },
 });
 
-export const { setShowItineraryCard } = checkoutDataSlice.actions;
+export const { setShowItineraryCard, setCheckoutRoom } = checkoutDataSlice.actions;
 
 export default checkoutDataSlice.reducer;

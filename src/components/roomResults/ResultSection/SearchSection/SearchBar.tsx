@@ -23,8 +23,13 @@ const SearchBar = () => {
   const language = useAppSelector((state) => state.language);
   const paramsSort = `${sortName}#${sortValue}`;
   const { t } = useTranslation();
+
+  // creating new URLSeachParams object
   const searchParams = new URLSearchParams();
   const navigate = useNavigate();
+
+  // creating a object with all the required fields
+  // to be stored in localstorage.
   const handleSubmit = () => {
     const formData = {
       property: landingFormData.propertyId,
@@ -39,15 +44,28 @@ const SearchBar = () => {
       filters: filters,
     };
     reduxDispatch(setSortToSend(paramsSort));
+
+    // setting the object in localstorage
     localStorage.setItem("formData", JSON.stringify(formData));
+
+    // setting all the different params to make URL
+    // shareable.
     searchParams.set("propertyId", formData.property);
     searchParams.set("startDate", format(new Date(formData.startDate), "yyyy-MM-dd"));
     searchParams.set("endDate", format(new Date(formData.endDate), "yyyy-MM-dd"));
+
+    // iterating oveer the guest array and
+    // checking if the show value is true then setting
+    // the guest count against the categoryname.
     formData.guestDetails.forEach((guest) => {
       if (guest.show === true) {
         searchParams.set(`${guest.categoryName}`, `${guest.count}`);
       }
     });
+
+    // iterating oveer the filters array and
+    // checking if the show value is true then setting
+    // the selected filter options against filter name.
     formData.filters.forEach((filter) => {
       if (filter.show === true) {
         if (filter.selectedOptions.length !== 0)
@@ -57,9 +75,12 @@ const SearchBar = () => {
     searchParams.set("rooms", `${formData.rooms}`);
     searchParams.set("beds", `${formData.beds}`);
     searchParams.set("sort", paramsSort);
-
     searchParams.set("currency", currency.selectedCurrency.name);
     searchParams.set("lang", language.selectedLanguage);
+
+    // navigating the user to room-search-results
+    // after pressing the search dates button
+  
     navigate(`/room-search-results?${searchParams.toString()}`);
   };
   useEffect(() => {

@@ -9,6 +9,11 @@ export default function LanguageMenu() {
   const language = useAppSelector((state) => state.language.selectedLanguage);
   const { i18n } = useTranslation();
   const reduxDispatch = useAppDispatch();
+
+  // setting the selected language to redux
+  // store and aslo updating the i18-nexus 
+  // selected language to show the data in 
+  // different language.
   const handleLanguageChange = (event: SelectChangeEvent) => {
     i18n.changeLanguage(event.target.value);
     reduxDispatch(setSelectedLanguage(event.target.value));

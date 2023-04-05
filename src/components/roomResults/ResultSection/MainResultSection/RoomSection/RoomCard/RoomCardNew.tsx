@@ -1,4 +1,4 @@
-import { Button, Modal, Typography } from "@mui/material";
+import { Modal, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import "./roomCard.scss";
@@ -13,19 +13,23 @@ import { RoomType } from "../../../../../../redux/reducers/roomResultConfigDataS
 import { useAppSelector } from "../../../../../../redux/store";
 import { useTranslation } from "react-i18next";
 import RoomCardModal from "../../../../RoomCardModal/RoomCardModal";
+import { sliderSettings } from "../../../../../../constants/sliderSettings";
+import { StyledButton } from "../../../../../styledComponents/styledComponents";
 
 interface RoomCardProps {
   room: RoomType;
 }
 
-const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
-  const style = {
-    margin: "5rem auto 0 auto",
-    maxWidth: "90vw",
-    bgcolor: "background.paper",
-    boxShadow: 24,
-  };
+// styles
+const modalContainerStyle = {
+  margin: "5rem auto 0 auto",
+  overflowY: "scroll",
+  maxWidth: "90vw",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+};
 
+const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -33,16 +37,6 @@ const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
   const roomTypeImages = useAppSelector((state) => state.resultsConfiguration.roomType);
   const selectedCurrency = useAppSelector((state) => state.currency.selectedCurrency);
   const { t } = useTranslation();
-  const settings = {
-    autoplay: true,
-    autoplaySpeed: 5000,
-    arrows: true,
-    dots: true,
-    infinite: true,
-    speed: 1500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
   return (
     <Box
       className="room-card"
@@ -53,7 +47,7 @@ const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
       }}
     >
       <Box sx={{ borderRadius: "5px" }}>
-        <Slider className="slick-slider" {...settings}>
+        <Slider className="slick-slider" {...sliderSettings}>
           {roomTypeImages[`${room.roomTypeName}`].images.map((image, index) => (
             <img className="room-image" key={index} src={image} alt="roomImage" />
           ))}
@@ -186,35 +180,17 @@ const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
           </Typography>
         </Box>
         <Box className="button-section" sx={{ placeSelf: "end" }}>
-          <Button
-            type="submit"
-            onClick={handleOpen}
-            sx={{
-              backgroundColor: "#26266D",
-              "&:hover": { backgroundColor: "#26266D" },
-              display: "flex",
-              padding: "0.75rem 1.25rem",
-              height: "2.75rem",
-              width: "8rem",
-              fontSize: "0.875rem",
-            }}
-            variant="contained"
-          >
+          <StyledButton type="submit" onClick={handleOpen} variant="contained">
             <Typography sx={{ fontWeight: "700", fontSize: "0.775rem" }}>
               {t("SELECT ROOM")}
             </Typography>
-          </Button>
+          </StyledButton>
         </Box>
       </Box>
+      {/* --------------------------------------------------------------- Modal Section ----------------------------------------------- */}
       <Box>
-        <Modal
-          sx={{ overflowY: "scroll" }}
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
+        <Modal sx={{ overflowY: "scroll" }} open={open} onClose={handleClose}>
+          <Box sx={modalContainerStyle}>
             <RoomCardModal handleClose={handleClose} room={room}></RoomCardModal>
           </Box>
         </Modal>

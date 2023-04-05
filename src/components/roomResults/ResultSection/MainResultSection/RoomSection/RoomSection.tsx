@@ -22,6 +22,11 @@ import RoomCardNew from "./RoomCard/RoomCardNew";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ItineraryCard from "../../../../checkout/itinerary/ItineraryCard";
+import {
+  roomCardList,
+  roomSectionContainer,
+  roomSectionRight,
+} from "../../../../../constants/styledConstants";
 
 const RoomSection = () => {
   const sorts = useAppSelector((state) => state.resultsConfiguration.sorts);
@@ -60,15 +65,7 @@ const RoomSection = () => {
 
   return (
     <Box sx={{ width: "100%" }} className={"room-section"}>
-      <Box
-        className={"room-title"}
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: "0.7rem",
-          flexDirection: { xs: "column", sm: "row" },
-        }}
-      >
+      <Box className={"room-title"} sx={roomSectionContainer}>
         <Typography
           fontWeight={700}
           fontSize="1.25rem"
@@ -76,15 +73,7 @@ const RoomSection = () => {
         >
           {t("Room Results")}
         </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            columnGap: "1rem",
-            rowGap: "0",
-            alignItems: "center",
-            flexDirection: { xs: "column", sm: "row" },
-          }}
-        >
+        <Box sx={roomSectionRight}>
           <Box
             sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}
           >
@@ -160,18 +149,7 @@ const RoomSection = () => {
           flexDirection: "column-reverse",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            flexDirection: { xs: "column", md: "row" },
-            alignItems: "center",
-            columnGap: "3rem",
-            rowGap: "2rem",
-            justifyContent: "space-between",
-          }}
-          className={"room-card-list"}
-        >
+        <Box sx={roomCardList} className={"room-card-list"}>
           {roomResults.roomResultsLoading ? (
             <Box sx={{ height: "30vh" }}>
               <CircularProgress />

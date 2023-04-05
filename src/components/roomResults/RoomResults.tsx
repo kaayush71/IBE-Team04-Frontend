@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box } from "@mui/system";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { RequestBody } from "../../constants/types";
 import { setSelectedCuurency } from "../../redux/reducers/currencyDataSlice";
 import {
   fetchLandingConfigData,
@@ -25,7 +27,6 @@ export default function RoomResults() {
   const location = useLocation();
   const sortToSend = useAppSelector((state) => state.resultsConfiguration.sortToSend);
   const landingFormData = useAppSelector((state) => state.landingForm);
-  const filters = useAppSelector((state) => state.resultsConfiguration.filters);
   const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const navigate = useNavigate();
 
@@ -80,7 +81,6 @@ export default function RoomResults() {
       formData.filters.forEach((filter: any) => {
         if (filter.show === true) {
           const options = params.get(`${filter.filterName}`);
-          // console.log(options);
           if (options) {
             const selectedFilterOptions = options?.split(",");
             filter.selectedOptions = selectedFilterOptions;
@@ -136,23 +136,8 @@ export default function RoomResults() {
       }
     });
     localStorage.setItem("formData", JSON.stringify(formData));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, params, reduxDispatch]);
 
-  type Filters = {
-    [key: string]: string[];
-  };
-
-  type RequestBody = {
-    sortType: string;
-    numberOfRooms: number;
-    numberOfBeds: number;
-    pageSize: number;
-    pageNumber: number;
-    filters: Filters;
-    startTime: string;
-    endTime: string;
-  };
 
   useEffect(() => {
     async function fetchData() {
@@ -161,8 +146,6 @@ export default function RoomResults() {
         await reduxDispatch(fetchResultsConfigData());
         getSearchParams();
         reduxDispatch(getLocalstorageFormData());
-        console.log("SORT TO SEND", sortToSend);
-        console.log("FILTERS TO SEND", filters);
         const pageNumber = Number(localStorage.getItem("page"));
         console.log("pageNumber", pageNumber);
         const formData = JSON.parse(localStorage.getItem("formData") || "{}");
@@ -189,7 +172,6 @@ export default function RoomResults() {
       }
     }
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getSearchParams, reduxDispatch]);
 
   return (

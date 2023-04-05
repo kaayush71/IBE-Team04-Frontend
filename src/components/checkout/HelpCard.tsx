@@ -4,6 +4,8 @@ import React from "react";
 
 type Props = {};
 
+// Help card which is displayed
+// on checkout page.
 const HelpCard = (props: Props) => {
   return (
     <Box sx={{ background: "#EFF0F1", padding: "1.43rem", minHeight: "9.375rem" }}>

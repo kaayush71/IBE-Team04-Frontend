@@ -1,20 +1,35 @@
-import { Box, Button, Divider, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { useAppDispatch } from "../../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { setShowItineraryCard } from "../../../redux/reducers/checkoutDataSlice";
+import { itineraryButtonStyle } from "../../../constants/styledConstants";
+import { StyledDivider, TypographyGrey } from "../../styledComponents/styledComponents";
+// buttonTetxt to change the text displayed
+// on the button.
 type Props = {
   buttonText: string;
 };
 
+// Itinerary Card showing on the checkout page.
 const ItineraryCard = ({ buttonText }: Props) => {
+  // currenlty selected room whose data is
+  // being displayed.
+  const checkoutRoom = useAppSelector((state) => state.checkout.room);
   const reduxDispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  // on click of the checkout/continue shopping
+  // button, redirecting the user to room-search-results
+  // or checkout page respectively.
   const handleClick = () => {
     if (buttonText === "CONTINUE SHOPPING") navigate("/room-search-results");
     else if (buttonText === "CHECKOUT") navigate("/checkout");
   };
+
+  // remove the itinerary card and redirect the
+  // user to home page or room-search-results page.
   const hnadleRemove = () => {
     reduxDispatch(setShowItineraryCard(false));
     if (buttonText === "CONTINUE SHOPPING") navigate("/");
@@ -31,66 +46,44 @@ const ItineraryCard = ({ buttonText }: Props) => {
         </Button>
       </Box>
       <Box mt={"1rem"}>
-        <Typography fontWeight={"700"} fontSize={"20px"}>
-          {"Long Beautiful Resort Name"}
+        <Typography textTransform={"capitalize"} fontWeight={"700"} fontSize={"20px"}>
+          {checkoutRoom.roomTypeName.replaceAll("_", " ").toLowerCase()}
         </Typography>
-        <Typography color={"#5D5D5D"} fontWeight={400}>
-          May 9 - May 16, 2022 | 1 adult 1 child
-        </Typography>
-        <Typography color={"#5D5D5D"} fontWeight={400}>
-          Executive Room
-        </Typography>
-        <Typography color={"#5D5D5D"} fontWeight={400}>
-          $132 per night
-        </Typography>
-        <Typography color={"#5D5D5D"} fontWeight={400}>
-          1 room
-        </Typography>
-        <Typography color={"#5D5D5D"} fontWeight={400}>
+        <TypographyGrey>May 9 - May 16, 2022 | 1 adult 1 child</TypographyGrey>
+        <TypographyGrey>Executive Room</TypographyGrey>
+        <TypographyGrey>{`$ ${checkoutRoom.roomRate}`} per night</TypographyGrey>
+        <TypographyGrey>1 room</TypographyGrey>
+        <TypographyGrey>
           Special Promoname, $132/night
           <InfoOutlinedIcon fontSize="small" />
-        </Typography>
+        </TypographyGrey>
       </Box>
-      <Divider sx={{ margin: "1rem 0", color: "#5D5D5D", borderWidth: "1px" }}></Divider>
+      <StyledDivider></StyledDivider>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography color={"#5D5D5D"}>Subtotal</Typography>
+        <TypographyGrey>Subtotal</TypographyGrey>
         <Typography fontSize={"1.25rem"}>$XXX.xx</Typography>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography color={"#5D5D5D"} fontWeight={400}>
+        <TypographyGrey>
           Taxes, Surcharges, Fees
           <InfoOutlinedIcon fontSize="small" />
-        </Typography>
+        </TypographyGrey>
         <Typography fontSize={"1.25rem"}>$XXX.xx</Typography>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography color={"#5D5D5D"}>VAT</Typography>
+        <TypographyGrey>VAT</TypographyGrey>
         <Typography fontSize={"1.25rem"}>$XXX.xx</Typography>
       </Box>
-      <Divider sx={{ margin: "0.5rem 0", color: "#5D5D5D", borderWidth: "1px" }}></Divider>
+      <StyledDivider></StyledDivider>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography color={"#5D5D5D"}>Due now</Typography>
+        <Typography>Due now</Typography>
         <Typography fontSize={"1.25rem"}>$XXX.xx</Typography>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography color={"#5D5D5D"}>Due at resort</Typography>
+        <TypographyGrey>Due at resort</TypographyGrey>
         <Typography fontSize={"1.25rem"}>$XXX.xx</Typography>
       </Box>
-      <Button
-        onClick={handleClick}
-        type="submit"
-        sx={{
-          display: "flex",
-          margin: "33px auto 0 auto",
-          padding: "0.75rem 0.5rem",
-          width: "60%",
-          fontSize: "0.875rem",
-          color: "#26266D",
-          border: "3px solid #26266D ",
-          "&:hover": { color: "#fff", backgroundColor: "#26266D", border: "3px solid #26266D " },
-        }}
-        variant="outlined"
-      >
+      <Button onClick={handleClick} type="submit" sx={itineraryButtonStyle} variant="outlined">
         <Typography sx={{ fontWeight: "700", fontSize: "0.875rem" }}>{`${buttonText}`}</Typography>
       </Button>
     </Box>
