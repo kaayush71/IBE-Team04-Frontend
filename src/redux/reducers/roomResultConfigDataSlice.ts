@@ -134,7 +134,6 @@ export const roomResultsConfigDataSlice = createSlice({
       state.selectedSortValue = sortValue;
     },
     setSortToSend: (state, action) => {
-      console.log("inside sort to send");
       const sortSubStrings = action.payload.split("#");
       const sortName = sortSubStrings[0];
       const sortValue = sortSubStrings[1];
