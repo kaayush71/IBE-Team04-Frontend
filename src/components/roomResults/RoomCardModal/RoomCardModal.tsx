@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
+import { Box, IconButton, TextField, Typography } from "@mui/material";
 import React from "react";
 import Slider from "react-slick";
 import { RoomType } from "../../../redux/reducers/roomResultConfigDataSlice";
@@ -12,28 +12,20 @@ import BedIcon from "@mui/icons-material/Bed";
 
 import "./RoomCardModal.scss";
 import PromotionCard from "./PromotionCard/PromotionCard";
+import { sliderSettings } from "../../../constants/sliderSettings";
+import { roomTypeName } from "../../../constants/styledConstants";
+import { StyledButtonNoMargin } from "../../styledComponents/styledComponents";
 type Props = {
   room: RoomType;
   handleClose: any;
 };
 
-const settings = {
-  autoplay: true,
-  autoplaySpeed: 3000,
-  arrows: true,
-  infinite: true,
-  speed: 1000,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-};
-
 const RoomCardModal = ({ room, handleClose }: Props) => {
   const roomType = useAppSelector((state) => state.resultsConfiguration.roomType);
-
   return (
     <Box>
       <Box sx={{ position: "relative" }}>
-        <Slider className="slick-slider modal" {...settings}>
+        <Slider className="slick-slider modal" {...sliderSettings}>
           {roomType[`${room.roomTypeName}`].images.map((image, index) => (
             <Box
               key={index}
@@ -50,17 +42,7 @@ const RoomCardModal = ({ room, handleClose }: Props) => {
             ></Box>
           ))}
         </Slider>
-        <Typography
-          sx={{
-            position: "absolute",
-            bottom: "1rem",
-            left: "5%",
-            fontWeight: "800",
-            textTransform: "capitalize",
-          }}
-          color={"#ffffff"}
-          fontSize={"2rem"}
-        >
+        <Typography sx={roomTypeName} color={"#ffffff"} fontSize={"2rem"}>
           {room.roomTypeName.replaceAll("_", " ").toLowerCase()}
         </Typography>
         <IconButton
@@ -79,7 +61,7 @@ const RoomCardModal = ({ room, handleClose }: Props) => {
         <Box
           sx={{
             display: { md: "grid", xs: "flex" },
-            gridTemplateColumns: { lg: "70% 1fr", md: "65% 1fr" },
+            gridTemplateColumns: { lg: "60% 1fr", md: "65% 1fr" },
             gap: "5rem",
             flexDirection: "column-reverse",
           }}
@@ -112,15 +94,15 @@ const RoomCardModal = ({ room, handleClose }: Props) => {
                 Standard Rate
               </Typography>
               {/* --------------------------------------- Promotion Card ----------------------------------------------------------- */}
-              <PromotionCard />
+              <PromotionCard room={room} />
             </Box>
             {/* ---------------------------------------------------------------- Deals And Packages ------------------------------------- */}
             <Box mt={"2.5rem"} className="deals-packages">
               <Typography fontSize={"1.25rem"} fontWeight={"700"}>
                 Deals & Packages
               </Typography>
-              <PromotionCard />
-              <PromotionCard />
+              <PromotionCard room={room} />
+              <PromotionCard room={room} />
             </Box>
             {/* --------------------------------------------------------------- Promo Code ------------------------------------------------ */}
             <Box mt={"2.5rem"}>
@@ -135,21 +117,11 @@ const RoomCardModal = ({ room, handleClose }: Props) => {
                 }}
               >
                 <TextField id="outlined-basic" variant="outlined" />
-                <Button
-                  type="submit"
-                  sx={{
-                    backgroundColor: "#26266D",
-                    "&:hover": { backgroundColor: "#26266D" },
-                    padding: "0.75rem 1.25rem",
-                    width: "100%",
-                    fontSize: "0.875rem",
-                  }}
-                  variant="contained"
-                >
+                <StyledButtonNoMargin type="submit" variant="contained">
                   <Typography sx={{ fontWeight: "700", fontSize: "0.875rem" }}>
                     {"APPLY"}
                   </Typography>
-                </Button>
+                </StyledButtonNoMargin>
               </Box>
             </Box>
             {/* ------------------------------------------------------------------------------------------------------------------------- */}
@@ -165,9 +137,9 @@ const RoomCardModal = ({ room, handleClose }: Props) => {
                 gap: "0.3rem",
               }}
             >
-              {roomType[`${room.roomTypeName}`].ammenities.map((ammenity) => {
+              {roomType[`${room.roomTypeName}`].ammenities.map((ammenity, index) => {
                 return (
-                  <Box sx={{ display: "flex", gap: "0.5rem" }}>
+                  <Box key={index} sx={{ display: "flex", gap: "0.5rem" }}>
                     <CheckCircleOutlineIcon />
                     <Typography>{ammenity}</Typography>
                   </Box>

@@ -15,6 +15,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import "@aws-amplify/ui-react/styles.css";
 
 import Login from "./components/login/Login";
+import Checkout from "./components/checkout/Checkout";
 
 const theme = createTheme({
   typography: {
@@ -63,6 +64,7 @@ function App() {
             <Route path={routesPath.landing} element={<Landing />} />
             <Route path={routesPath.roomResults} element={<RoomResults />} />
             <Route path={routesPath.login} element={<Login />} />
+            <Route path={routesPath.checkout} element={<Checkout />} />
           </Routes>
           <Footer />
         </BrowserRouter>

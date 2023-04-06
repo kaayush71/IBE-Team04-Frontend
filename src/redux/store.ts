@@ -18,16 +18,29 @@ import {
   REGISTER,
   persistStore,
 } from "redux-persist";
+import checkoutDataSlice from "./reducers/checkoutDataSlice";
+
+// for currency conversion
 const persistConfig = {
-  key: "counter",
+  key: "currency",
   storage,
 };
 
+// for language conversion
 const languageConfig = {
   key: "language",
   storage,
 };
 
+// user checkout data
+const checkoutConfig = {
+  key: "checkout",
+  storage,
+};
+
+// creating a combineReducers with different
+// persist config so that it easy to manipulate the 
+// data stored in local storage
 const reducers = combineReducers({
   config: configDataSlice,
   currency: persistReducer(persistConfig, currencyDataSlice),
@@ -35,10 +48,11 @@ const reducers = combineReducers({
   landingForm: landingSearchFormSlice,
   calendar: calendarDataSlice,
   resultsConfiguration: roomResultConfigDataSlice,
+  checkout: persistReducer(checkoutConfig, checkoutDataSlice),
 });
 
-// const persistedReducer = persistReducer(persistConfig, reducers);
-
+// using redux persist to persist specific
+// reducers automatically.
 export const store = configureStore({
   reducer: reducers,
   middleware: (getDefaultMiddleware) =>

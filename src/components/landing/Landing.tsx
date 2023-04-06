@@ -18,13 +18,24 @@ import {
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
+import { setShowItineraryCard } from "../../redux/reducers/checkoutDataSlice";
+import { searchButtonStyle } from "../../constants/styledConstants";
 
 export default function Landing() {
+  const bannerImage = useAppSelector((state) => state.config.bannerImage);
+  // styles
+  const landingContainerStyle = {
+    backgroundImage: `url(${bannerImage})`,
+    backgroundSize: "100% 75vh",
+    backgroundRepeat: "no-repeat",
+    padding: "0 3.375rem",
+    height: "83vh",
+  };
+
   const reduxDispatch = useAppDispatch();
   const navigate = useNavigate();
-  const bannerImage = useAppSelector((state) => state.config.bannerImage);
-  const currency = useAppSelector((state)=>state.currency);
-  const language = useAppSelector((state)=>state.language);
+  const currency = useAppSelector((state) => state.currency);
+  const language = useAppSelector((state) => state.language);
   const landingConfig = useAppSelector((state) => state.landingForm.landingConfig);
   const landingFormData = useAppSelector((state) => state.landingForm);
   const accessibility = useAppSelector((state) => state.landingForm.accessibility);
@@ -39,6 +50,7 @@ export default function Landing() {
   }, [reduxDispatch]);
 
   useEffect(() => {
+    reduxDispatch(setShowItineraryCard(false));
     const formData = JSON.parse(localStorage.getItem("formData") || "{}");
     if (JSON.stringify(formData) === "{}") {
       reduxDispatch(setIsLandingFormDisbale(true));
@@ -70,21 +82,13 @@ export default function Landing() {
         searchParams.set(`${guest.categoryName}`, `${guest.count}`);
       }
     });
-    searchParams.set("currency",currency.selectedCurrency.name);
-    searchParams.set("lang",language.selectedLanguage);
+    searchParams.set("currency", currency.selectedCurrency.name);
+    searchParams.set("lang", language.selectedLanguage);
     searchParams.set("rooms", `${formData.rooms}`);
     navigate(`/room-search-results?${searchParams.toString()}`);
   };
   return (
-    <Box
-      sx={{
-        backgroundImage: `url(${bannerImage})`,
-        backgroundSize: "100% 75vh",
-        backgroundRepeat: "no-repeat",
-        padding: "0 3.375rem",
-        height: "83vh",
-      }}
-    >
+    <Box sx={landingContainerStyle}>
       <Container sx={{ padding: "3.5rem 0" }} maxWidth={false}>
         <Paper
           sx={{ padding: "2.75rem", maxWidth: "25.75rem", marginBottom: { xs: "5rem", md: "0" } }}
@@ -146,18 +150,7 @@ export default function Landing() {
                 </Box>
               )}
 
-              <Button
-                type="submit"
-                sx={{
-                  backgroundColor: "#26266D",
-                  "&:hover": { backgroundColor: "#26266D" },
-                  display: "flex",
-                  padding: "0.75rem 1.25rem",
-                  margin: { md: "5rem auto 3rem auto", xs: "4rem auto 3rem auto" },
-                  width: "10rem",
-                }}
-                variant="contained"
-              >
+              <Button type="submit" sx={searchButtonStyle} variant="contained">
                 {t("SEARCH")}
               </Button>
             </form>

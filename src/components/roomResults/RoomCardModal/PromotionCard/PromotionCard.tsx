@@ -1,23 +1,28 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React from "react";
-import { useAppSelector } from "../../../../redux/store";
+import { Link } from "react-router-dom";
+import { promotionBoxStyle } from "../../../../constants/styledConstants";
+import {
+  setCheckoutRoom,
+  setShowItineraryCard,
+} from "../../../../redux/reducers/checkoutDataSlice";
+import { RoomType } from "../../../../redux/reducers/roomResultConfigDataSlice";
+import { useAppDispatch, useAppSelector } from "../../../../redux/store";
+import { StyledButton } from "../../../styledComponents/styledComponents";
 
-type Props = {};
+type Props = {
+  room: RoomType;
+};
 
-const PromotionCard = (props: Props) => {
+const PromotionCard = ({ room }: Props) => {
   const selectedCurrency = useAppSelector((state) => state.currency.selectedCurrency);
-
+  const reduxDispatch = useAppDispatch();
+  const handleSubmit = () => {
+    reduxDispatch(setCheckoutRoom(room));
+    reduxDispatch(setShowItineraryCard(true));
+  };
   return (
-    <Box
-      mt={"1rem"}
-      sx={{
-        display: { md: "grid", sm: "block" },
-        gridTemplateColumns: "70% 1fr",
-        boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.1)",
-        border: "1px solid #EFF0F1",
-        maxWidth: { lg: "40vw", md: "60vw" },
-      }}
-    >
+    <Box mt={"1rem"} sx={promotionBoxStyle}>
       <Box
         sx={{
           padding: "26px 23px",
@@ -35,22 +40,13 @@ const PromotionCard = (props: Props) => {
         <Typography color={"#858685"} textAlign={"end"}>
           per night
         </Typography>
-        <Button
-          type="submit"
-          sx={{
-            backgroundColor: "#26266D",
-            "&:hover": { backgroundColor: "#26266D" },
-            padding: "0.75rem 1.25rem",
-            width: "100%",
-            marginTop: "0.5rem",
-            fontSize: "0.875rem",
-          }}
-          variant="contained"
-        >
-          <Typography sx={{ fontWeight: "700", fontSize: "0.875rem" }}>
-            {"SELECT PACKAGE"}
-          </Typography>
-        </Button>
+        <Link style={{ textDecoration: "none" }} to={"/checkout"}>
+          <StyledButton type="submit" variant="contained" onClick={handleSubmit}>
+            <Typography sx={{ fontWeight: "700", fontSize: "0.875rem" }}>
+              {"SELECT PACKAGE"}
+            </Typography>
+          </StyledButton>
+        </Link>
       </Box>
     </Box>
   );

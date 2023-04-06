@@ -7,6 +7,8 @@ import { useTranslation } from "react-i18next";
 
 const BedMenu = () => {
   const reduxDispatch = useAppDispatch();
+
+  // setting number of beds in redux store
   const handleChange = (event: SelectChangeEvent) => {
     reduxDispatch(setNumberOfBeds(Number(event.target.value)));
   };

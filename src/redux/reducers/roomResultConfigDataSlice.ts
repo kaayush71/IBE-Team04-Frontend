@@ -60,11 +60,7 @@ const initialState: RoomResultsConfig = {
     bedCountArray: [1],
     showBed: true,
   },
-  roomType: {
-    // images: [],
-    // ammenities: [],
-    // description: "",
-  },
+  roomType: {},
   numberOfBedsSelected: 1,
   sortToSend: "",
   selectedSortName: "",
@@ -138,7 +134,6 @@ export const roomResultsConfigDataSlice = createSlice({
       state.selectedSortValue = sortValue;
     },
     setSortToSend: (state, action) => {
-      console.log("inside sort to send");
       const sortSubStrings = action.payload.split("#");
       const sortName = sortSubStrings[0];
       const sortValue = sortSubStrings[1];

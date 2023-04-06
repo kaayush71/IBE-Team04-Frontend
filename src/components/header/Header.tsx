@@ -14,12 +14,17 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Header() {
   const [t] = useTranslation();
   const navigate = useNavigate();
+
+  // navigating the user to login page
   const handleClick = () => {
     navigate("/login");
   };
   const applicationTitle = useAppSelector((state) => state.config.applicationTitle);
   const headerLogo = useAppSelector((state) => state.config.companyLogo.headerLogo);
   const [open, setOpenState] = useState(false);
+
+  // handling the hamburger menu opening
+  // and closing.
   const toggleDrawer = (open: boolean) => (event: any) => {
     if (event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
       return;
@@ -59,9 +64,11 @@ export default function Header() {
             </Typography>
           </Box>
           <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: "1.34rem" }}>
-            <Typography fontSize={"0.875rem"} fontWeight={700} color={"black"}>
+            <Button
+              sx={{ fontWeight: "600", cursor: "pointer", color: "black", fontSize: "0.875rem" }}
+            >
               {t("MY BOOKINGS")}
-            </Typography>
+            </Button>
             <LanguageMenu />
             <CurrencyMenu />
             <Button
@@ -103,9 +110,12 @@ export default function Header() {
                 </IconButton>
                 <Divider sx={{ mb: 2 }} />
                 <Box sx={{ mb: 2 }}>
-                  <Typography fontWeight={600} color={"black"}>
+                  <Button
+                    variant="outlined"
+                    sx={{ fontWeight: "600", cursor: "pointer", color: "black" }}
+                  >
                     {t("MY BOOKINGS")}
-                  </Typography>
+                  </Button>
                   <Box sx={{ display: "flex", mt: 3 }}>
                     <LanguageMenu />
                     <CurrencyMenu />

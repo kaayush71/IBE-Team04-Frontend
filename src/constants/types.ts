@@ -37,39 +37,53 @@ export interface roomCard {
   roomPrice: number;
 }
 
-export interface limit{
-  lowerLimit : number;
-  upperLimit : number;
+export interface limit {
+  lowerLimit: number;
+  upperLimit: number;
 }
 
-export interface roomResultsConfigData{
+export interface roomResultsConfigData {
   filters: {
     bedTypeFilter: {
       showBedFilter: boolean;
-      "bedFilterArrayOptions": string[]
-    },
+      bedFilterArrayOptions: string[];
+    };
     roomTypeFilter: {
-      showRoomTypeFilter: boolean,
-      roomTypeFilterArrayOptions: string[]
-    },
-    numberOfBedsFilter : {
-      showNumberOfBedFilter : boolean,
-      numberOfBedsFilterOptions : string[]
-    },
-    priceFilter : {
-      showPriceFilter : boolean,
-      priceFilterOptions : limit[]
-    }
-  },
+      showRoomTypeFilter: boolean;
+      roomTypeFilterArrayOptions: string[];
+    };
+    numberOfBedsFilter: {
+      showNumberOfBedFilter: boolean;
+      numberOfBedsFilterOptions: string[];
+    };
+    priceFilter: {
+      showPriceFilter: boolean;
+      priceFilterOptions: limit[];
+    };
+  };
   sorts: {
     rating: {
-      showRatingSort: boolean,
-      ratingSortOptions: string[]
-    },
+      showRatingSort: boolean;
+      ratingSortOptions: string[];
+    };
     area: {
-      showAreaSort : boolean,
-      areaSortOption: string[]
-    }
-  }
-
+      showAreaSort: boolean;
+      areaSortOption: string[];
+    };
+  };
 }
+
+export type Filters = {
+  [key: string]: string[];
+};
+
+export type RequestBody = {
+  sortType: string;
+  numberOfRooms: number;
+  numberOfBeds: number;
+  pageSize: number;
+  pageNumber: number;
+  filters: Filters;
+  startTime: string;
+  endTime: string;
+};
