@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { Promotion } from "../../constants/types";
 
 export interface RoomType {
   areaInSquareFeet: number;
@@ -12,6 +13,12 @@ export interface RoomType {
   roomRate: number;
   bedType: string;
   priceType: string;
+  bestPromotion: Promotion;
+  ratingAndReviews: {
+    showRatingsAndReviews: boolean;
+    averageRatingValue: number;
+    numberOfRatings: number;
+  };
 }
 
 interface RoomResultsConfig {
@@ -50,6 +57,8 @@ interface RoomResultsConfig {
   roomResultsLoading: boolean;
   selectedPage: number;
   isError: boolean;
+  startPage: number;
+  resultConfigLoading: boolean;
 }
 
 const initialState: RoomResultsConfig = {
@@ -70,6 +79,8 @@ const initialState: RoomResultsConfig = {
   roomResultsLoading: true,
   selectedPage: 1,
   isError: false,
+  startPage: 1,
+  resultConfigLoading: true,
 };
 
 export const fetchResultsConfigData = createAsyncThunk(
@@ -126,27 +137,33 @@ export const roomResultsConfigDataSlice = createSlice({
         selectedFilter.selectedOptions = option;
       }
     },
-    setSort: (state, action) => {
-      const sortSubStrings = action.payload.split("#");
-      const sortName = sortSubStrings[0];
-      const sortValue = sortSubStrings[1];
-      state.selectedSortName = sortName;
-      state.selectedSortValue = sortValue;
-    },
+    // setSort: (state, action) => {
+    //   const sortSubStrings = action.payload.split("#");
+    //   const sortName = sortSubStrings[0];
+    //   const sortValue = sortSubStrings[1];
+    //   state.selectedSortName = sortName;
+    //   state.selectedSortValue = sortValue;
+    // },
     setSortToSend: (state, action) => {
+      console.log("inside set sort to send", action.payload);
       const sortSubStrings = action.payload.split("#");
       const sortName = sortSubStrings[0];
       const sortValue = sortSubStrings[1];
       state.selectedSortName = sortName;
       state.selectedSortValue = sortValue;
+      const formData = JSON.parse(localStorage.getItem("formData") || "{}");
       const sortToSend = state.sorts.find((sort) => sort.sortName === sortName);
       if (sortToSend !== undefined) {
+        console.log("set sort to send", `${sortToSend.sendingName}#${sortValue}`);
+        formData.sortToSend = `${sortToSend.sendingName}#${sortValue}`;
+        localStorage.setItem("formData", JSON.stringify(formData));
         state.sortToSend = `${sortToSend.sendingName}#${sortValue}`;
       }
     },
     setPageNumber: (state, action) => {
       state.selectedPage = action.payload;
     },
+    setStartPage: (state, action) => {},
   },
   extraReducers: (builder) => {
     builder.addCase(fetchResultsConfigData.fulfilled, (state, action) => {
@@ -162,9 +179,13 @@ export const roomResultsConfigDataSlice = createSlice({
       } else {
         return;
       }
+      state.resultConfigLoading = false;
     });
     builder.addCase(fetchResultsConfigData.rejected, (state) => {
       console.log("rejected");
+    });
+    builder.addCase(fetchRoomResultsGraphQlData.pending, (state, action) => {
+      state.roomResultsLoading = true;
     });
     builder.addCase(fetchRoomResultsGraphQlData.fulfilled, (state, action) => {
       console.log("graph ql response", action.payload);
@@ -181,6 +202,12 @@ export const roomResultsConfigDataSlice = createSlice({
   },
 });
 
-export const { setSortToSend, setFilter, setExistingFilters, setSort, setPageNumber } =
-  roomResultsConfigDataSlice.actions;
+export const {
+  setSortToSend,
+  setFilter,
+  setExistingFilters,
+  // setSort,
+  setPageNumber,
+  setStartPage,
+} = roomResultsConfigDataSlice.actions;
 export default roomResultsConfigDataSlice.reducer;

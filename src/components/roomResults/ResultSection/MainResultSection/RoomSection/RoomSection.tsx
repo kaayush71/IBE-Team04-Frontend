@@ -22,11 +22,32 @@ import RoomCardNew from "./RoomCard/RoomCardNew";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ItineraryCard from "../../../../checkout/itinerary/ItineraryCard";
-import {
-  roomCardList,
-  roomSectionContainer,
-  roomSectionRight,
-} from "../../../../../constants/styledConstants";
+
+//styles
+const roomCardList = {
+  display: "flex",
+  flexWrap: "wrap",
+  flexDirection: { xs: "column", md: "row" },
+  // alignItems: "center",
+  columnGap: "3rem",
+  rowGap: "2rem",
+  justifyContent: "space-between",
+};
+
+const roomSectionContainer = {
+  display: "flex",
+  justifyContent: "space-between",
+  marginBottom: "0.7rem",
+  flexDirection: { xs: "column", sm: "row" },
+};
+
+const roomSectionRight = {
+  display: "flex",
+  columnGap: "1rem",
+  rowGap: "0",
+  alignItems: "center",
+  flexDirection: { xs: "column", sm: "row" },
+};
 
 const RoomSection = () => {
   const sorts = useAppSelector((state) => state.resultsConfiguration.sorts);
@@ -41,7 +62,7 @@ const RoomSection = () => {
   const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const handleForward = () => {
     let pageNumber = currentPageNumber;
-    if (pageNumber * 3 <= roomResults.totalNumberOfData) {
+    if (pageNumber * 3 < roomResults.totalNumberOfData) {
       params.set("page", `${pageNumber + 1}`);
       localStorage.setItem("page", `${pageNumber}`);
       reduxDispatch(setPageNumber(currentPageNumber + 1));
@@ -151,7 +172,7 @@ const RoomSection = () => {
       >
         <Box sx={roomCardList} className={"room-card-list"}>
           {roomResults.roomResultsLoading ? (
-            <Box sx={{ height: "30vh" }}>
+            <Box sx={{ height: "50vh" }}>
               <CircularProgress />
             </Box>
           ) : roomResults.isError || roomResults.roomTypeList.length === 0 ? (

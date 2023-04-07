@@ -1,8 +1,8 @@
-import { Box, IconButton, TextField, Typography } from "@mui/material";
-import React from "react";
+import { Box, CircularProgress, IconButton, TextField, Typography } from "@mui/material";
+import React, { useRef } from "react";
 import Slider from "react-slick";
 import { RoomType } from "../../../redux/reducers/roomResultConfigDataSlice";
-import { useAppSelector } from "../../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CloseIcon from "@mui/icons-material/Close";
@@ -12,16 +12,66 @@ import BedIcon from "@mui/icons-material/Bed";
 
 import "./RoomCardModal.scss";
 import PromotionCard from "./PromotionCard/PromotionCard";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { sliderSettings } from "../../../constants/sliderSettings";
-import { roomTypeName } from "../../../constants/styledConstants";
 import { StyledButtonNoMargin } from "../../styledComponents/styledComponents";
+import PromotionCardStandard from "./PromotionCard/PromotionCardStandard";
+import {
+  fetchCustomPromotion,
+  setSelectedPromotionRoomType,
+} from "../../../redux/reducers/promotionsDataSlice";
 type Props = {
   room: RoomType;
   handleClose: any;
 };
 
+//styles
+const roomTypeName = {
+  position: "absolute",
+  bottom: "1rem",
+  left: "5%",
+  fontWeight: "800",
+  textTransform: "capitalize",
+};
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+  return (
+    <MuiAlert elevation={6} ref={ref} variant="filled" {...props}>
+      {props.children}
+    </MuiAlert>
+  );
+});
+
 const RoomCardModal = ({ room, handleClose }: Props) => {
+  const fetchCustomPromoStatus = useAppSelector((state) => state.promotions.fetchCustomPromoStatus);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClosed = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+  const reduxDispatch = useAppDispatch();
   const roomType = useAppSelector((state) => state.resultsConfiguration.roomType);
+  const promotions = useAppSelector((state) => state.promotions);
+  const specialPromotion = useAppSelector((state) => state.promotions.specialPromotion);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    setOpen(true);
+    reduxDispatch(setSelectedPromotionRoomType(room.roomTypeName));
+    reduxDispatch(
+      fetchCustomPromotion({
+        roomTypeId: room.roomTypeId,
+        promoCode: inputRef.current?.value,
+      })
+    );
+    if (inputRef?.current) {
+      inputRef.current.value = "";
+    }
+  };
   return (
     <Box>
       <Box sx={{ position: "relative" }}>
@@ -94,36 +144,81 @@ const RoomCardModal = ({ room, handleClose }: Props) => {
                 Standard Rate
               </Typography>
               {/* --------------------------------------- Promotion Card ----------------------------------------------------------- */}
-              <PromotionCard room={room} />
+              <PromotionCardStandard room={room} />
             </Box>
             {/* ---------------------------------------------------------------- Deals And Packages ------------------------------------- */}
             <Box mt={"2.5rem"} className="deals-packages">
               <Typography fontSize={"1.25rem"} fontWeight={"700"}>
                 Deals & Packages
               </Typography>
-              <PromotionCard room={room} />
-              <PromotionCard room={room} />
+              {promotions.loading ? (
+                <CircularProgress />
+              ) : (
+                promotions.promotions.map((promotion) => {
+                  return (
+                    <PromotionCard key={promotion.promotionId} promotion={promotion} room={room} />
+                  );
+                })
+              )}
             </Box>
-            {/* --------------------------------------------------------------- Promo Code ------------------------------------------------ */}
-            <Box mt={"2.5rem"}>
-              <Typography>Enter a promo code</Typography>
-              <Box
-                mt={"5px"}
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "0.7fr 0.3fr",
-                  gap: "0.813rem",
-                  maxWidth: "20rem",
-                }}
-              >
-                <TextField id="outlined-basic" variant="outlined" />
-                <StyledButtonNoMargin type="submit" variant="contained">
-                  <Typography sx={{ fontWeight: "700", fontSize: "0.875rem" }}>
-                    {"APPLY"}
-                  </Typography>
-                </StyledButtonNoMargin>
+            {/* --------------------------------------------------------------- Special Deal ------------------------------------------------ */}
+            {promotions.showSpecialPromotion &&
+            promotions.selectedPromotionRoomType === room.roomTypeName ? (
+              <Box mt={"2.5rem"} className="special-promotion">
+                <Typography fontSize={"1.25rem"} fontWeight={"700"}>
+                  Special Deal
+                </Typography>
+                <PromotionCard promotion={specialPromotion} room={room} />
               </Box>
-            </Box>
+            ) : (
+              <></>
+            )}
+
+            {/* --------------------------------------------------------------- Promo Code ------------------------------------------------ */}
+            <form onSubmit={handleSubmit}>
+              <Box mt={"2.5rem"}>
+                <Typography>Enter a promo code</Typography>
+                <Box
+                  mt={"5px"}
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: "0.7fr 0.3fr",
+                    gap: "0.813rem",
+                    maxWidth: "20rem",
+                  }}
+                >
+                  <TextField inputRef={inputRef} id="outlined-basic" variant="outlined" />
+                  <StyledButtonNoMargin onSubmit={handleSubmit} type="submit" variant="contained">
+                    <Typography sx={{ fontWeight: "700", fontSize: "0.875rem" }}>
+                      {"APPLY"}
+                    </Typography>
+                  </StyledButtonNoMargin>
+                  <Snackbar
+                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                    sx={{ marginTop: "5rem" }}
+                    open={fetchCustomPromoStatus !== "" && open}
+                    autoHideDuration={1000}
+                    onClose={handleClosed}
+                  >
+                    {fetchCustomPromoStatus === "success" ? (
+                      <Box>
+                        <Alert onClose={handleClosed} severity="success" sx={{ width: "100%" }}>
+                          Promocode applied successfully.
+                        </Alert>
+                      </Box>
+                    ) : fetchCustomPromoStatus === "rejected" ? (
+                      <Box>
+                        <Alert onClose={handleClosed} severity="error" sx={{ width: "100%" }}>
+                          Please check your promocode..!
+                        </Alert>
+                      </Box>
+                    ) : (
+                      <></>
+                    )}
+                  </Snackbar>
+                </Box>
+              </Box>
+            </form>
             {/* ------------------------------------------------------------------------------------------------------------------------- */}
           </Box>
           {/* -------------------------------------------------------------- Ammenities ----------------------------------------------- */}
