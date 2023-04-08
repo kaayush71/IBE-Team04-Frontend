@@ -7,6 +7,14 @@ type Props = {
   handleClose: any;
 };
 
+// styles
+const inconButtonStyle = {
+  top: "0.2rem",
+  right: "0.3rem",
+  position: "absolute",
+  color: "black",
+};
+
 const CheckOutModal = (props: Props) => {
   const inputRef: any = useRef(null);
   const handleSubmit = () => {
@@ -14,15 +22,7 @@ const CheckOutModal = (props: Props) => {
   };
   return (
     <Box>
-      <IconButton
-        sx={{
-          top: "0.2rem",
-          right: "0.3rem",
-          position: "absolute",
-          color: "black",
-        }}
-        onClick={props.handleClose}
-      >
+      <IconButton sx={inconButtonStyle} onClick={props.handleClose}>
         <CloseIcon sx={{ fontWeight: "400" }} fontSize="medium" />
       </IconButton>
       <Typography fontSize={"1.25rem"} fontWeight={"700"} textAlign={"center"}>

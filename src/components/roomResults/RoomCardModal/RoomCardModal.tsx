@@ -194,7 +194,7 @@ const RoomCardModal = ({ room, handleClose }: Props) => {
                     </Typography>
                   </StyledButtonNoMargin>
                   <Snackbar
-                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                     sx={{ marginTop: "5rem" }}
                     open={fetchCustomPromoStatus !== "" && open}
                     autoHideDuration={1000}
