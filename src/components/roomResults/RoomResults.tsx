@@ -25,7 +25,7 @@ import Stepper from "./Stepper/Steps";
 export default function RoomResults() {
   const reduxDispatch = useAppDispatch();
   const location = useLocation();
-  const sortToSend = useAppSelector((state) => state.resultsConfiguration.sortToSend);
+  const resultConfig = useAppSelector((state) => state.resultsConfiguration);
   const landingFormData = useAppSelector((state) => state.landingForm);
   const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const navigate = useNavigate();
@@ -102,24 +102,13 @@ export default function RoomResults() {
         }
       });
 
-      // for sort
-      const sort = params.get("sort");
-      if (sort !== null) {
-        formData.sort = sort;
-        reduxDispatch(setSortToSend(sort));
-      } else if (formData.sort !== "#" && formData.sort !== undefined) {
-        reduxDispatch(setSortToSend(formData.sort));
-      }
-
       // for page
       const pageNumber = Number(params.get("page"));
       if (pageNumber !== 0) {
-        console.log("params page number", pageNumber);
         localStorage.setItem("page", String(pageNumber));
         reduxDispatch(setPageNumber(pageNumber));
       } else {
         const localStoragePageNumber = Number(localStorage.getItem("page"));
-        console.log("localstorage page number", localStoragePageNumber);
         if (localStoragePageNumber !== 0) reduxDispatch(setPageNumber(localStoragePageNumber));
       }
 
@@ -134,25 +123,33 @@ export default function RoomResults() {
       if (currency) {
         reduxDispatch(setSelectedCuurency(currency));
       }
+
+      // for sort
+      const sort = params.get("sort");
+      if (sort !== null) {
+        formData.sort = sort;
+        reduxDispatch(setSortToSend(sort));
+      } else if (formData.sort !== "#" && formData.sort !== undefined) {
+        reduxDispatch(setSortToSend(formData.sort));
+      }
     });
     localStorage.setItem("formData", JSON.stringify(formData));
-  }, [navigate, params, reduxDispatch]);
-
+  }, [navigate, reduxDispatch, params]);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        await reduxDispatch(fetchLandingConfigData());
-        await reduxDispatch(fetchResultsConfigData());
+        landingFormData.landingConfig.searchForm.guest.guestTypes.length === 0 &&
+          (await reduxDispatch(fetchLandingConfigData()));
+        resultConfig.filters.length === 0 && (await reduxDispatch(fetchResultsConfigData()));
         getSearchParams();
         reduxDispatch(getLocalstorageFormData());
         const pageNumber = Number(localStorage.getItem("page"));
-        console.log("pageNumber", pageNumber);
         const formData = JSON.parse(localStorage.getItem("formData") || "{}");
         const startTime = formData.startDate;
         const endTime = formData.endDate;
         const requestBody: RequestBody = {
-          sortType: sortToSend,
+          sortType: formData.sortToSend || "",
           numberOfRooms: formData.rooms,
           numberOfBeds: formData.beds || 1,
           pageSize: 3,

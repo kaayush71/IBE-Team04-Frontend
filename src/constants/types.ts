@@ -87,3 +87,22 @@ export type RequestBody = {
   startTime: string;
   endTime: string;
 };
+
+export type Promotion = {
+  minimumDaysOfStay: number;
+  priceFactor: number;
+  promotionDescription: string;
+  promotionTitle: string;
+  isDeactivated: boolean;
+  promotionId: number;
+};
+
+export type promotionSliceIntialState = {
+  promotions: Promotion[];
+  loading: boolean;
+  specialPromotion: Promotion;
+  showSpecialPromotion: boolean;
+  isSpecialPromotionError: boolean;
+  selectedPromotionRoomType: string;
+  fetchCustomPromoStatus: string;
+};

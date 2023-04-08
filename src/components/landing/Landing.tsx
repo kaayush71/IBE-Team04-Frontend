@@ -19,11 +19,21 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { setShowItineraryCard } from "../../redux/reducers/checkoutDataSlice";
-import { searchButtonStyle } from "../../constants/styledConstants";
+import { fetchCalendarData } from "../../redux/reducers/calendarDataSlice";
+
+// styles
+
+const searchButtonStyle = {
+  backgroundColor: "#26266D",
+  "&:hover": { backgroundColor: "#26266D" },
+  display: "flex",
+  padding: "0.75rem 1.25rem",
+  margin: { md: "5rem auto 3rem auto", xs: "4rem auto 3rem auto" },
+  width: "10rem",
+};
 
 export default function Landing() {
   const bannerImage = useAppSelector((state) => state.config.bannerImage);
-  // styles
   const landingContainerStyle = {
     backgroundImage: `url(${bannerImage})`,
     backgroundSize: "100% 75vh",
@@ -50,6 +60,7 @@ export default function Landing() {
   }, [reduxDispatch]);
 
   useEffect(() => {
+    reduxDispatch(fetchCalendarData());
     reduxDispatch(setShowItineraryCard(false));
     const formData = JSON.parse(localStorage.getItem("formData") || "{}");
     if (JSON.stringify(formData) === "{}") {

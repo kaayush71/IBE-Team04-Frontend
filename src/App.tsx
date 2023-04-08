@@ -16,6 +16,7 @@ import "@aws-amplify/ui-react/styles.css";
 
 import Login from "./components/login/Login";
 import Checkout from "./components/checkout/Checkout";
+import RatingPage from "./components/rating/Rating";
 
 const theme = createTheme({
   typography: {
@@ -65,6 +66,7 @@ function App() {
             <Route path={routesPath.roomResults} element={<RoomResults />} />
             <Route path={routesPath.login} element={<Login />} />
             <Route path={routesPath.checkout} element={<Checkout />} />
+            <Route path={`${routesPath.rating}/:id`} element={<RatingPage />} />
           </Routes>
           <Footer />
         </BrowserRouter>

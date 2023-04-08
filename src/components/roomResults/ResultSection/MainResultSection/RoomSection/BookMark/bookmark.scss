@@ -4,11 +4,10 @@
 .offer-bar {
   color: #FFFFFF;
   justify-content: center;
-  padding: 0.58rem 1.238rem;
   position: relative;
   left: -0.8rem;
-  height: 2rem;
-  width: 7.548rem;
+  height: 2.5rem;
+  width: 7.748rem;
   background: $COMPLETED_ICON_COLOR;
   display: flex;
   align-items: center;
@@ -19,7 +18,7 @@
   right: 0;
   top: 0;
   border-style: solid;
-  border-width: 0 0 1.7rem 0.8rem;
+  border-width: 0 0 1.3rem 0.8rem;
   border-color: #FFFFFF transparent #FFFFFF transparent;
   display: block;
   width: 0;
@@ -37,7 +36,7 @@
   right: 0;
   bottom: 0;
   border-style: solid;
-  border-width: 1.5rem 0 0 0.8rem;
+  border-width: 1.3rem 0 0 0.8rem;
   border-color: #FFFFFF transparent #FFFFFF transparent;
   display: block;
   width: 0;

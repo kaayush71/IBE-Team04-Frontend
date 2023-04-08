@@ -10,11 +10,16 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import BedIcon from "@mui/icons-material/Bed";
 import { RoomType } from "../../../../../../redux/reducers/roomResultConfigDataSlice";
-import { useAppSelector } from "../../../../../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../../../../../redux/store";
 import { useTranslation } from "react-i18next";
 import RoomCardModal from "../../../../RoomCardModal/RoomCardModal";
 import { sliderSettings } from "../../../../../../constants/sliderSettings";
 import { StyledButton } from "../../../../../styledComponents/styledComponents";
+import {
+  fetchPromotions,
+} from "../../../../../../redux/reducers/promotionsDataSlice";
+import { format } from "date-fns";
+import BookMark from "../BookMark/BookMark";
 
 interface RoomCardProps {
   room: RoomType;
@@ -31,7 +36,18 @@ const modalContainerStyle = {
 
 const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  const reduxDispatch = useAppDispatch();
+  const startDate = useAppSelector((state) => state.landingForm.startDate);
+  const endDate = useAppSelector((state) => state.landingForm.endDate);
+  const handleOpen = () => {
+    reduxDispatch(
+      fetchPromotions({
+        startDate: format(new Date(startDate), "yyyy-MM-dd"),
+        endDate: format(new Date(endDate), "yyyy-MM-dd"),
+      })
+    );
+    setOpen(true);
+  };
   const handleClose = () => setOpen(false);
 
   const roomTypeImages = useAppSelector((state) => state.resultsConfiguration.roomType);
@@ -85,12 +101,14 @@ const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
                 <Box className="rating-star">
                   {<StarRateIcon sx={{ color: "#26266D" }} fontSize="small" />}
                 </Box>
-                <Box className="rating-number">{"3.7"}</Box>
+                <Box className="rating-number">
+                  {room.ratingAndReviews.averageRatingValue.toFixed(1)}
+                </Box>
               </Box>
             </Box>
             <Box className={"total-reviews"}>
               <Typography fontSize={"0.875rem"} color={"#5D5D5D"} fontWeight={400}>
-                {"200"} {t("reviews")}
+                {room.ratingAndReviews.numberOfRatings} {t("reviews")}
               </Typography>
             </Box>
           </Box>
@@ -177,6 +195,12 @@ const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
           } ${(selectedCurrency.rate * room.roomRate).toFixed(1)} `}</Typography>
           <Typography fontSize={"0.875rem"} color={"#5D5D5D"} fontWeight={400}>
             {t("per night")}
+          </Typography>
+        </Box>
+        <Box>
+          <BookMark />
+          <Typography fontSize={"0.875rem"} color={"#5D5D5D"} fontWeight={400}>
+            {room.bestPromotion.promotionDescription}
           </Typography>
         </Box>
         <Box className="button-section" sx={{ placeSelf: "end" }}>

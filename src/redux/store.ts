@@ -19,6 +19,7 @@ import {
   persistStore,
 } from "redux-persist";
 import checkoutDataSlice from "./reducers/checkoutDataSlice";
+import promotionsDataSlice from "./reducers/promotionsDataSlice";
 
 // for currency conversion
 const persistConfig = {
@@ -39,7 +40,7 @@ const checkoutConfig = {
 };
 
 // creating a combineReducers with different
-// persist config so that it easy to manipulate the 
+// persist config so that it easy to manipulate the
 // data stored in local storage
 const reducers = combineReducers({
   config: configDataSlice,
@@ -49,6 +50,7 @@ const reducers = combineReducers({
   calendar: calendarDataSlice,
   resultsConfiguration: roomResultConfigDataSlice,
   checkout: persistReducer(checkoutConfig, checkoutDataSlice),
+  promotions: promotionsDataSlice,
 });
 
 // using redux persist to persist specific
