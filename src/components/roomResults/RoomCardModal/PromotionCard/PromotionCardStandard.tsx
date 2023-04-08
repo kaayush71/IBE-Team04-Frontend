@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import {
+  fetchRoomTypeRates,
   setCheckoutRoom,
   setCheckoutSelectedRoom,
   setDates,
@@ -47,6 +48,13 @@ const PromotionCardStandard = ({ room }: Props) => {
       setDates({
         startDate,
         endDate,
+      })
+    );
+    reduxDispatch(
+      fetchRoomTypeRates({
+        startTime: startDate,
+        endTime: endDate,
+        roomTypeId: room.roomTypeId,
       })
     );
     reduxDispatch(setCheckoutSelectedRoom(selectedRoom));

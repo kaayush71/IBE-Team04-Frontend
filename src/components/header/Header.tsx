@@ -4,24 +4,33 @@ import React, { useState } from "react";
 import "./Header.scss";
 import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
-import { useAppSelector } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import LanguageMenu from "./languageMenu/LanguageMenu";
 import CurrencyMenu from "./currecnyMenu/CurrencyMenu";
 import { Link, useNavigate } from "react-router-dom";
+import { Auth } from "aws-amplify";
+import { setUserId } from "../../redux/reducers/checkoutDataSlice";
 
 export default function Header() {
   const [t] = useTranslation();
   const navigate = useNavigate();
+  const reduxDispatch = useAppDispatch();
 
   // navigating the user to login page
   const handleClick = () => {
     navigate("/login");
   };
+
+  const handleLogout = () => {
+    Auth.signOut();
+    reduxDispatch(setUserId(""));
+  };
   const applicationTitle = useAppSelector((state) => state.config.applicationTitle);
   const headerLogo = useAppSelector((state) => state.config.companyLogo.headerLogo);
   const [open, setOpenState] = useState(false);
+  const userId = useAppSelector((state) => state.checkout.userId);
 
   // handling the hamburger menu opening
   // and closing.
@@ -71,13 +80,23 @@ export default function Header() {
             </Button>
             <LanguageMenu />
             <CurrencyMenu />
-            <Button
-              onClick={handleClick}
-              sx={{ backgroundColor: "#26266D", "&:hover": { backgroundColor: "#26266D" } }}
-              variant="contained"
-            >
-              {t("LOGIN")}
-            </Button>
+            {userId === "" ? (
+              <Button
+                onClick={handleClick}
+                sx={{ backgroundColor: "#26266D", "&:hover": { backgroundColor: "#26266D" } }}
+                variant="contained"
+              >
+                {t("LOGIN")}
+              </Button>
+            ) : (
+              <Button
+                onClick={handleLogout}
+                sx={{ backgroundColor: "#26266D", "&:hover": { backgroundColor: "#26266D" } }}
+                variant="contained"
+              >
+                {t("LOGOUT")}
+              </Button>
+            )}
           </Box>
           <Box sx={{ display: { xs: "grid", md: "none" } }}>
             <IconButton

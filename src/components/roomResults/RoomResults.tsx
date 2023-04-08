@@ -137,11 +137,14 @@ export default function RoomResults() {
   }, [navigate, reduxDispatch, params]);
 
   useEffect(() => {
+    console.log("hello");
     async function fetchData() {
       try {
         landingFormData.landingConfig.searchForm.guest.guestTypes.length === 0 &&
           (await reduxDispatch(fetchLandingConfigData()));
         resultConfig.filters.length === 0 && (await reduxDispatch(fetchResultsConfigData()));
+        // await reduxDispatch(fetchResultsConfigData());
+
         getSearchParams();
         reduxDispatch(getLocalstorageFormData());
         const pageNumber = Number(localStorage.getItem("page"));

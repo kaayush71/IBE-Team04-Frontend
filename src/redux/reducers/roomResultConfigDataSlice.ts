@@ -129,6 +129,9 @@ export const roomResultsConfigDataSlice = createSlice({
           selectedFilter.selectedOptions.push(action.payload.option);
         }
       }
+      const formData = JSON.parse(localStorage.getItem("formData") || "{}");
+      formData.filters = state.filters;
+      localStorage.setItem("formData", JSON.stringify(formData));
     },
     setExistingFilters: (state, action) => {
       const { filterName, option } = action.payload;
@@ -137,13 +140,6 @@ export const roomResultsConfigDataSlice = createSlice({
         selectedFilter.selectedOptions = option;
       }
     },
-    // setSort: (state, action) => {
-    //   const sortSubStrings = action.payload.split("#");
-    //   const sortName = sortSubStrings[0];
-    //   const sortValue = sortSubStrings[1];
-    //   state.selectedSortName = sortName;
-    //   state.selectedSortValue = sortValue;
-    // },
     setSortToSend: (state, action) => {
       console.log("inside set sort to send", action.payload);
       const sortSubStrings = action.payload.split("#");
@@ -173,7 +169,7 @@ export const roomResultsConfigDataSlice = createSlice({
       state.beds = action.payload.beds;
       const formData = JSON.parse(localStorage.getItem("formData") || "{}");
       localStorage.setItem("page", `${state.selectedPage}`);
-      if (formData.filters.length === 0) {
+      if (formData.filters === undefined || formData.filters.length === 0) {
         formData.filters = state.filters;
         localStorage.setItem("formData", JSON.stringify(formData));
       } else {
@@ -202,12 +198,6 @@ export const roomResultsConfigDataSlice = createSlice({
   },
 });
 
-export const {
-  setSortToSend,
-  setFilter,
-  setExistingFilters,
-  // setSort,
-  setPageNumber,
-  setStartPage,
-} = roomResultsConfigDataSlice.actions;
+export const { setSortToSend, setFilter, setExistingFilters, setPageNumber, setStartPage } =
+  roomResultsConfigDataSlice.actions;
 export default roomResultsConfigDataSlice.reducer;

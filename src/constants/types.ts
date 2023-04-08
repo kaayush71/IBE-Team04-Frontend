@@ -134,3 +134,8 @@ export const initialRoom: RoomType = {
     numberOfRatings: 0,
   },
 };
+
+export interface RoomTypeRate {
+  date: string;
+  roomTypeRate: number;
+}

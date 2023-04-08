@@ -1,21 +1,27 @@
 import { FormControl, InputAdornment, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import LanguageIcon from "@mui/icons-material/Language";
-import React from "react";
+import React, { useMemo } from "react";
 import { setSelectedLanguage } from "../../../redux/reducers/languageDataSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function LanguageMenu() {
   const language = useAppSelector((state) => state.language.selectedLanguage);
   const { i18n } = useTranslation();
   const reduxDispatch = useAppDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
 
   // setting the selected language to redux
-  // store and aslo updating the i18-nexus 
-  // selected language to show the data in 
+  // store and aslo updating the i18-nexus
+  // selected language to show the data in
   // different language.
   const handleLanguageChange = (event: SelectChangeEvent) => {
     i18n.changeLanguage(event.target.value);
+    params.set("lang", event.target.value);
+    navigate(`${location.pathname}?${params}`);
     reduxDispatch(setSelectedLanguage(event.target.value));
   };
   return (
@@ -24,8 +30,8 @@ export default function LanguageMenu() {
         "& .MuiOutlinedInput-notchedOutline": {
           border: "0 none",
         },
-        "& .languageInput":{
-          padding:"0 !important"
+        "& .languageInput": {
+          padding: "0 !important",
         },
         "& .MuiSelect-icon": {
           display: "none",
