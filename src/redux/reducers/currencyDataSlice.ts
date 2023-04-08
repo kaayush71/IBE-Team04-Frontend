@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+// initial state 
 interface State {
   selectedCurrency: {
     name: string;

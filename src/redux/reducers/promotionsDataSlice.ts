@@ -1,7 +1,9 @@
+// Import necessary functions and libraries
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { promotionSliceIntialState } from "../../constants/types";
 
+// Define initial state for the promotion slice
 const initialState: promotionSliceIntialState = {
   promotions: [],
   loading: true,
@@ -19,9 +21,11 @@ const initialState: promotionSliceIntialState = {
   fetchCustomPromoStatus: "",
 };
 
+// Create an async thunk function to fetch promotions data from a backend API
 export const fetchPromotions = createAsyncThunk(
-  "promotionData/fetchPromotionData",
+  "promotionData/fetchPromotionData", // Name for the slice and the async thunk
   async (req: any, thunkApi) => {
+    // Use Axios to make a GET request to the API endpoint and return the response data
     const response = await axios.get(
       "https://95xedsf044.execute-api.ap-south-1.amazonaws.com/dev/api/v1/getAllPromotions/?",
       {
@@ -35,10 +39,11 @@ export const fetchPromotions = createAsyncThunk(
   }
 );
 
+// Create another async thunk function to fetch custom promotions data from the same backend API
 export const fetchCustomPromotion = createAsyncThunk(
-  "customPromotion/fetchCustomPromotion",
+  "customPromotion/fetchCustomPromotion", // Name for the slice and the async thunk
   async (req: any, thunkApi) => {
-    console.log("prmotion", req);
+    // Use Axios to make a GET request to the API endpoint and return the response data
     const response = await axios.get(
       "https://95xedsf044.execute-api.ap-south-1.amazonaws.com/dev/api/v1/checkCustomPromotions",
       {
@@ -48,14 +53,14 @@ export const fetchCustomPromotion = createAsyncThunk(
         },
       }
     );
-    console.log(response.data);
     return response.data;
   }
 );
 
+// Create a slice of state for the promotion data
 export const promotionDataSlice = createSlice({
-  name: "promotions",
-  initialState,
+  name: "promotions", // Name for the slice
+  initialState, // Initial state defined above
   reducers: {
     setSelectedPromotionRoomType: (state, action) => {
       state.selectedPromotionRoomType = action.payload;
@@ -65,30 +70,21 @@ export const promotionDataSlice = createSlice({
     },
   },
   extraReducers(builder) {
+    // Handle the successful completion of the fetchPromotions async thunk
     builder.addCase(fetchPromotions.fulfilled, (state, action) => {
-      state.promotions = action.payload;
-      state.loading = false;
+      state.promotions = action.payload; // Update the promotions state with the response data
+      state.loading = false; // Set loading state to false
     });
+    // Handle the rejection of the fetchPromotions async thunk
     builder.addCase(fetchPromotions.rejected, (state) => {
-      state.loading = false;
-      throw new Error("Unable to fetch promotions");
+      state.loading = false; // Set loading state to false
+      throw new Error("Unable to fetch promotions"); // Throw an error for debugging purposes
     });
+    // Handle the pending state of the fetchCustomPromotion async thunk
     builder.addCase(fetchCustomPromotion.pending, (state) => {
-      state.fetchCustomPromoStatus = "";
-    });
-    builder.addCase(fetchCustomPromotion.fulfilled, (state, action) => {
-      state.specialPromotion.promotionId = action.payload.promotion;
-      state.specialPromotion.promotionTitle = action.payload.promotionTitle;
-      state.specialPromotion.promotionDescription = action.payload.promotionDescription;
-      state.specialPromotion.priceFactor = action.payload.priceFactor;
-      state.showSpecialPromotion = true;
-      state.fetchCustomPromoStatus = "success";
-    });
-    builder.addCase(fetchCustomPromotion.rejected, (state, action) => {
-      state.fetchCustomPromoStatus = "rejected";
+      state.fetchCustomPromoStatus = ""; // Set the fetchCustomPromoStatus state to an empty string
     });
   },
 });
-
 export const { setSelectedPromotionRoomType, setFetchPromotionStatus } = promotionDataSlice.actions;
 export default promotionDataSlice.reducer;

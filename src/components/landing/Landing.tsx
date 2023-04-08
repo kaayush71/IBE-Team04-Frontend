@@ -49,6 +49,7 @@ export default function Landing() {
   const landingConfig = useAppSelector((state) => state.landingForm.landingConfig);
   const landingFormData = useAppSelector((state) => state.landingForm);
   const accessibility = useAppSelector((state) => state.landingForm.accessibility);
+  const filters = useAppSelector((state) => state.resultsConfiguration.filters);
   const { t } = useTranslation();
   const handleCheckbox = () => {
     reduxDispatch(setAccessibility(!accessibility));
@@ -60,6 +61,7 @@ export default function Landing() {
   }, [reduxDispatch]);
 
   useEffect(() => {
+    console.log("hello");
     reduxDispatch(fetchCalendarData());
     reduxDispatch(setShowItineraryCard(false));
     const formData = JSON.parse(localStorage.getItem("formData") || "{}");
@@ -83,6 +85,7 @@ export default function Landing() {
       guestDetails: landingConfig.searchForm.guest.guestTypes,
       accessibility: landingFormData.accessibility,
       totalGuestCount: landingFormData.totalGuestCount,
+      filters: filters,
     };
     localStorage.setItem("formData", JSON.stringify(formData));
     searchParams.set("propertyId", formData.property);

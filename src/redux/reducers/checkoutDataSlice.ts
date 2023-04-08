@@ -1,5 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { Promotion } from "../../constants/types";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { initialRoom, Promotion } from "../../constants/types";
+import axios from "axios";
 // importing RoomType interface from a different module
 import { RoomType } from "./roomResultConfigDataSlice";
 
@@ -25,35 +26,13 @@ interface Checkout {
     name: string;
     value: number;
   }[];
+  sendReviewMailStatus: string;
+  addReviewStatus: string;
 }
 
 // defining the initial state of the Checkout object
 const initialState: Checkout = {
-  room: {
-    areaInSquareFeet: 0,
-    doubleBed: 0,
-    maxCapacity: 0,
-    roomTypeName: "",
-    roomTypeId: 0,
-    propertyAddress: "",
-    singleBed: 0,
-    roomRate: 0,
-    bedType: "",
-    priceType: "",
-    bestPromotion: {
-      minimumDaysOfStay: 0,
-      priceFactor: 0,
-      promotionDescription: "",
-      promotionTitle: "",
-      isDeactivated: false,
-      promotionId: 0,
-    },
-    ratingAndReviews: {
-      showRatingsAndReviews: true,
-      averageRatingValue: 0,
-      numberOfRatings: 0,
-    },
-  },
+  room: initialRoom,
   selectedPromotion: {
     minimumDaysOfStay: NaN,
     priceFactor: NaN,
@@ -71,7 +50,32 @@ const initialState: Checkout = {
   dueAtResort: 0,
   dueNow: 0,
   taxes: [],
+  sendReviewMailStatus: "",
+  addReviewStatus: "",
 };
+
+export const sendReviewMail = createAsyncThunk("sendReviewMail", async (req: any, thunkAPI) => {
+  console.log("req", req);
+  const response = await axios.get(
+    "https://95xedsf044.execute-api.ap-south-1.amazonaws.com/dev/api/v1/feedback",
+    {
+      params: req,
+    }
+  );
+  console.log(response.data);
+  return response.data;
+});
+
+export const addReview = createAsyncThunk("addReview", async (req: any, thunkAPI) => {
+  console.log("req", req);
+  const response = await axios.post(
+    "https://95xedsf044.execute-api.ap-south-1.amazonaws.com/dev/api/v1/addReviews",
+    {},
+    { params: req }
+  );
+  console.log(response.data);
+  return response.data;
+});
 
 // creating the checkoutDataSlice using createSlice method
 export const checkoutDataSlice = createSlice({
@@ -99,6 +103,26 @@ export const checkoutDataSlice = createSlice({
     setCheckoutSelectedRoom: (state, action) => {
       state.selectedRoom = action.payload;
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(sendReviewMail.pending, (state) => {
+      state.sendReviewMailStatus = "";
+    });
+    builder.addCase(sendReviewMail.fulfilled, (state, action) => {
+      state.sendReviewMailStatus = "success";
+    });
+    builder.addCase(sendReviewMail.rejected, (state) => {
+      state.sendReviewMailStatus = "rejected";
+    });
+    builder.addCase(addReview.pending, (state) => {
+      state.addReviewStatus = "";
+    });
+    builder.addCase(addReview.fulfilled, (state, action) => {
+      state.addReviewStatus = "success";
+    });
+    builder.addCase(addReview.rejected, (state) => {
+      state.addReviewStatus = "rejected";
+    });
   },
 });
 

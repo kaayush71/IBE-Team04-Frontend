@@ -1,3 +1,5 @@
+import { RoomType } from "../redux/reducers/roomResultConfigDataSlice";
+
 export interface rooms {
   roomCountArray: [number];
   roomCountSelected: number;
@@ -105,4 +107,30 @@ export type promotionSliceIntialState = {
   isSpecialPromotionError: boolean;
   selectedPromotionRoomType: string;
   fetchCustomPromoStatus: string;
+};
+
+export const initialRoom: RoomType = {
+  areaInSquareFeet: 0,
+  doubleBed: 0,
+  maxCapacity: 0,
+  roomTypeName: "",
+  roomTypeId: 0,
+  propertyAddress: "",
+  singleBed: 0,
+  roomRate: 0,
+  bedType: "",
+  priceType: "",
+  bestPromotion: {
+    minimumDaysOfStay: 0,
+    priceFactor: 0,
+    promotionDescription: "",
+    promotionTitle: "",
+    isDeactivated: false,
+    promotionId: 0,
+  },
+  ratingAndReviews: {
+    showRatingsAndReviews: true,
+    averageRatingValue: 0,
+    numberOfRatings: 0,
+  },
 };

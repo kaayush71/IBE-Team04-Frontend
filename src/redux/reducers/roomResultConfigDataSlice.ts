@@ -173,7 +173,7 @@ export const roomResultsConfigDataSlice = createSlice({
       state.beds = action.payload.beds;
       const formData = JSON.parse(localStorage.getItem("formData") || "{}");
       localStorage.setItem("page", `${state.selectedPage}`);
-      if (formData.filters === undefined) {
+      if (formData.filters.length === 0) {
         formData.filters = state.filters;
         localStorage.setItem("formData", JSON.stringify(formData));
       } else {
@@ -182,7 +182,7 @@ export const roomResultsConfigDataSlice = createSlice({
       state.resultConfigLoading = false;
     });
     builder.addCase(fetchResultsConfigData.rejected, (state) => {
-      console.log("rejected");
+      console.log("room result config rejected");
     });
     builder.addCase(fetchRoomResultsGraphQlData.pending, (state, action) => {
       state.roomResultsLoading = true;
