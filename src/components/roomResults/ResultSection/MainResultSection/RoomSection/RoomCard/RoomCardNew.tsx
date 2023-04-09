@@ -62,7 +62,7 @@ const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
     >
       <Box sx={{ borderRadius: "5px" }}>
         <Slider className="slick-slider" {...sliderSettings}>
-          {roomTypeImages[`${room.roomTypeName}`].images.map((image, index) => (
+          {roomTypeImages[`${room.roomTypeName}`].compressedImages.map((image, index) => (
             <img className="room-image" key={index} src={image} alt="roomImage" />
           ))}
         </Slider>

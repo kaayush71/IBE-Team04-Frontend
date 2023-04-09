@@ -46,6 +46,7 @@ interface RoomResultsConfig {
       images: string[];
       ammenities: string[];
       description: string;
+      compressedImages: string[];
     };
   };
   numberOfBedsSelected: number;
@@ -165,6 +166,7 @@ export const roomResultsConfigDataSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchResultsConfigData.fulfilled, (state, action) => {
+      console.log(action.payload.roomType);
       state.filters = action.payload.filters;
       state.sorts = action.payload.sorts;
       state.roomType = action.payload.roomType;
