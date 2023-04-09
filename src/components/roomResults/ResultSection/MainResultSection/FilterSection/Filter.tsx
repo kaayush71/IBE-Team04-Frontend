@@ -1,18 +1,46 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Checkbox, ListItemIcon, ListItemText, MenuItem, Typography } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import React from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import "./filter.scss";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/store";
 import { setFilter } from "../../../../../redux/reducers/roomResultConfigDataSlice";
 import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Filter = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const filters = useAppSelector((state) => state.resultsConfiguration.filters);
   const reduxDispatch = useAppDispatch();
   const { t } = useTranslation();
+  const formData = JSON.parse(localStorage.getItem("formData") || "{}");
+  const previousFormDataRef = useRef(formData);
+  useEffect(() => {
+    console.log("filter");
+    if (formData === "{}" || formData === previousFormDataRef.current) {
+      return;
+    } else {
+      if (filters !== undefined) {
+        filters.forEach((filter: any) => {
+          if (filter.show === true) {
+            if (filter.selectedOptions.length !== 0)
+              searchParams.set(`${filter.filterName}`, `${filter.selectedOptions}`);
+            else {
+              searchParams.delete(`${filter.filterName}`);
+            }
+          }
+        });
+        navigate(`/room-search-results?${searchParams.toString()}`);
+      }
+    }
+    previousFormDataRef.current = formData;
+  }, [filters,navigate, searchParams]);
+
   const handleClick = (filterData: any) => {
     reduxDispatch(setFilter(filterData));
   };

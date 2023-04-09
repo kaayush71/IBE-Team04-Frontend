@@ -1,5 +1,5 @@
 import { FormControl, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
-import React from "react";
+import React, { useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { setSelectedCuurency } from "../../../redux/reducers/currencyDataSlice";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
@@ -7,11 +7,18 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import EuroIcon from "@mui/icons-material/Euro";
 import "./CurrencyMenu.scss";
 import { Box } from "@mui/system";
+import { useLocation, useNavigate } from "react-router-dom";
+
 export default function CurrencyMenu() {
   const currency = useAppSelector((state) => state.currency.selectedCurrency.name);
   const reduxDispatch = useAppDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
   // set the selected currency to redux store
   const handleCurrencyChnage = (event: SelectChangeEvent) => {
+    params.set("currency", event.target.value);
+    navigate(`${location.pathname}?${params}`);
     reduxDispatch(setSelectedCuurency(event.target.value));
   };
   return (

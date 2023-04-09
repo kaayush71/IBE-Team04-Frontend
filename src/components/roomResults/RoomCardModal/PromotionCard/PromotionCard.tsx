@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Promotion } from "../../../../constants/types";
 import {
+  fetchRoomTypeRates,
   setCheckoutRoom,
   setCheckoutSelectedRoom,
   setDates,
@@ -42,6 +43,13 @@ const PromotionCard = ({ room, promotion }: Props) => {
       setDates({
         startDate,
         endDate,
+      })
+    );
+    reduxDispatch(
+      fetchRoomTypeRates({
+        startTime: startDate,
+        endTime: endDate,
+        roomTypeId: room.roomTypeId,
       })
     );
     reduxDispatch(setCheckoutSelectedRoom(selectedRoom));

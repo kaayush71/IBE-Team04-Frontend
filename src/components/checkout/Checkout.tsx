@@ -35,13 +35,14 @@ const Checkout = (props: Props) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  console.log("checkout");
   return (
     <Box sx={{ width: "100%" }} className="checkout">
       <Steps />
       <Box sx={{ padding: "0 3.375rem", width: "100%" }}>
         <Box sx={checkOutContainerStyle}>
           <Box>
-          {/* ---------------------------------------------- User Info ------------------------------------------ */}
+            {/* ---------------------------------------------- User Info ------------------------------------------ */}
             <StyledButton
               onClick={handleOpen}
               sx={{ display: "flex", maxWidth: "15rem", margin: "0 auto" }}

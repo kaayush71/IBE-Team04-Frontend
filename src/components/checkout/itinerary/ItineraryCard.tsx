@@ -1,9 +1,12 @@
 import { Box, Button, Typography } from "@mui/material";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { setShowItineraryCard } from "../../../redux/reducers/checkoutDataSlice";
+import {
+  fetchRoomTypeRates,
+  setShowItineraryCard,
+} from "../../../redux/reducers/checkoutDataSlice";
 import { StyledDivider, TypographyGrey } from "../../styledComponents/styledComponents";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
@@ -33,6 +36,7 @@ const ItineraryCard = ({ buttonText }: Props) => {
   const handlePromotionModelClose = () => setIsPromotionModalOpen(false);
 
   const { t } = useTranslation();
+
   const guestConfig = useAppSelector((state) => state.checkout.guestTypes);
   const startDate = useAppSelector((state) => state.checkout.startDate);
   const endDate = useAppSelector((state) => state.checkout.endDate);
@@ -46,15 +50,27 @@ const ItineraryCard = ({ buttonText }: Props) => {
   const numberOfRoomSelected = useAppSelector((state) => state.checkout.selectedRoom);
   const guestInformation = guestTypeStrings.join(", ");
   const selectedCurrency = useAppSelector((state) => state.currency.selectedCurrency);
-
+  const location = useLocation();
   // currently selected promotion
-  const selectedPromotion = useAppSelector((state) => state.checkout.selectedPromotion);
+  const { selectedPromotion, roomTypeRates, totalCostOfStay } = useAppSelector(
+    (state) => state.checkout
+  );
+  const reduxDispatch = useAppDispatch();
 
   // currenlty selected room whose data is
   // being displayed.
   const checkoutRoom = useAppSelector((state) => state.checkout.room);
-  const reduxDispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    reduxDispatch(
+      fetchRoomTypeRates({
+        startTime: startDate,
+        endTime: endDate,
+        roomTypeId: checkoutRoom.roomTypeId,
+      })
+    );
+  }, [checkoutRoom.roomTypeId, endDate, reduxDispatch, startDate]);
 
   // on click of the checkout/continue shopping
   // button, redirecting the user to room-search-results
@@ -91,10 +107,30 @@ const ItineraryCard = ({ buttonText }: Props) => {
           {guestInformation}
         </TypographyGrey>
         <TypographyGrey>Executive Room</TypographyGrey>
+
         <TypographyGrey>
           {`${selectedCurrency.symbol} ${selectedCurrency.rate * checkoutRoom.roomRate}`} per night
         </TypographyGrey>
         <TypographyGrey>{numberOfRoomSelected} room</TypographyGrey>
+        {/* ----------------------------------------------- Room Type Rates With Day ------------------------------------------- */}
+        {location.pathname === "/room-search-results" &&
+          roomTypeRates.map((roomTypeRate) => {
+            return (
+              <Box
+                key={roomTypeRate.date}
+                sx={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <TypographyGrey>
+                  {format(new Date(roomTypeRate.date), "EEEE do MMMM")}
+                </TypographyGrey>
+                <Typography>{`${selectedCurrency.symbol} ${
+                  selectedCurrency.rate * roomTypeRate.roomTypeRate
+                }`}</Typography>
+              </Box>
+            );
+          })}
+        {/* -------------------------------------------------------------------------------------------------------------------- */}
+
         <TypographyGrey textTransform={"capitalize"}>
           {`${selectedPromotion.promotionTitle.replaceAll("_", " ").toLowerCase()}, ${
             selectedCurrency.symbol
@@ -117,7 +153,7 @@ const ItineraryCard = ({ buttonText }: Props) => {
         <TypographyGrey>Subtotal</TypographyGrey>
         <Typography fontSize={"1.25rem"}>{`${selectedCurrency.symbol}${(
           selectedCurrency.rate *
-          (checkoutRoom.roomRate * selectedPromotion.priceFactor)
+          (totalCostOfStay * selectedPromotion.priceFactor)
         ).toFixed(1)}`}</Typography>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>

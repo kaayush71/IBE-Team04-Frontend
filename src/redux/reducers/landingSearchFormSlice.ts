@@ -201,6 +201,8 @@ export const landingSearchFormSlice = createSlice({
       state.numberOfRoomSelected = action.payload.searchForm.rooms.defaultRoomCount;
       state.accessibility = action.payload.searchForm.accessibility.defaultAccessibilty;
       state.loading = false;
+      // setting the initial config value
+      // inside localstorage.
       const formData = {
         property: state.propertyId,
         startDate: state.startDate,
@@ -210,6 +212,8 @@ export const landingSearchFormSlice = createSlice({
         accessibility: state.accessibility,
         totalGuestCount: state.totalGuestCount,
       };
+      // if the localstorage is empty then only
+      // setting the value else return.
       const setFormData = JSON.parse(localStorage.getItem("formData") || "{}");
       if (JSON.stringify(setFormData) === "{}") {
         localStorage.setItem("formData", JSON.stringify(formData));
