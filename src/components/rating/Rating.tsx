@@ -1,7 +1,7 @@
 import { Box, Typography, Rating, TextareaAutosize } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { addReview } from "../../redux/reducers/checkoutDataSlice";
+import { addReview, checkRatingAdded } from "../../redux/reducers/checkoutDataSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { StyledButton } from "../styledComponents/styledComponents";
 import Snackbar from "@mui/material/Snackbar";
@@ -43,10 +43,16 @@ const RatingPage = (props: Props) => {
   const reduxDispatch = useAppDispatch();
   const [open, setOpen] = React.useState(false);
   const addReviewStatus = useAppSelector((state) => state.checkout.addReviewStatus);
+  const ratingAdded = useAppSelector((state) => state.checkout.ratingAdded);
+  console.log(ratingAdded);
+  useEffect(() => {
+    reduxDispatch(
+      checkRatingAdded({
+        ratingId: id,
+      })
+    );
+  }, [id, reduxDispatch]);
   const handleClosed = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === "clickaway") {
-      return;
-    }
     setOpen(false);
   };
   const handleSubmit = (e: React.SyntheticEvent) => {
@@ -62,30 +68,35 @@ const RatingPage = (props: Props) => {
 
   return (
     <Box sx={ratingContainer}>
-      <Box sx={ratingBox}>
-        <Typography fontSize={"1.5rem"}>Please give your feedback for your stay.</Typography>
-        <Rating
-          sx={{ placeSelf: "center" }}
-          value={value}
-          precision={0.5}
-          max={5}
-          name="unique-rating"
-          onChange={(event, newValue) => setValue(newValue)}
-        />
-        <TextareaAutosize
-          style={{ padding: "1rem" }}
-          minLength={3}
-          maxRows={3}
-          placeholder="Please provide feedback comments."
-        />
-        <StyledButton
-          onClick={handleSubmit}
-          sx={{ width: "15rem", placeSelf: "center" }}
-          variant="contained"
-        >
-          SUBMIT
-        </StyledButton>
-      </Box>
+      {ratingAdded ? (
+        <Alert severity="error">You have already given your feedback</Alert>
+      ) : (
+        <Box sx={ratingBox}>
+          <Typography fontSize={"1.5rem"}>Please give your feedback for your stay.</Typography>
+          <Rating
+            sx={{ placeSelf: "center" }}
+            value={value}
+            precision={0.5}
+            max={5}
+            name="unique-rating"
+            onChange={(event, newValue) => setValue(newValue)}
+          />
+          <TextareaAutosize
+            style={{ padding: "1rem" }}
+            minLength={3}
+            maxRows={3}
+            placeholder="Please provide feedback comments."
+          />
+          <StyledButton
+            onClick={handleSubmit}
+            sx={{ width: "15rem", placeSelf: "center" }}
+            variant="contained"
+          >
+            SUBMIT
+          </StyledButton>
+        </Box>
+      )}
+
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         sx={{ position: "absolute", bottom: "10vh" }}

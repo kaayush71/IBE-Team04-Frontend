@@ -21,6 +21,7 @@ import {
   fetchCustomPromotion,
   setSelectedPromotionRoomType,
 } from "../../../redux/reducers/promotionsDataSlice";
+import { useTranslation } from "react-i18next";
 type Props = {
   room: RoomType;
   handleClose: any;
@@ -44,13 +45,11 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 });
 
 const RoomCardModal = ({ room, handleClose }: Props) => {
+  const { t } = useTranslation();
   const fetchCustomPromoStatus = useAppSelector((state) => state.promotions.fetchCustomPromoStatus);
   const [open, setOpen] = React.useState(false);
 
   const handleClosed = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === "clickaway") {
-      return;
-    }
     setOpen(false);
   };
   const reduxDispatch = useAppDispatch();
@@ -93,7 +92,7 @@ const RoomCardModal = ({ room, handleClose }: Props) => {
           ))}
         </Slider>
         <Typography sx={roomTypeName} color={"#ffffff"} fontSize={"2rem"}>
-          {room.roomTypeName.replaceAll("_", " ").toLowerCase()}
+          {t(room.roomTypeName.replaceAll("_", " "))}
         </Typography>
         <IconButton
           sx={{
@@ -136,12 +135,14 @@ const RoomCardModal = ({ room, handleClose }: Props) => {
                 </Typography>
               </Box>
             </Box>
-            <Typography mt={"1.375rem"}>{roomType[`${room.roomTypeName}`].description}</Typography>
+            <Typography mt={"1.375rem"}>
+              {t(`${roomType[`${room.roomTypeName}`].description}`)}
+            </Typography>
 
             {/* ------------------------------------------------------- Promotions ---------------------------------------------------- */}
             <Box mt={"1.625rem"} className="standard-rate">
               <Typography fontSize={"1.25rem"} fontWeight={"700"}>
-                Standard Rate
+                {t("Standard Rate")}
               </Typography>
               {/* --------------------------------------- Promotion Card ----------------------------------------------------------- */}
               <PromotionCardStandard room={room} />
@@ -149,7 +150,7 @@ const RoomCardModal = ({ room, handleClose }: Props) => {
             {/* ---------------------------------------------------------------- Deals And Packages ------------------------------------- */}
             <Box mt={"2.5rem"} className="deals-packages">
               <Typography fontSize={"1.25rem"} fontWeight={"700"}>
-                Deals & Packages
+                {t("Deals & Packages")}
               </Typography>
               {promotions.loading ? (
                 <CircularProgress />
@@ -166,7 +167,7 @@ const RoomCardModal = ({ room, handleClose }: Props) => {
             promotions.selectedPromotionRoomType === room.roomTypeName ? (
               <Box mt={"2.5rem"} className="special-promotion">
                 <Typography fontSize={"1.25rem"} fontWeight={"700"}>
-                  Special Deal
+                  {t("Special Deal")}
                 </Typography>
                 <PromotionCard promotion={specialPromotion} room={room} />
               </Box>
@@ -177,7 +178,7 @@ const RoomCardModal = ({ room, handleClose }: Props) => {
             {/* --------------------------------------------------------------- Promo Code ------------------------------------------------ */}
             <form onSubmit={handleSubmit}>
               <Box mt={"2.5rem"}>
-                <Typography>Enter a promo code</Typography>
+                <Typography>{t("Enter a promo code")}</Typography>
                 <Box
                   mt={"5px"}
                   sx={{
@@ -188,16 +189,16 @@ const RoomCardModal = ({ room, handleClose }: Props) => {
                   }}
                 >
                   <TextField inputRef={inputRef} id="outlined-basic" variant="outlined" />
-                  <StyledButtonNoMargin onSubmit={handleSubmit} type="submit" variant="contained">
+                  <StyledButtonNoMargin type="submit" variant="contained">
                     <Typography sx={{ fontWeight: "700", fontSize: "0.875rem" }}>
-                      {"APPLY"}
+                      {t("APPLY")}
                     </Typography>
                   </StyledButtonNoMargin>
                   <Snackbar
                     anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                     sx={{ marginTop: "5rem" }}
                     open={fetchCustomPromoStatus !== "" && open}
-                    autoHideDuration={1000}
+                    autoHideDuration={700}
                     onClose={handleClosed}
                   >
                     {fetchCustomPromoStatus === "success" ? (
@@ -223,7 +224,7 @@ const RoomCardModal = ({ room, handleClose }: Props) => {
           </Box>
           {/* -------------------------------------------------------------- Ammenities ----------------------------------------------- */}
           <Box>
-            <Typography>Ammenities</Typography>
+            <Typography>{t("Ammenities")}</Typography>
             <Box
               sx={{
                 marginTop: "1rem",
@@ -236,7 +237,7 @@ const RoomCardModal = ({ room, handleClose }: Props) => {
                 return (
                   <Box key={index} sx={{ display: "flex", gap: "0.5rem" }}>
                     <CheckCircleOutlineIcon />
-                    <Typography>{ammenity}</Typography>
+                    <Typography>{t(`${ammenity}`)}</Typography>
                   </Box>
                 );
               })}

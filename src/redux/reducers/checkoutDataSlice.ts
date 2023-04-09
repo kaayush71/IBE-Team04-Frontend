@@ -31,6 +31,7 @@ interface Checkout {
   userId: string;
   roomTypeRates: RoomTypeRate[];
   totalCostOfStay: number;
+  ratingAdded: boolean;
 }
 
 // defining the initial state of the Checkout object
@@ -58,7 +59,28 @@ const initialState: Checkout = {
   userId: "",
   roomTypeRates: [],
   totalCostOfStay: NaN,
+  ratingAdded: false,
 };
+
+export const fetchBillingConfig = createAsyncThunk("fetchBillingConfig", async (req, thunkAPI) => {
+  const response = await axios.get(
+    "https://95xedsf044.execute-api.ap-south-1.amazonaws.com/dev/api/v1/configuration?tenantName=Kickdrum&property=Team-04%23billingConfig"
+  );
+  console.log(JSON.parse(response.data.billingConfig));
+  return JSON.parse(response.data.billingConfig);
+});
+
+export const checkRatingAdded = createAsyncThunk("checkRatingAdded", async (req: any, thunkAPI) => {
+  const response = await axios.get(
+    "https://95xedsf044.execute-api.ap-south-1.amazonaws.com/dev/api/v1/checkReview",
+    {
+      params: {
+        ratingId: req.ratingId,
+      },
+    }
+  );
+  return response.data;
+});
 
 export const sendReviewMail = createAsyncThunk("sendReviewMail", async (req: any, thunkAPI) => {
   console.log("req", req);
@@ -131,6 +153,25 @@ export const checkoutDataSlice = createSlice({
     },
   },
   extraReducers(builder) {
+    builder.addCase(fetchBillingConfig.fulfilled, (state, action) => {
+      state.vat = action.payload.vat;
+      state.taxes = action.payload.taxes;
+      state.dueNow = action.payload.dueNow;
+      state.dueAtResort = action.payload.dueAtResort;
+    });
+    builder.addCase(checkRatingAdded.pending, (state) => {
+      state.ratingAdded = false;
+    });
+    builder.addCase(checkRatingAdded.fulfilled, (state, action) => {
+      console.log(action.payload);
+      if (action.payload.message === "Rating yet to be filled") {
+        state.ratingAdded = false;
+      } else state.ratingAdded = true;
+    });
+    builder.addCase(checkRatingAdded.rejected, (state) => {
+      state.ratingAdded = true;
+    });
+
     builder.addCase(sendReviewMail.pending, (state) => {
       state.sendReviewMailStatus = "";
     });

@@ -39,7 +39,7 @@ const Filter = () => {
       }
     }
     previousFormDataRef.current = formData;
-  }, [filters,navigate, searchParams]);
+  }, [filters, navigate, searchParams]);
 
   const handleClick = (filterData: any) => {
     reduxDispatch(setFilter(filterData));

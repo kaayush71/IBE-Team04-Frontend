@@ -33,9 +33,6 @@ const CheckOutModal = (props: Props) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClosed = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === "clickaway") {
-      return;
-    }
     setOpen(false);
   };
   const reduxDispatch = useAppDispatch();
