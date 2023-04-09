@@ -58,6 +58,7 @@ interface RoomResultsConfig {
   selectedPage: number;
   isError: boolean;
   startPage: number;
+  endPage: number;
   resultConfigLoading: boolean;
 }
 
@@ -80,6 +81,7 @@ const initialState: RoomResultsConfig = {
   selectedPage: 1,
   isError: false,
   startPage: 1,
+  endPage: 1,
   resultConfigLoading: true,
 };
 
@@ -159,7 +161,7 @@ export const roomResultsConfigDataSlice = createSlice({
     setPageNumber: (state, action) => {
       state.selectedPage = action.payload;
     },
-    setStartPage: (state, action) => {},
+    setPage: (state, action) => {},
   },
   extraReducers: (builder) => {
     builder.addCase(fetchResultsConfigData.fulfilled, (state, action) => {
@@ -189,15 +191,25 @@ export const roomResultsConfigDataSlice = createSlice({
       state.totalNumberOfData = action.payload.totalNumberOfData;
       state.roomResultsLoading = false;
       state.isError = false;
+      if (state.selectedPage === 1) {
+        state.startPage = 1;
+        state.endPage = action.payload.roomTypeList.length;
+      } else {
+        state.startPage = (state.selectedPage - 1) * 3 + 1;
+        state.endPage = (state.selectedPage - 1) * 3 + action.payload.roomTypeList.length;
+      }
     });
     builder.addCase(fetchRoomResultsGraphQlData.rejected, (state) => {
       console.log("Grpah ql call rejected");
       state.isError = true;
       state.roomResultsLoading = false;
+      state.startPage = 0;
+      state.endPage = 0;
+      state.totalNumberOfData = 0;
     });
   },
 });
 
-export const { setSortToSend, setFilter, setExistingFilters, setPageNumber, setStartPage } =
+export const { setSortToSend, setFilter, setExistingFilters, setPageNumber, setPage } =
   roomResultsConfigDataSlice.actions;
 export default roomResultsConfigDataSlice.reducer;

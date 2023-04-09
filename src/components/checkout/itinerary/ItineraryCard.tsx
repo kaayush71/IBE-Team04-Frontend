@@ -11,6 +11,7 @@ import { StyledDivider, TypographyGrey } from "../../styledComponents/styledComp
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import PromotionModal from "./PromotionModal";
+import TaxModal from "./TaxModal";
 // buttonTetxt to change the text displayed
 // on the button.
 type Props = {
@@ -32,8 +33,13 @@ const itineraryButtonStyle = {
 // Itinerary Card showing on the checkout page.
 const ItineraryCard = ({ buttonText }: Props) => {
   const [isPromotionModalOpen, setIsPromotionModalOpen] = useState<boolean>();
+  const [isTaxModalOpen, setIsTaxModalOpen] = useState<boolean>();
+
   const handlePromotionModelOpen = () => setIsPromotionModalOpen(true);
   const handlePromotionModelClose = () => setIsPromotionModalOpen(false);
+
+  const handleTaxModelOpen = () => setIsTaxModalOpen(true);
+  const handleTaxModelClose = () => setIsTaxModalOpen(false);
 
   const { t } = useTranslation();
 
@@ -87,29 +93,69 @@ const ItineraryCard = ({ buttonText }: Props) => {
     if (buttonText === "CONTINUE SHOPPING") navigate("/");
     else if (buttonText === "CHECKOUT") navigate("/room-search-results");
   };
+  const { vat, taxes, dueNow, dueAtResort } = useAppSelector((state) => state.checkout);
+
+  // function to calculate vat amount
+  const calculateVat = () => {
+    let costWithVat = 0;
+    costWithVat = totalCostOfStay * selectedPromotion.priceFactor;
+    costWithVat = costWithVat * vat;
+    return costWithVat * selectedCurrency.rate;
+  };
+
+  // function to calculate amount with taxes
+  const calculateTaxes = () => {
+    let costWithTaxes = 0;
+    costWithTaxes = totalCostOfStay * selectedPromotion.priceFactor;
+    let taxAmount = 0;
+    for (let i = 0; i < taxes.length; i++) {
+      taxAmount = taxAmount + costWithTaxes * taxes[i].value;
+    }
+    return taxAmount * selectedCurrency.rate;
+  };
+
+  // function to calculate amount due now
+  const dueNowAmount = () => {
+    let dueNowAmount = 0;
+    dueNowAmount +=
+      totalCostOfStay * selectedPromotion.priceFactor + calculateTaxes() + calculateVat();
+    dueNowAmount = dueNowAmount * dueNow;
+    return dueNowAmount * selectedCurrency.rate;
+  };
+
+  // function to calculate amount due at resort
+  const dueAtResortAmount = () => {
+    let dueAtResortAmount = 0;
+    dueAtResortAmount +=
+      totalCostOfStay * selectedPromotion.priceFactor + calculateTaxes() + calculateVat();
+    dueAtResortAmount = dueAtResortAmount * dueAtResort;
+    return dueAtResortAmount * selectedCurrency.rate;
+  };
+
   return (
     <Box sx={{ background: "#EFF0F1", padding: "1.43rem" }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <Typography fontWeight={"700"} fontSize={"1.5rem"}>
-          Your Trip Itinerary
+          {t("Your Trip Itinerary")}
         </Typography>
         <Button onClick={handleRemove} sx={{ cursor: "pointer", color: "#006EFF" }}>
-          Remove
+          {t("Remove")}
         </Button>
       </Box>
       <Box mt={"1rem"}>
         <Typography textTransform={"capitalize"} fontWeight={"700"} fontSize={"20px"}>
-          {checkoutRoom.roomTypeName.replaceAll("_", " ").toLowerCase()}
+          {t("Property")} 4
         </Typography>
         <TypographyGrey>
           {format(new Date(startDate), "MMM,dd")}-{format(new Date(endDate), "MMM,dd")}
           {` `} {format(new Date(), "yyyy")} {` | `}
           {guestInformation}
         </TypographyGrey>
-        <TypographyGrey>Executive Room</TypographyGrey>
+        <TypographyGrey>{t(checkoutRoom.roomTypeName.replaceAll("_", " "))}</TypographyGrey>
 
         <TypographyGrey>
-          {`${selectedCurrency.symbol} ${selectedCurrency.rate * checkoutRoom.roomRate}`} per night
+          {`${selectedCurrency.symbol} ${selectedCurrency.rate * checkoutRoom.roomRate}`}{" "}
+          {t("per night")}
         </TypographyGrey>
         <TypographyGrey>{numberOfRoomSelected} room</TypographyGrey>
         {/* ----------------------------------------------- Room Type Rates With Day ------------------------------------------- */}
@@ -124,7 +170,7 @@ const ItineraryCard = ({ buttonText }: Props) => {
                   {format(new Date(roomTypeRate.date), "EEEE do MMMM")}
                 </TypographyGrey>
                 <Typography>{`${selectedCurrency.symbol} ${
-                  selectedCurrency.rate * roomTypeRate.roomTypeRate
+                  selectedCurrency.rate * roomTypeRate.roomTypeRate * selectedPromotion.priceFactor
                 }`}</Typography>
               </Box>
             );
@@ -150,7 +196,7 @@ const ItineraryCard = ({ buttonText }: Props) => {
       </Box>
       <StyledDivider></StyledDivider>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <TypographyGrey>Subtotal</TypographyGrey>
+        <TypographyGrey>{t("Subtotal")}</TypographyGrey>
         <Typography fontSize={"1.25rem"}>{`${selectedCurrency.symbol}${(
           selectedCurrency.rate *
           (totalCostOfStay * selectedPromotion.priceFactor)
@@ -158,26 +204,45 @@ const ItineraryCard = ({ buttonText }: Props) => {
       </Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <TypographyGrey>
-          Taxes, Surcharges, Fees
-          <InfoOutlinedIcon fontSize="small" />
+          {t("Taxes, Surcharges, Fees")}
+          <InfoOutlinedIcon
+            sx={{ cursor: "pointer" }}
+            onClick={handleTaxModelOpen}
+            fontSize="small"
+          />
         </TypographyGrey>
-        <Typography fontSize={"1.25rem"}>$XXX.xx</Typography>
+        {isTaxModalOpen && <TaxModal open={isTaxModalOpen} handleClose={handleTaxModelClose} />}
+        <Typography fontSize={"1.25rem"}>
+          {selectedCurrency.symbol}
+          {calculateTaxes().toFixed(1)}
+        </Typography>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <TypographyGrey>VAT</TypographyGrey>
-        <Typography fontSize={"1.25rem"}>$XXX.xx</Typography>
+        <TypographyGrey>{t("VAT")}</TypographyGrey>
+        <Typography fontSize={"1.25rem"}>
+          {selectedCurrency.symbol}
+          {calculateVat().toFixed(1)}
+        </Typography>
       </Box>
       <StyledDivider></StyledDivider>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <TypographyGrey>Due now</TypographyGrey>
-        <Typography fontSize={"1.25rem"}>$XXX.xx</Typography>
+        <TypographyGrey>{t("Due now")}</TypographyGrey>
+        <Typography fontSize={"1.25rem"}>
+          {selectedCurrency.symbol}
+          {dueNowAmount().toFixed(1)}
+        </Typography>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <TypographyGrey>Due at resort</TypographyGrey>
-        <Typography fontSize={"1.25rem"}>$XXX.xx</Typography>
+        <TypographyGrey>{t("Due at resort")}</TypographyGrey>
+        <Typography fontSize={"1.25rem"}>
+          {selectedCurrency.symbol}
+          {dueAtResortAmount().toFixed(1)}
+        </Typography>
       </Box>
       <Button onClick={handleClick} type="submit" sx={itineraryButtonStyle} variant="outlined">
-        <Typography sx={{ fontWeight: "700", fontSize: "0.875rem" }}>{`${buttonText}`}</Typography>
+        <Typography sx={{ fontWeight: "700", fontSize: "0.875rem" }}>
+          {t(`${buttonText}`)}
+        </Typography>
       </Button>
     </Box>
   );

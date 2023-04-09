@@ -28,7 +28,7 @@ const roomCardList = {
   display: "flex",
   flexWrap: "wrap",
   flexDirection: { xs: "column", md: "row" },
-  // alignItems: "center",
+  alignItems: { xs: "center", md: "initial" },
   columnGap: "3rem",
   rowGap: "2rem",
   justifyContent: "space-between",
@@ -84,6 +84,8 @@ const RoomSection = () => {
     navigate(`/room-search-results?${params.toString()}`);
   };
 
+  const { startPage, endPage } = useAppSelector((state) => state.resultsConfiguration);
+
   return (
     <Box sx={{ width: "100%" }} className={"room-section"}>
       <Box className={"room-title"} sx={roomSectionContainer}>
@@ -102,9 +104,9 @@ const RoomSection = () => {
               <ChevronLeftIcon sx={{ paddingTop: "0.4rem", height: "3rem" }} fontSize="medium" />
             </Box>
             <Typography fontWeight={700} fontSize="1" sx={{ padding: "0.5rem 0" }}>
-              {`Showing ${roomResults.selectedPage} - ${
-                roomResults.roomTypeList.length * roomResults.selectedPage
-              } of  ${roomResults.totalNumberOfData} Results`}
+              {t("Showing")}
+              {` ${startPage} - ${endPage} of  ${roomResults.totalNumberOfData} `}
+              {t("Results")}
             </Typography>
             <Box onClick={handleForward}>
               <ChevronRightIcon sx={{ paddingTop: "0.4rem", height: "3rem" }} fontSize="medium" />
@@ -130,7 +132,7 @@ const RoomSection = () => {
               IconComponent={KeyboardArrowDownIcon}
               renderValue={
                 roomResults.selectedSortName === ""
-                  ? () => <Typography fontWeight={700}>Sort</Typography>
+                  ? () => <Typography fontWeight={700}>{t("Sort")}</Typography>
                   : () => (
                       <Typography
                         fontWeight={700}
@@ -164,7 +166,7 @@ const RoomSection = () => {
       </Box>
       <Box
         sx={{
-          display: showItineraryCard ? { sm: "flex", md: "grid" } : "initial",
+          display: showItineraryCard ? { sm: "flex", md: "grid", xs: "flex" } : "initial",
           gridTemplateColumns: "60% 1fr",
           gap: "3rem",
           flexDirection: "column-reverse",

@@ -28,3 +28,9 @@ export const StyledDivider = styled(Divider)((props) => ({
   color: "#5D5D5D",
   borderWidth: "1px",
 }));
+
+export const StyledDividerBlack = styled(Divider)((props) => ({
+  margin: "1.375rem 0",
+  borderWidth: "0.1px",
+  borderColor: "black",
+}));

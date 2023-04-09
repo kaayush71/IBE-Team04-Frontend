@@ -2,7 +2,9 @@
   font-size: 2.7rem;
   font-weight: 800;
   color: #ffffff;
+  opacity: 1;
 }
+
 .slick-slider {
   .slick-next:before {
     content: ">";
@@ -36,6 +38,7 @@
 }
 .slick-active {
   button::before {
+    opacity: 1;
     color: #ffffff !important;
   }
 }
@@ -53,6 +56,7 @@
     }
   }
   .slick-arrow {
+    opacity: 1;
     margin-bottom: 2rem !important;
   }
 }

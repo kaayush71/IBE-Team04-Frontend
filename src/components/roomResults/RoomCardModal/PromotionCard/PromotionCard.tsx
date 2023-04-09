@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Promotion } from "../../../../constants/types";
 import {
@@ -30,6 +31,7 @@ const promotionBoxStyle = {
 };
 
 const PromotionCard = ({ room, promotion }: Props) => {
+  const { t } = useTranslation();
   const selectedCurrency = useAppSelector((state) => state.currency.selectedCurrency);
   const startDate = useAppSelector((state) => state.landingForm.startDate);
   const endDate = useAppSelector((state) => state.landingForm.endDate);
@@ -69,7 +71,7 @@ const PromotionCard = ({ room, promotion }: Props) => {
           {promotion.promotionTitle.replaceAll("_", " ").toLowerCase()}
         </Typography>
         <Typography textTransform={"capitalize"} color={"#5D5D5D"} mt={"0.75rem"}>
-          {promotion.promotionDescription.replaceAll("_", " ").toLowerCase()}
+          {t(`${promotion.promotionDescription.replaceAll("_", " ").toLowerCase()}`)}
         </Typography>
       </Box>
       <Box sx={{ backgroundColor: "#EFF0F1", padding: "26px 23px" }}>
@@ -80,12 +82,12 @@ const PromotionCard = ({ room, promotion }: Props) => {
           ).toFixed(1)}`}
         </Typography>
         <Typography color={"#858685"} textAlign={"end"}>
-          per night
+          {t("per night")}
         </Typography>
         <Link style={{ textDecoration: "none" }} to={"/checkout"}>
           <StyledButton type="submit" variant="contained" onClick={handleSubmit}>
             <Typography sx={{ fontWeight: "700", fontSize: "0.875rem" }}>
-              {"SELECT PACKAGE"}
+              {t("SELECT PACKAGE")}
             </Typography>
           </StyledButton>
         </Link>

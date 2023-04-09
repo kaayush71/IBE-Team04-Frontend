@@ -1,6 +1,9 @@
 import { Modal } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { fetchBillingConfig } from "../../redux/reducers/checkoutDataSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 import Steps from "../roomResults/Stepper/Steps";
 import { StyledButton } from "../styledComponents/styledComponents";
 import CheckOutModal from "./checkOutModal/CheckOutModal";
@@ -25,17 +28,24 @@ const checkOutContainerStyle = {
   padding: "0 1.5rem",
   margin: "3.43rem 0",
   display: "grid",
-  gridTemplateColumns: "58.4% 1fr",
+  gridTemplateColumns: { lg: "58.4% 1fr", md: "1fr 1fr" },
   columnGap: "8.35rem",
-  minHeight: "50vh",
+  rowGap: "2rem",
+  minHeight: "63vh",
 };
 
 // Checkout Page
 const Checkout = (props: Props) => {
   const [open, setOpen] = React.useState(false);
+  const { t } = useTranslation();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  console.log("checkout");
+  const reduxDispatch = useAppDispatch();
+  const { showItineraryCard } = useAppSelector((state) => state.checkout);
+  useEffect(() => {
+    reduxDispatch(fetchBillingConfig());
+  }, [reduxDispatch]);
+
   return (
     <Box sx={{ width: "100%" }} className="checkout">
       <Steps />
@@ -48,7 +58,7 @@ const Checkout = (props: Props) => {
               sx={{ display: "flex", maxWidth: "15rem", margin: "0 auto" }}
               variant="contained"
             >
-              Checkout
+              {t("CHECKOUT")}
             </StyledButton>
             <Modal open={open} onClose={handleClose}>
               <Box sx={modalContainerStyle}>
@@ -58,7 +68,7 @@ const Checkout = (props: Props) => {
           </Box>
           {/* ---------------------------------------------- Itinerary section ------------------------------------------ */}
           <Box sx={{ display: "grid", gap: "2.5rem", position: "relative" }}>
-            <ItineraryCard buttonText="CONTINUE SHOPPING" />
+            {showItineraryCard ? <ItineraryCard buttonText="CONTINUE SHOPPING" /> : <></>}
             <HelpCard />
           </Box>
         </Box>

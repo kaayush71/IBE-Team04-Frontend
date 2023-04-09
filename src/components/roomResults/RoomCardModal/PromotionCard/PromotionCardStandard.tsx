@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import {
   fetchRoomTypeRates,
@@ -37,6 +38,7 @@ const PromotionCardStandard = ({ room }: Props) => {
     (state) => state.landingForm.landingConfig.searchForm.guest.guestTypes
   );
 
+  const { t } = useTranslation();
   const handleSubmit = () => {
     const promotion = {
       promotionTitle: "Standrd Rate",
@@ -70,7 +72,7 @@ const PromotionCardStandard = ({ room }: Props) => {
           padding: "26px 23px",
         }}
       >
-        <Typography fontWeight={"700"}>Standard Rate</Typography>
+        <Typography fontWeight={"700"}>{t("Standard Rate")}</Typography>
         <Typography color={"#5D5D5D"} mt={"0.75rem"}>
           Spend $10 every night you stay and earn $150 in dining credit at the resort.
         </Typography>
@@ -80,12 +82,12 @@ const PromotionCardStandard = ({ room }: Props) => {
           {`${selectedCurrency.symbol} ${(selectedCurrency.rate * room.roomRate).toFixed(1)}`}
         </Typography>
         <Typography color={"#858685"} textAlign={"end"}>
-          per night
+          {t("per night")}
         </Typography>
         <Link style={{ textDecoration: "none" }} to={"/checkout"}>
           <StyledButton type="submit" variant="contained" onClick={handleSubmit}>
             <Typography sx={{ fontWeight: "700", fontSize: "0.875rem" }}>
-              {"SELECT PACKAGE"}
+              {t("SELECT PACKAGE")}
             </Typography>
           </StyledButton>
         </Link>

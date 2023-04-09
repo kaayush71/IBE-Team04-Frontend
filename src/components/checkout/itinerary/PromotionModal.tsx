@@ -25,7 +25,7 @@ const promotionModalStyle = {
 };
 
 const PromotionModal = (props: Props) => {
-  const checkoutRoom = useAppSelector((state) => state.checkout.room);
+  const { totalCostOfStay } = useAppSelector((state) => state.checkout);
   const selectedCurrency = useAppSelector((state) => state.currency.selectedCurrency);
   const selectedPromotion = useAppSelector((state) => state.checkout.selectedPromotion);
   return (
@@ -58,8 +58,8 @@ const PromotionModal = (props: Props) => {
             <Typography>
               {` ${selectedCurrency.symbol}${(
                 selectedCurrency.rate *
-                (checkoutRoom.roomRate * selectedPromotion.priceFactor)
-              ).toFixed(1)}/night `}
+                (totalCostOfStay * selectedPromotion.priceFactor)
+              ).toFixed(1)} `}
             </Typography>
           </Box>
         </Box>
