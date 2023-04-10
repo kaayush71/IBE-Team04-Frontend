@@ -1,7 +1,11 @@
 import { Box, Typography, Rating, TextareaAutosize } from "@mui/material";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { addReview, checkRatingAdded } from "../../redux/reducers/checkoutDataSlice";
+import {
+  addReview,
+  checkRatingAdded,
+  setAddReviewStatus,
+} from "../../redux/reducers/checkoutDataSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { StyledButton } from "../styledComponents/styledComponents";
 import Snackbar from "@mui/material/Snackbar";
@@ -42,10 +46,12 @@ const RatingPage = (props: Props) => {
   const { id } = useParams();
   const reduxDispatch = useAppDispatch();
   const [open, setOpen] = React.useState(false);
-  const addReviewStatus = useAppSelector((state) => state.checkout.addReviewStatus);
+  const { addReviewStatus } = useAppSelector((state) => state.checkout);
   const ratingAdded = useAppSelector((state) => state.checkout.ratingAdded);
+  console.log(addReviewStatus);
   console.log(ratingAdded);
   useEffect(() => {
+    reduxDispatch(setAddReviewStatus());
     reduxDispatch(
       checkRatingAdded({
         ratingId: id,
@@ -70,6 +76,8 @@ const RatingPage = (props: Props) => {
     <Box sx={ratingContainer}>
       {ratingAdded ? (
         <Alert severity="error">You have already given your feedback</Alert>
+      ) : addReviewStatus === "success" ? (
+        <Alert severity="success">Thank you for submitting</Alert>
       ) : (
         <Box sx={ratingBox}>
           <Typography fontSize={"1.5rem"}>Please give your feedback for your stay.</Typography>
@@ -100,25 +108,15 @@ const RatingPage = (props: Props) => {
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         sx={{ position: "absolute", bottom: "10vh" }}
-        open={addReviewStatus !== "" && open}
+        open={addReviewStatus === "rejected" && open}
         autoHideDuration={1500}
         onClose={handleClosed}
       >
-        {addReviewStatus === "success" ? (
-          <Box>
-            <Alert onClose={handleClosed} severity="success" sx={{ width: "100%" }}>
-              Review Added Sucessfully...!s
-            </Alert>
-          </Box>
-        ) : addReviewStatus === "rejected" ? (
-          <Box>
-            <Alert onClose={handleClosed} severity="error" sx={{ width: "100%" }}>
-              Unable to add review,Please try again later..!
-            </Alert>
-          </Box>
-        ) : (
-          <></>
-        )}
+        <Box>
+          <Alert onClose={handleClosed} severity="error" sx={{ width: "100%" }}>
+            Unable to add review,Please try again later..!
+          </Alert>
+        </Box>
       </Snackbar>
     </Box>
   );

@@ -169,9 +169,11 @@ const ItineraryCard = ({ buttonText }: Props) => {
                 <TypographyGrey>
                   {format(new Date(roomTypeRate.date), "EEEE do MMMM")}
                 </TypographyGrey>
-                <Typography>{`${selectedCurrency.symbol} ${
-                  selectedCurrency.rate * roomTypeRate.roomTypeRate * selectedPromotion.priceFactor
-                }`}</Typography>
+                <Typography>{`${selectedCurrency.symbol} ${(
+                  selectedCurrency.rate *
+                  roomTypeRate.roomTypeRate *
+                  selectedPromotion.priceFactor
+                ).toFixed(1)}`}</Typography>
               </Box>
             );
           })}

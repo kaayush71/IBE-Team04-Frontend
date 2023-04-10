@@ -39,6 +39,7 @@ const CheckOutModal = (props: Props) => {
   const inputRef: any = useRef(null);
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
+    console.log("button clicked");
     setOpen(true);
     const emailId = inputRef?.current?.value;
     reduxDispatch(
