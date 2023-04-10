@@ -6,14 +6,22 @@ import StepLabel from "@mui/material/StepLabel";
 import { steps } from "../../../constants/constStepText";
 import "./stepper.scss";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 
 const Steps = () => {
   const {t} = useTranslation();
+
+  let currentLocation = useLocation();
+  let stepNumber =1;
+  if(currentLocation.pathname === "/checkout"){
+    stepNumber = 2;
+  }
+
   return (
     <Box className={"main-stepper-section"}>
       <Stepper
         sx={{ "& .MuiSvgIcon-root": { color: "white" },height:"30px",width:"30px"}}
-        activeStep={1}
+        activeStep={stepNumber}
         className={"starter-stepper-section"}
         alternativeLabel
       >
