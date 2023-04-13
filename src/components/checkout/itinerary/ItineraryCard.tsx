@@ -147,7 +147,9 @@ const ItineraryCard = ({ buttonText }: Props) => {
           {t("Property")} 4
         </Typography>
         <TypographyGrey>
-          {format(new Date(startDate), "MMM,dd")}-{format(new Date(endDate), "MMM,dd")}
+          {format(new Date(startDate), "MMM dd")}
+          {` - `}
+          {format(new Date(endDate), "MMM dd")}
           {` `} {format(new Date(), "yyyy")} {` | `}
           {guestInformation}
         </TypographyGrey>
