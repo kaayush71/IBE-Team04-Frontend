@@ -5,3 +5,11 @@
   position: relative;
 }
 
+.MuiFormHelperText-root {
+  font-size: 0.75rem !important;
+}
+
+.MuiFormHelperText-root.Mui-error {
+  margin: 3px 0 0 0;
+  font-size: 0.75rem;
+}

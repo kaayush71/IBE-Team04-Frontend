@@ -17,7 +17,7 @@ const HelpCard = (props: Props) => {
       <Box mt={"1rem"} sx={{ display: "grid", columnGap: "0.25rem" }}>
         <Typography fontWeight={"700"}>{t("Call")}1-800-555-5555</Typography>
         <Typography fontSize={"0.875rem"} color="#2F2F2F">
-          {t("Mon-Fr 8a-5p EST")}
+          {t("Mon-Fri 8a-5p EST")}
         </Typography>
       </Box>
     </Box>

@@ -1,14 +1,18 @@
-import { Modal } from "@mui/material";
+import { CircularProgress, Modal, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { fetchCheckoutConfig } from "../../redux/reducers/checkoutConfigDataSlice";
 import { fetchBillingConfig } from "../../redux/reducers/checkoutDataSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import Steps from "../roomResults/Stepper/Steps";
 import { StyledButton } from "../styledComponents/styledComponents";
+import BillingInfo from "./BillingInfo";
 import CheckOutModal from "./checkOutModal/CheckOutModal";
 import HelpCard from "./HelpCard";
 import ItineraryCard from "./itinerary/ItineraryCard";
+import PaymentInfo from "./PaymentInfo";
+import TravelerInfo from "./TravelerInfo";
 
 type Props = {};
 
@@ -41,8 +45,10 @@ const Checkout = (props: Props) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const reduxDispatch = useAppDispatch();
+  const loading = useAppSelector((state) => state.checkoutConfig.loading);
   const { showItineraryCard } = useAppSelector((state) => state.checkout);
   useEffect(() => {
+    reduxDispatch(fetchCheckoutConfig());
     reduxDispatch(fetchBillingConfig());
   }, [reduxDispatch]);
 
@@ -53,21 +59,38 @@ const Checkout = (props: Props) => {
         <Box sx={checkOutContainerStyle}>
           <Box>
             {/* ---------------------------------------------- User Info ------------------------------------------ */}
-            <StyledButton
-              onClick={handleOpen}
-              sx={{ display: "flex", maxWidth: "15rem", margin: "0 auto" }}
-              variant="contained"
-            >
-              {t("CHECKOUT")}
-            </StyledButton>
-            <Modal open={open} onClose={handleClose}>
-              <Box sx={modalContainerStyle}>
-                <CheckOutModal handleClose={handleClose} />
+            <Typography fontSize={"1.5rem"} fontWeight={700}>
+              Payment Info
+            </Typography>
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              <Box>
+                {/* ------------------------------------------------- Traveler Info ------------------------------------ */}
+                <TravelerInfo />
+                {/* ----------------------------------------------------------------------------------------------------- */}
+                {/* ------------------------------------------------- Billing Info ------------------------------------ */}
+                <BillingInfo />
+                {/* ------------------------------------------------- Payment Info ------------------------------------ */}
+                <PaymentInfo />
+                {/* ----------------------------------------------------------------------------------------------------- */}
+                <StyledButton
+                  onClick={handleOpen}
+                  sx={{ display: "flex", maxWidth: "15rem", margin: "0 auto" }}
+                  variant="contained"
+                >
+                  {t("CHECKOUT")}
+                </StyledButton>
+                <Modal open={open} onClose={handleClose}>
+                  <Box sx={modalContainerStyle}>
+                    <CheckOutModal handleClose={handleClose} />
+                  </Box>
+                </Modal>
               </Box>
-            </Modal>
+            )}
           </Box>
           {/* ---------------------------------------------- Itinerary section ------------------------------------------ */}
-          <Box sx={{ display: "grid", gap: "2.5rem", position: "relative" }}>
+          <Box sx={{ display: "grid", gap: "2.5rem", gridAutoRows: "min-content" }}>
             {showItineraryCard ? <ItineraryCard buttonText="CONTINUE SHOPPING" /> : <></>}
             <HelpCard />
           </Box>
