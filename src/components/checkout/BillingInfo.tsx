@@ -18,23 +18,24 @@ import { TypographyGrey } from "../styledComponents/styledComponents";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import json from "country-region-data/data.json";
-import { setFormToShow } from "../../redux/reducers/checkoutConfigDataSlice";
+import { setBillingInfo, setFormToShow } from "../../redux/reducers/checkoutFormDataSlice";
+import { useTranslation } from "react-i18next";
 
 type Props = {};
 
 const BillingInfo = (props: Props) => {
-  const { billingInfo, formToShow } = useAppSelector((state) => state.checkoutConfig);
+  const { formToShow } = useAppSelector((state) => state.checkoutConfig);
   const defaultValues = {
-    firstName: "",
-    lastName: "",
-    mailingAddress1: "",
-    mailingAddress2: "",
-    country: "",
-    city: "",
-    state: "",
-    zip: "",
-    phone: "",
-    email: "",
+    billingFirstName: "",
+    billingLastName: "",
+    billingMailingAddress1: "",
+    billingMailingAddress2: "",
+    billingCountry: "",
+    billingCity: "",
+    billingState: "",
+    billingZip: "",
+    billingPhoneNumber: "",
+    billingEmail: "",
   };
   const {
     register,
@@ -48,16 +49,18 @@ const BillingInfo = (props: Props) => {
 
   const reduxDispatch = useAppDispatch();
 
-  const country = watch("country");
-  const state = watch("state");
+  const billingCountry = watch("billingCountry");
+  const billingState = watch("billingState");
 
   const onSubmit = (data: any) => {
-    console.log("billing info", billingInfo);
+    reduxDispatch(setBillingInfo(data));
     reduxDispatch(setFormToShow("paymentInfo"));
   };
   const handleClick = () => {
     reduxDispatch(setFormToShow("travelerInfo"));
   };
+
+  const { t } = useTranslation();
 
   return (
     <Box display={"grid"} sx={{ gap: "1rem" }} mb={"2rem"}>
@@ -66,48 +69,56 @@ const BillingInfo = (props: Props) => {
         fontWeight={700}
         sx={{ background: "#EFF0F1", borderRadius: "0.3rem", padding: "0.43rem 0.3rem" }}
       >
-        2.Billing Info
+        2.{t("Billing Info")}
       </Typography>
-      {formToShow === "billingInfo" ? (
+      <Box sx={{ display: formToShow === "billingInfo" ? "initial" : "none" }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* ------------------------------------------- first row ----------------------------------------------------- */}
           <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.4rem" }}>
             <Box display={"grid"}>
-              <TypographyGrey>First Name</TypographyGrey>
+              <TypographyGrey>{t("First Name")}</TypographyGrey>
               <TextField
-                {...register("firstName")}
-                error={!!errors.firstName}
-                helperText={errors.firstName ? errors.firstName?.message?.toString() : " "}
+                {...register("billingFirstName")}
+                error={!!errors.billingFirstName}
+                helperText={
+                  errors.billingFirstName ? errors.billingFirstName?.message?.toString() : " "
+                }
               />
             </Box>
             <Box display={"grid"}>
-              <TypographyGrey>Last Name</TypographyGrey>
+              <TypographyGrey>{t("Last Name")}</TypographyGrey>
               <TextField
-                {...register("lastName")}
-                error={!!errors.lastName}
-                helperText={errors.lastName ? errors.lastName?.message?.toString() : " "}
+                {...register("billingLastName")}
+                error={!!errors.billingLastName}
+                helperText={
+                  errors.billingLastName ? errors.billingLastName?.message?.toString() : " "
+                }
               />
             </Box>
           </Box>
           {/* ------------------------------------------- second row ----------------------------------------------------- */}
           <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.4rem" }}>
             <Box display={"grid"}>
-              <TypographyGrey>Mailing Address1</TypographyGrey>
+              <TypographyGrey>{t("Mailing Address1")}</TypographyGrey>
               <TextField
-                {...register("mailingAddress1")}
-                error={!!errors.mailingAddress1}
+                {...register("billingMailingAddress1")}
+                error={!!errors.billingMailingAddress1}
                 helperText={
-                  errors.mailingAddress1 ? errors.mailingAddress1?.message?.toString() : " "
+                  errors.billingMailingAddress1
+                    ? errors.billingMailingAddress1?.message?.toString()
+                    : " "
                 }
               />
             </Box>
             <Box display={"grid"}>
-              <TypographyGrey>Mailing Address2</TypographyGrey>
+              <TypographyGrey>{t("Mailing Address2")}</TypographyGrey>
               <TextField
-                {...register("mailingAddress2")}
-                error={!!errors.mailingAddress2}
+                {...register("billingMailingAddress2")}
+                error={!!errors.billingMailingAddress2}
                 helperText={
-                  errors.mailingAddress2 ? errors.mailingAddress2?.message?.toString() : " "
+                  errors.billingMailingAddress2
+                    ? errors.billingMailingAddress2?.message?.toString()
+                    : " "
                 }
               />
             </Box>
@@ -115,16 +126,20 @@ const BillingInfo = (props: Props) => {
           {/* ------------------------------------------------------ third row ------------------------------------------------ */}
           <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.4rem" }}>
             <Box display={"grid"}>
-              <TypographyGrey>Country</TypographyGrey>
-              <FormControl fullWidth error={!!errors.country}>
+              <TypographyGrey>{t("Country")}</TypographyGrey>
+              <FormControl fullWidth error={!!errors.billingCountry}>
                 <Select
                   renderValue={() =>
-                    country === "" ? <em style={{ color: "#858685" }}>Choose</em> : country
+                    billingCountry === "" ? (
+                      <em style={{ color: "#858685" }}>Choose</em>
+                    ) : (
+                      billingCountry
+                    )
                   }
                   displayEmpty
-                  {...register("country")}
+                  {...register("billingCountry")}
                   defaultValue=""
-                  value={country}
+                  value={billingCountry}
                   IconComponent={KeyboardArrowDownIcon}
                 >
                   {json.map((data) => (
@@ -134,7 +149,7 @@ const BillingInfo = (props: Props) => {
                   ))}
                 </Select>
                 <FormHelperText>
-                  {errors.country ? errors.country.message?.toString() : " "}
+                  {errors.billingCountry ? errors.billingCountry.message?.toString() : " "}
                 </FormHelperText>
               </FormControl>
             </Box>
@@ -142,37 +157,37 @@ const BillingInfo = (props: Props) => {
           {/* ------------------------------------------------------ fourth row ------------------------------------------------ */}
           <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.4rem" }}>
             <Box display={"grid"}>
-              <TypographyGrey>City</TypographyGrey>
+              <TypographyGrey>{t("City")}</TypographyGrey>
               <TextField
-                {...register("city")}
-                error={!!errors.city}
-                helperText={errors.city ? errors.city?.message?.toString() : " "}
+                {...register("billingCity")}
+                error={!!errors.billingCity}
+                helperText={errors.billingCity ? errors.billingCity?.message?.toString() : " "}
               />
             </Box>
             {/* ---------------------------------------------------------- right side --------------------------------------------- */}
             <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
               <Box display={"grid"}>
-                <TypographyGrey>State</TypographyGrey>
-                <FormControl fullWidth error={!!errors.state}>
+                <TypographyGrey>{t("State")}</TypographyGrey>
+                <FormControl fullWidth error={!!errors.billingState}>
                   <Select
-                    disabled={country === ""}
+                    disabled={billingCountry === ""}
                     renderValue={() =>
-                      country === "" ? (
-                        <em style={{ color: "#858685" }}>Choose</em>
-                      ) : state === "" ? (
-                        <em style={{ color: "#858685" }}>Choose</em>
+                      billingCountry === "" ? (
+                        <em style={{ color: "#858685" }}>{t("Choose")}</em>
+                      ) : billingState === "" ? (
+                        <em style={{ color: "#858685" }}>{t("Choose")}</em>
                       ) : (
-                        state
+                        billingState
                       )
                     }
                     displayEmpty
-                    {...register("state")}
+                    {...register("billingState")}
                     defaultValue=""
-                    value={state}
+                    value={billingState}
                     IconComponent={KeyboardArrowDownIcon}
                   >
                     {json.map((data) => {
-                      if (data.countryName === country) {
+                      if (data.countryName === billingCountry) {
                         return data.regions.map((region) => {
                           return (
                             <MenuItem key={region.name} value={region.name}>
@@ -184,17 +199,17 @@ const BillingInfo = (props: Props) => {
                     })}
                   </Select>
                   <FormHelperText>
-                    {errors.state ? errors.state.message?.toString() : " "}
+                    {errors.billingState ? errors.billingState.message?.toString() : " "}
                   </FormHelperText>
                 </FormControl>
               </Box>
               {/* ---------------------------------------------------------- zip --------------------------------------------- */}
               <Box display={"grid"}>
-                <TypographyGrey>Zip</TypographyGrey>
+                <TypographyGrey>{t("Zip")}</TypographyGrey>
                 <TextField
-                  {...register("zip")}
-                  error={!!errors.zip}
-                  helperText={errors.zip ? errors.zip?.message?.toString() : " "}
+                  {...register("billingZip")}
+                  error={!!errors.billingZip}
+                  helperText={errors.billingZip ? errors.billingZip?.message?.toString() : " "}
                 />
               </Box>
             </Box>
@@ -202,22 +217,24 @@ const BillingInfo = (props: Props) => {
           {/* ------------------------------------------------------ fifth row ------------------------------------------------ */}
           <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.4rem" }}>
             <Box display={"grid"}>
-              <TypographyGrey>Phone</TypographyGrey>
+              <TypographyGrey>{t("Phone")}</TypographyGrey>
               <TextField
-                {...register("phone")}
-                error={!!errors.phone}
-                helperText={errors.phone ? errors.phone?.message?.toString() : " "}
+                {...register("billingPhoneNumber")}
+                error={!!errors.billingPhoneNumber}
+                helperText={
+                  errors.billingPhoneNumber ? errors.billingPhoneNumber?.message?.toString() : " "
+                }
               />
             </Box>
           </Box>
           {/* ------------------------------------------------------ sixth row ------------------------------------------------ */}
           <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.4rem" }}>
             <Box display={"grid"}>
-              <TypographyGrey>Email</TypographyGrey>
+              <TypographyGrey>{t("Email")}</TypographyGrey>
               <TextField
-                {...register("email")}
-                error={!!errors.email}
-                helperText={errors.email ? errors.email?.message?.toString() : " "}
+                {...register("billingEmail")}
+                error={!!errors.billingEmail}
+                helperText={errors.billingEmail ? errors.billingEmail?.message?.toString() : " "}
               />
             </Box>
           </Box>
@@ -228,17 +245,15 @@ const BillingInfo = (props: Props) => {
                 onClick={handleClick}
                 sx={{ cursor: "pointer", color: "#26266d", width: "9rem", fontSize: "0.875rem" }}
               >
-                Edit Traveler Info.
+                {t("Edit Traveler Info.")}
               </Button>
               <StyledButtonNoMargin sx={{ maxWidth: "12rem" }} variant="contained" type="submit">
-                NEXT:PAYMENT INFO
+                {t("NEXT:PAYMENT INFO")}
               </StyledButtonNoMargin>
             </Box>
           </Box>
         </form>
-      ) : (
-        <></>
-      )}
+      </Box>
     </Box>
   );
 };

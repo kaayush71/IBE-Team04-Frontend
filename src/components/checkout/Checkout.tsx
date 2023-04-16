@@ -1,32 +1,18 @@
-import { CircularProgress, Modal, Typography } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { fetchCheckoutConfig } from "../../redux/reducers/checkoutConfigDataSlice";
+import { fetchCheckoutConfig, setFormToShow } from "../../redux/reducers/checkoutFormDataSlice";
 import { fetchBillingConfig } from "../../redux/reducers/checkoutDataSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import Steps from "../roomResults/Stepper/Steps";
-import { StyledButton } from "../styledComponents/styledComponents";
 import BillingInfo from "./BillingInfo";
-import CheckOutModal from "./checkOutModal/CheckOutModal";
 import HelpCard from "./HelpCard";
 import ItineraryCard from "./itinerary/ItineraryCard";
 import PaymentInfo from "./PaymentInfo";
 import TravelerInfo from "./TravelerInfo";
 
 type Props = {};
-
-// styles
-const modalContainerStyle = {
-  position: "absolute" as "absolute",
-  top: "30%",
-  left: "30%",
-  transform: "translate(-50%, -50%)",
-  width: "40vw",
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  padding: "1rem 1.5rem",
-};
 
 const checkOutContainerStyle = {
   padding: "0 1.5rem",
@@ -35,19 +21,17 @@ const checkOutContainerStyle = {
   gridTemplateColumns: { lg: "58.4% 1fr", md: "1fr 1fr" },
   columnGap: "8.35rem",
   rowGap: "2rem",
-  minHeight: "63vh",
+  minHeight: "67vh",
 };
 
 // Checkout Page
 const Checkout = (props: Props) => {
-  const [open, setOpen] = React.useState(false);
   const { t } = useTranslation();
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
   const reduxDispatch = useAppDispatch();
   const loading = useAppSelector((state) => state.checkoutConfig.loading);
   const { showItineraryCard } = useAppSelector((state) => state.checkout);
   useEffect(() => {
+    reduxDispatch(setFormToShow("travelerInfo"));
     reduxDispatch(fetchCheckoutConfig());
     reduxDispatch(fetchBillingConfig());
   }, [reduxDispatch]);
@@ -60,7 +44,7 @@ const Checkout = (props: Props) => {
           <Box>
             {/* ---------------------------------------------- User Info ------------------------------------------ */}
             <Typography fontSize={"1.5rem"} fontWeight={700}>
-              Payment Info
+              {t("Payment Info")}
             </Typography>
             {loading ? (
               <CircularProgress />
@@ -74,18 +58,6 @@ const Checkout = (props: Props) => {
                 {/* ------------------------------------------------- Payment Info ------------------------------------ */}
                 <PaymentInfo />
                 {/* ----------------------------------------------------------------------------------------------------- */}
-                <StyledButton
-                  onClick={handleOpen}
-                  sx={{ display: "flex", maxWidth: "15rem", margin: "0 auto" }}
-                  variant="contained"
-                >
-                  {t("CHECKOUT")}
-                </StyledButton>
-                <Modal open={open} onClose={handleClose}>
-                  <Box sx={modalContainerStyle}>
-                    <CheckOutModal handleClose={handleClose} />
-                  </Box>
-                </Modal>
               </Box>
             )}
           </Box>

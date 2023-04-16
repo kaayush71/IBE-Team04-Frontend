@@ -2,35 +2,35 @@ import * as yup from "yup";
 
 export const travelerInfoSchema = yup
   .object({
-    firstName: yup.string().trim().required("First name is required"),
-    lastName: yup.string().trim().optional(),
-    phone: yup
+    travellerFirstName: yup.string().trim().required("First name is required"),
+    travellerLastName: yup.string().trim().optional(),
+    travellerPhoneNumber: yup
       .string()
       .trim()
       .matches(/^(\+?\d{1,3}[- ]?)?\d{10}$/, "Phone number is not valid")
       .required("Phone number is required"),
-    email: yup.string().trim().email("Email is not valid").required("Email is required"),
+    travellerEmail: yup.string().trim().email("Email is not valid").required("Email is required"),
   })
   .required();
 
 export const billingInfoSchema = yup
   .object({
-    firstName: yup.string().required("First name is required"),
-    lastName: yup.string().optional(),
-    mailingAddress1: yup.string().required("Address is required"),
-    mailingAddress2: yup.string().optional(),
-    country: yup.string().required("Country is required"),
-    city: yup.string().required("City is required"),
-    state: yup.string().required("State is required"),
-    zip: yup
+    billingFirstName: yup.string().required("First name is required"),
+    billingLastName: yup.string().optional(),
+    billingMailingAddress1: yup.string().required("Address is required"),
+    billingMailingAddress2: yup.string().optional(),
+    billingCountry: yup.string().required("Country is required"),
+    billingCity: yup.string().required("City is required"),
+    billingState: yup.string().required("State is required"),
+    billingZip: yup
       .string()
       .matches(/^\d{6}(?:[-\s]\d{4})?$/, "Zip code is not valid")
       .required("Zip code is required"),
-    phone: yup
+    billingPhoneNumber: yup
       .string()
       .matches(/^(\+?\d{1,3}[- ]?)?\d{10}$/, "Phone number is not valid")
       .required("Phone number is required"),
-    email: yup.string().email("Email is not valid").required("Email is required"),
+    billingEmail: yup.string().email("Email is not valid").required("Email is required"),
   })
   .required();
 
@@ -48,7 +48,7 @@ export const paymentInfoSchema = yup.object({
   expYY: yup
     .string()
     .length(2, "Please enter valid expiry year")
-    .matches(/^([0-9]{2})$/, "Expiry year is not valid")
+    .matches(/^([2-9][3-9])$/, "Expiry year is not valid")
     .required("Expiry year is required"),
   cvv: yup
     .string()

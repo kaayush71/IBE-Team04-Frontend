@@ -7,4 +7,5 @@ export const routesPath = {
   login: "/login",
   checkout: "/checkout",
   rating: "/rating",
+  confirmBooking: "/confirm-booking",
 };

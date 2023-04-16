@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import PromotionModal from "./PromotionModal";
 import TaxModal from "./TaxModal";
+import { useCustomHook } from "../../../constants/calculateRoomRates";
 // buttonTetxt to change the text displayed
 // on the button.
 type Props = {
@@ -93,44 +94,9 @@ const ItineraryCard = ({ buttonText }: Props) => {
     if (buttonText === "CONTINUE SHOPPING") navigate("/");
     else if (buttonText === "CHECKOUT") navigate("/room-search-results");
   };
-  const { vat, taxes, dueNow, dueAtResort } = useAppSelector((state) => state.checkout);
 
-  // function to calculate vat amount
-  const calculateVat = () => {
-    let costWithVat = 0;
-    costWithVat = totalCostOfStay * selectedPromotion.priceFactor;
-    costWithVat = costWithVat * vat;
-    return costWithVat * selectedCurrency.rate;
-  };
-
-  // function to calculate amount with taxes
-  const calculateTaxes = () => {
-    let costWithTaxes = 0;
-    costWithTaxes = totalCostOfStay * selectedPromotion.priceFactor;
-    let taxAmount = 0;
-    for (let i = 0; i < taxes.length; i++) {
-      taxAmount = taxAmount + costWithTaxes * taxes[i].value;
-    }
-    return taxAmount * selectedCurrency.rate;
-  };
-
-  // function to calculate amount due now
-  const dueNowAmount = () => {
-    let dueNowAmount = 0;
-    dueNowAmount +=
-      totalCostOfStay * selectedPromotion.priceFactor + calculateTaxes() + calculateVat();
-    dueNowAmount = dueNowAmount * dueNow;
-    return dueNowAmount * selectedCurrency.rate;
-  };
-
-  // function to calculate amount due at resort
-  const dueAtResortAmount = () => {
-    let dueAtResortAmount = 0;
-    dueAtResortAmount +=
-      totalCostOfStay * selectedPromotion.priceFactor + calculateTaxes() + calculateVat();
-    dueAtResortAmount = dueAtResortAmount * dueAtResort;
-    return dueAtResortAmount * selectedCurrency.rate;
-  };
+  // -------------------------------------- importing functions from customHook --------------------------------------------------
+  const { calculateVat, calculateTaxes, dueNowAmount, dueAtResortAmount } = useCustomHook();
 
   return (
     <Box sx={{ background: "#EFF0F1", padding: "1.43rem" }}>

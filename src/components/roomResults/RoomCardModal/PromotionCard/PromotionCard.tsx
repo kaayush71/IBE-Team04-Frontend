@@ -5,9 +5,11 @@ import { Link } from "react-router-dom";
 import { Promotion } from "../../../../constants/types";
 import {
   fetchRoomTypeRates,
+  setBedCount,
   setCheckoutRoom,
   setCheckoutSelectedRoom,
   setDates,
+  setIsCustomPromotion,
   setSelectedGuestType,
   setSelectedPromotion,
   setShowItineraryCard,
@@ -36,6 +38,8 @@ const PromotionCard = ({ room, promotion }: Props) => {
   const startDate = useAppSelector((state) => state.landingForm.startDate);
   const endDate = useAppSelector((state) => state.landingForm.endDate);
   const selectedRoom = useAppSelector((state) => state.landingForm.numberOfRoomSelected);
+  const bedCount = useAppSelector((state) => state.landingForm.numberOfBedsSelected);
+  const { showSpecialPromotion } = useAppSelector((state) => state.promotions);
   const reduxDispatch = useAppDispatch();
   const guest = useAppSelector(
     (state) => state.landingForm.landingConfig.searchForm.guest.guestTypes
@@ -54,11 +58,13 @@ const PromotionCard = ({ room, promotion }: Props) => {
         roomTypeId: room.roomTypeId,
       })
     );
+    reduxDispatch(setIsCustomPromotion(showSpecialPromotion));
     reduxDispatch(setCheckoutSelectedRoom(selectedRoom));
     reduxDispatch(setSelectedGuestType(guest));
     reduxDispatch(setSelectedPromotion(promotion));
     reduxDispatch(setCheckoutRoom(room));
     reduxDispatch(setShowItineraryCard(true));
+    reduxDispatch(setBedCount(bedCount));
   };
   return (
     <Box mt={"1rem"} sx={promotionBoxStyle}>

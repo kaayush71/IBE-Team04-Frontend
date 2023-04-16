@@ -143,8 +143,6 @@ export default function RoomResults() {
         landingFormData.landingConfig.searchForm.guest.guestTypes.length === 0 &&
           (await reduxDispatch(fetchLandingConfigData()));
         resultConfig.filters.length === 0 && (await reduxDispatch(fetchResultsConfigData()));
-        // await reduxDispatch(fetchResultsConfigData());
-
         getSearchParams();
         reduxDispatch(getLocalstorageFormData());
         const pageNumber = Number(localStorage.getItem("page"));

@@ -139,3 +139,49 @@ export interface RoomTypeRate {
   date: string;
   roomTypeRate: number;
 }
+
+export interface Booking {
+  bookingId: number;
+  checkInDate: string;
+  checkOutDate: string;
+  roomTypeId: number;
+  roomTypeName: string;
+  nightlyRate: number;
+  subTotal: number;
+  propertyId: number;
+  customPromotion: Promotion | null;
+  graphQlPromotion: {
+    minimumDaysOfStay: number;
+    priceFactor: number;
+    promotionDescription: string;
+    promotionTitle: string;
+    isDeactivated: boolean;
+    promotionId: number;
+  } | null;
+  roomsCount: number;
+  totalCostOfStay: number;
+  travellerEmail: string;
+  travellerFirstName: string;
+  travellerLastName: string | null;
+  travellerPhoneNumber: string;
+  billingFirstName: string;
+  billingLastName: string;
+  billingPhoneNumber: string;
+  billingEmail: string;
+  billingMailingAddress1: string;
+  billingMailingAddress2: string;
+  billingCity: string;
+  billingState: string;
+  billingCountry: string;
+  billingZip: string;
+  cardNumber: string;
+  cardNumberExpiryMonth: string;
+  cardNumberExpiryYear: string;
+  bedsCount: number;
+  adultCount: number;
+  childCount: number;
+  teenCount: number;
+  isSendOffers: boolean;
+  tax: number;
+  vat: number;
+}
