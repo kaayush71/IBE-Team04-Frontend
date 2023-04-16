@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import {
   fetchRoomTypeRates,
+  setBedCount,
   setCheckoutRoom,
   setCheckoutSelectedRoom,
   setDates,
@@ -34,6 +35,7 @@ const PromotionCardStandard = ({ room }: Props) => {
   const endDate = useAppSelector((state) => state.landingForm.endDate);
   const selectedRoom = useAppSelector((state) => state.landingForm.numberOfRoomSelected);
   const reduxDispatch = useAppDispatch();
+  const bedCount = useAppSelector((state) => state.landingForm.numberOfBedsSelected);
   const guest = useAppSelector(
     (state) => state.landingForm.landingConfig.searchForm.guest.guestTypes
   );
@@ -64,6 +66,7 @@ const PromotionCardStandard = ({ room }: Props) => {
     reduxDispatch(setSelectedPromotion(promotion));
     reduxDispatch(setCheckoutRoom(room));
     reduxDispatch(setShowItineraryCard(true));
+    reduxDispatch(setBedCount(bedCount));
   };
   return (
     <Box mt={"1rem"} sx={promotionBoxStyle}>
