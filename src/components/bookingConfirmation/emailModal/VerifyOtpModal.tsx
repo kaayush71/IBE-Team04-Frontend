@@ -81,7 +81,7 @@ const GetEmailModal = (props: Props) => {
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         sx={{ marginTop: "5rem", position: "relative", bottom: "0" }}
         open={verifyOtpMailStatus !== "" && open}
-        autoHideDuration={500}
+        autoHideDuration={1000}
         onClose={handleClosed}
       >
         {verifyOtpMailStatus === "success" ? (

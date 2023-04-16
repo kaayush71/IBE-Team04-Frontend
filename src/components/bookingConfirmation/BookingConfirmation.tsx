@@ -271,19 +271,19 @@ const BookingConfirmation = (props: Props) => {
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         sx={{ marginTop: "5rem", position: "absolute", bottom: "0" }}
         open={confirmBookingMailStatus !== "" && open}
-        autoHideDuration={700}
+        autoHideDuration={1000}
         onClose={handleClosed}
       >
         {confirmBookingMailStatus === "success" ? (
           <Box>
             <Alert onClose={handleClosed} severity="success" sx={{ width: "100%" }}>
-              Booking Deleted Successfully.
+              Booking Confirmation Email Sent Successfully.
             </Alert>
           </Box>
         ) : confirmBookingMailStatus === "rejected" ? (
           <Box>
             <Alert onClose={handleClosed} severity="error" sx={{ width: "100%" }}>
-              Unable to delete the booking.
+              Unable to send Booking confirmation email. Please try again later.
             </Alert>
           </Box>
         ) : (
