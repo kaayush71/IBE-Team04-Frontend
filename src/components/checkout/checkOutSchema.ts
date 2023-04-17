@@ -7,6 +7,7 @@ export const travelerInfoSchema = yup
     travellerPhoneNumber: yup
       .string()
       .trim()
+      .length(10, "Please enter 10 digit phone number")
       .matches(/^(\+?\d{1,3}[- ]?)?\d{10}$/, "Phone number is not valid")
       .required("Phone number is required"),
     travellerEmail: yup.string().trim().email("Email is not valid").required("Email is required"),
@@ -28,6 +29,7 @@ export const billingInfoSchema = yup
       .required("Zip code is required"),
     billingPhoneNumber: yup
       .string()
+      .length(10, "Please enter 10 digit phone number")
       .matches(/^(\+?\d{1,3}[- ]?)?\d{10}$/, "Phone number is not valid")
       .required("Phone number is required"),
     billingEmail: yup.string().email("Email is not valid").required("Email is required"),
