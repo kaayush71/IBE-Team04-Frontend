@@ -138,6 +138,7 @@ export default function RoomResults() {
 
   useEffect(() => {
     console.log("hello");
+    localStorage.removeItem("remainingTime");
     async function fetchData() {
       try {
         landingFormData.landingConfig.searchForm.guest.guestTypes.length === 0 &&
