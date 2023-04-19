@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import React from "react";
+import React, { useEffect } from "react";
 import { Box } from "@mui/system";
 import {
   Typography,
@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 type Props = {};
 
 const BillingInfo = (props: Props) => {
-  const { formToShow } = useAppSelector((state) => state.checkoutConfig);
+  const { formToShow, billingFormInfo } = useAppSelector((state) => state.checkoutConfig);
   const defaultValues = {
     billingFirstName: "",
     billingLastName: "",
@@ -41,11 +41,19 @@ const BillingInfo = (props: Props) => {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(billingInfoSchema),
     defaultValues,
+    criteriaMode: "all",
+    reValidateMode: "onChange",
+    mode: "all",
   });
+
+  useEffect(() => {
+    reset(billingFormInfo);
+  }, [billingFormInfo, reset]);
 
   const reduxDispatch = useAppDispatch();
 
@@ -53,6 +61,7 @@ const BillingInfo = (props: Props) => {
   const billingState = watch("billingState");
 
   const onSubmit = (data: any) => {
+    console.log("Clicked on Billing info submit button!");
     reduxDispatch(setBillingInfo(data));
     reduxDispatch(setFormToShow("paymentInfo"));
   };

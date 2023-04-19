@@ -1,40 +1,51 @@
 import * as yup from "yup";
 
-export const travelerInfoSchema = yup
-  .object({
-    travellerFirstName: yup.string().trim().required("First name is required"),
-    travellerLastName: yup.string().trim().optional(),
-    travellerPhoneNumber: yup
-      .string()
-      .trim()
-      .length(10, "Please enter 10 digit phone number")
-      .matches(/^(\+?\d{1,3}[- ]?)?\d{10}$/, "Phone number is not valid")
-      .required("Phone number is required"),
-    travellerEmail: yup.string().trim().email("Email is not valid").required("Email is required"),
-  })
-  .required();
+export const travelerInfoSchema = yup.object().shape({
+  travellerFirstName: yup
+    .string()
+    .trim()
+    .required("First name is required")
+    .matches(/^[a-z ,.'-]+$/i, "Please enter valid firstname"),
+  travellerLastName: yup
+    .string()
+    .trim()
+    .required("Last name is required")
+    .matches(/^[a-z ,.'-]+$/i, "Please enter valid lastname"),
+  travellerPhoneNumber: yup
+    .string()
+    .trim()
+    .length(10, "Please enter 10 digit phone number")
+    .required("Phone number is required")
+    .matches(/^(?![0])[0-9]{10}$/, "Phone number is not valid"),
+  travellerEmail: yup.string().trim().email("Email is not valid").required("Email is required"),
+});
 
-export const billingInfoSchema = yup
-  .object({
-    billingFirstName: yup.string().required("First name is required"),
-    billingLastName: yup.string().optional(),
-    billingMailingAddress1: yup.string().required("Address is required"),
-    billingMailingAddress2: yup.string().optional(),
-    billingCountry: yup.string().required("Country is required"),
-    billingCity: yup.string().required("City is required"),
-    billingState: yup.string().required("State is required"),
-    billingZip: yup
-      .string()
-      .matches(/^\d{6}(?:[-\s]\d{4})?$/, "Zip code is not valid")
-      .required("Zip code is required"),
-    billingPhoneNumber: yup
-      .string()
-      .length(10, "Please enter 10 digit phone number")
-      .matches(/^(\+?\d{1,3}[- ]?)?\d{10}$/, "Phone number is not valid")
-      .required("Phone number is required"),
-    billingEmail: yup.string().email("Email is not valid").required("Email is required"),
-  })
-  .required();
+export const billingInfoSchema = yup.object().shape({
+  billingFirstName: yup
+    .string()
+    .required("First name is required")
+    .matches(/^[a-z ,.'-]+$/i, "Please enter valid firstname"),
+  billingLastName: yup
+    .string()
+    .required("First name is required")
+    .matches(/^[a-z ,.'-]+$/i, "Please enter valid lastname"),
+
+  billingMailingAddress1: yup.string().required("Address is required"),
+  billingMailingAddress2: yup.string().optional(),
+  billingCountry: yup.string().required("Country is required"),
+  billingCity: yup.string().required("City is required"),
+  billingState: yup.string().required("State is required"),
+  billingZip: yup
+    .string()
+    .matches(/^\d{6}(?:[-\s]\d{4})?$/, "Zip code is not valid")
+    .required("Zip code is required"),
+  billingPhoneNumber: yup
+    .string()
+    .length(10, "Please enter 10 digit phone number")
+    .matches(/^(?![0])[0-9]{10}$/, "Phone number is not valid")
+    .required("Phone number is required"),
+  billingEmail: yup.string().email("Email is not valid").required("Email is required"),
+});
 
 export const paymentInfoSchema = yup.object({
   cardNumber: yup

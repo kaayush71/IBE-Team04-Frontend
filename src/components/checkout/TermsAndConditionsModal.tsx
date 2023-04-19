@@ -8,7 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 type Props = { open: boolean; handleClose: any };
 
 // style
-const specialDealModalStyle = {
+const termsAndConditionModalStyle = {
   position: "absolute" as "absolute",
   top: "13.25rem",
   left: "50%",
@@ -20,7 +20,7 @@ const specialDealModalStyle = {
   p: 4,
 };
 
-const SpecialDealModal = (props: Props) => {
+const TermsAndConditionsModal = (props: Props) => {
   return (
     <div>
       <Modal
@@ -28,7 +28,7 @@ const SpecialDealModal = (props: Props) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={specialDealModalStyle}>
+        <Box sx={termsAndConditionModalStyle}>
           <IconButton
             sx={{
               top: "0.2rem",
@@ -60,4 +60,4 @@ const SpecialDealModal = (props: Props) => {
   );
 };
 
-export default SpecialDealModal;
+export default TermsAndConditionsModal;

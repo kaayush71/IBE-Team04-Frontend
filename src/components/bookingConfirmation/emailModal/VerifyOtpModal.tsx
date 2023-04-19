@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { verifyOtpMail } from "../../../redux/reducers/confirmBookingSlice";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   handleClose: any;
@@ -30,11 +31,12 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 const GetEmailModal = (props: Props) => {
   const { verifyOtpMailStatus, booking } = useAppSelector((state) => state.confirmBooking);
   const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleClosed = (event?: React.SyntheticEvent | Event, reason?: string) => {
     setOpen(false);
     if (verifyOtpMailStatus === "success") {
-      window.location.reload();
+      navigate("/");
     }
   };
   const reduxDispatch = useAppDispatch();

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import { Typography, TextField, Button } from "@mui/material";
 import { useForm } from "react-hook-form";
@@ -16,6 +16,7 @@ import { setShowItineraryCard } from "../../redux/reducers/checkoutDataSlice";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { useTranslation } from "react-i18next";
+import TermsAndConditionsModal from "./TermsAndConditionsModal";
 type Props = {};
 
 const PaymentInfo = (props: Props) => {
@@ -35,6 +36,9 @@ const PaymentInfo = (props: Props) => {
   } = useForm({
     resolver: yupResolver(paymentInfoSchema),
     defaultValues,
+    criteriaMode: "all",
+    reValidateMode: "onChange",
+    mode: "onChange",
   });
   const { calculateVat, calculateTaxes, totalDueAmount } = useCustomHook();
   const navigate = useNavigate();
@@ -127,6 +131,17 @@ const PaymentInfo = (props: Props) => {
   const [open, setOpen] = React.useState(false);
   const handleClosed = (event?: React.SyntheticEvent | Event, reason?: string) => {
     setOpen(false);
+  };
+
+  const [termsAndConditionsModalOpen, setTermsAndConditionsModalOpen] = useState(false);
+
+  const handleTermsAndConditionsClick = () => {
+    console.log("clicked");
+    setTermsAndConditionsModalOpen(true);
+  };
+
+  const handleTermsAndConditionsClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    setTermsAndConditionsModalOpen(false);
   };
 
   const onSubmit = (data: any) => {
@@ -226,8 +241,21 @@ const PaymentInfo = (props: Props) => {
           {/* ----------------------------------------------------- Terms and conditions -------------------------------------  */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Checkbox checked={!!agreeToTerms} color="primary" {...register("agreeToTerms")} />
-            <Typography>{t("I agree to the Terms and Policies of travel")}</Typography>
+            <Typography>
+              {t("I agree to the")}{" "}
+              <span
+                style={{ color: "#5D5D5D", cursor: "pointer" }}
+                onClick={handleTermsAndConditionsClick}
+              >
+                {t("Terms and Policies")}
+              </span>{" "}
+              {t("of travel")}
+            </Typography>
           </Box>
+          <TermsAndConditionsModal
+            open={termsAndConditionsModalOpen}
+            handleClose={handleTermsAndConditionsClose}
+          />
           {
             <Typography ml={"0.8rem"} color={"red"} fontSize={"0.75rem"}>
               {errors.agreeToTerms ? errors.agreeToTerms.message?.toString() : " "}

@@ -1,5 +1,5 @@
 import { Typography, Box, TextField } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { StyledButtonNoMargin, TypographyGrey } from "../styledComponents/styledComponents";
@@ -19,18 +19,25 @@ const TravelerInfo = (props: Props) => {
   // };
   const { t } = useTranslation();
   const { travelerInfo, formToShow } = useAppSelector((state) => state.checkoutConfig);
+  const { travellerFormInfo } = useAppSelector((state) => state.checkoutConfig);
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(travelerInfoSchema),
     // defaultValues,
+    criteriaMode: "all",
+    reValidateMode: "onChange",
+    mode: "onChange",
   });
-  console.log("form", formToShow);
-  console.log("travellerInfo", travelerInfo);
   const reduxDispatch = useAppDispatch();
+  useEffect(() => {
+    reset(travellerFormInfo);
+  }, [reset, travellerFormInfo]);
   const onSubmit = (data: any) => {
+    console.log("traveller data", data);
     reduxDispatch(setTravellerInfo(data));
     reduxDispatch(setFormToShow("billingInfo"));
   };
@@ -66,6 +73,9 @@ const TravelerInfo = (props: Props) => {
                         errors[item.inputName] ? errors[item.inputName]?.message?.toString() : " "
                       }
                     />
+                    {errors.type?.type === "matches" && (
+                      <Typography style={{ color: "red" }}>Error</Typography>
+                    )}
                   </Box>
                 )
               );

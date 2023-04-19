@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { deleteForLoginUser } from "../../../redux/reducers/confirmBookingSlice";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   handleClose: any;
@@ -31,11 +32,12 @@ const ConfirmDeleteModal = (props: Props) => {
   const { booking, deleteForLoginUserStatus } = useAppSelector((state) => state.confirmBooking);
   const { userEmail } = useAppSelector((state) => state.checkout);
   const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleClosed = (event?: React.SyntheticEvent | Event, reason?: string) => {
     setOpen(false);
     if (deleteForLoginUserStatus === "success") {
-      window.location.reload();
+      navigate("/");
     }
   };
   const reduxDispatch = useAppDispatch();

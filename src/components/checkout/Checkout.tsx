@@ -11,6 +11,7 @@ import HelpCard from "./HelpCard";
 import ItineraryCard from "./itinerary/ItineraryCard";
 import PaymentInfo from "./PaymentInfo";
 import TravelerInfo from "./TravelerInfo";
+import { useNavigate } from "react-router-dom";
 
 type Props = {};
 
@@ -28,13 +29,17 @@ const checkOutContainerStyle = {
 const Checkout = (props: Props) => {
   const { t } = useTranslation();
   const reduxDispatch = useAppDispatch();
+  const navigate = useNavigate();
   const loading = useAppSelector((state) => state.checkoutConfig.loading);
   const { showItineraryCard } = useAppSelector((state) => state.checkout);
   useEffect(() => {
+    if (showItineraryCard === false) {
+      navigate("/");
+    }
     reduxDispatch(setFormToShow("travelerInfo"));
     reduxDispatch(fetchCheckoutConfig());
     reduxDispatch(fetchBillingConfig());
-  }, [reduxDispatch]);
+  }, [navigate, reduxDispatch, showItineraryCard]);
 
   return (
     <Box sx={{ width: "100%" }} className="checkout">
