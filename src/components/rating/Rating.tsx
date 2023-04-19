@@ -48,8 +48,8 @@ const RatingPage = (props: Props) => {
   const [open, setOpen] = React.useState(false);
   const { addReviewStatus } = useAppSelector((state) => state.checkout);
   const ratingAdded = useAppSelector((state) => state.checkout.ratingAdded);
-  console.log(addReviewStatus);
-  console.log(ratingAdded);
+  // console.log(addReviewStatus);
+  // console.log(ratingAdded);
   useEffect(() => {
     reduxDispatch(setAddReviewStatus());
     reduxDispatch(

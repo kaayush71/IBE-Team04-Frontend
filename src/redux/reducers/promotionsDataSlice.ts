@@ -48,7 +48,6 @@ export const fetchCustomPromotion = createAsyncThunk(
         },
       }
     );
-    console.log(response.data);
     return response.data;
   }
 );

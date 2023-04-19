@@ -72,7 +72,6 @@ export const fetchBillingConfig = createAsyncThunk("fetchBillingConfig", async (
   const response = await axios.get(
     "https://95xedsf044.execute-api.ap-south-1.amazonaws.com/dev/api/v1/configuration?tenantName=Kickdrum&property=Team-04%23billingConfig"
   );
-  console.log(JSON.parse(response.data.billingConfig));
   return JSON.parse(response.data.billingConfig);
 });
 
@@ -96,7 +95,6 @@ export const sendReviewMail = createAsyncThunk("sendReviewMail", async (req: any
       params: req,
     }
   );
-  console.log(response.data);
   return response.data;
 });
 
@@ -204,7 +202,6 @@ export const checkoutDataSlice = createSlice({
       state.addReviewStatus = "loading";
     });
     builder.addCase(addReview.fulfilled, (state, action) => {
-      console.log("hello");
       state.addReviewStatus = "success";
     });
     builder.addCase(addReview.rejected, (state) => {

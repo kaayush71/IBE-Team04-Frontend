@@ -26,6 +26,7 @@ export default function RoomResults() {
   const reduxDispatch = useAppDispatch();
   const location = useLocation();
   const resultConfig = useAppSelector((state) => state.resultsConfiguration);
+  const { sortToSend } = useAppSelector((state) => state.resultsConfiguration);
   const landingFormData = useAppSelector((state) => state.landingForm);
   const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const navigate = useNavigate();
@@ -38,7 +39,6 @@ export default function RoomResults() {
     if (propertyId !== null && propertyId === "4") {
       formData.property = propertyId;
     } else if (formData.property === "") {
-      console.log("navigate");
       navigate("/");
     }
 
@@ -84,7 +84,6 @@ export default function RoomResults() {
           if (options) {
             const selectedFilterOptions = options?.split(",");
             filter.selectedOptions = selectedFilterOptions;
-            console.log("params options", selectedFilterOptions);
             reduxDispatch(
               setExistingFilters({
                 filterName: filter.filterName,
@@ -137,7 +136,6 @@ export default function RoomResults() {
   }, [navigate, reduxDispatch, params]);
 
   useEffect(() => {
-    console.log("hello");
     localStorage.removeItem("remainingTime");
     async function fetchData() {
       try {
@@ -151,7 +149,7 @@ export default function RoomResults() {
         const startTime = formData.startDate;
         const endTime = formData.endDate;
         const requestBody: RequestBody = {
-          sortType: formData.sortToSend || "",
+          sortType: formData.sortToSend || sortToSend,
           numberOfRooms: formData.rooms,
           numberOfBeds: formData.beds || 1,
           pageSize: 3,
@@ -165,13 +163,15 @@ export default function RoomResults() {
             requestBody.filters[filter.sendingName] = filter.selectedOptions;
           }
         });
-        await reduxDispatch(fetchRoomResultsGraphQlData(requestBody));
+        if (sortToSend !== "") {
+          await reduxDispatch(fetchRoomResultsGraphQlData(requestBody));
+        }
       } catch (error) {
         console.log(error);
       }
     }
     fetchData();
-  }, [getSearchParams, reduxDispatch]);
+  }, [getSearchParams, reduxDispatch, sortToSend]);
 
   return (
     <Box className={"room-results-page"}>

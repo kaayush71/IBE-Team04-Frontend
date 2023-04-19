@@ -21,7 +21,6 @@ const Filter = () => {
   const formData = JSON.parse(localStorage.getItem("formData") || "{}");
   const previousFormDataRef = useRef(formData);
   useEffect(() => {
-    console.log("filter");
     if (formData === "{}" || formData === previousFormDataRef.current) {
       return;
     } else {

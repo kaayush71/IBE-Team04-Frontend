@@ -99,7 +99,7 @@ export const fetchResultsConfigData = createAsyncThunk(
 export const fetchRoomResultsGraphQlData = createAsyncThunk(
   "roomResultsData",
   async (req: any, thunkApi) => {
-    console.log("inside graph ql response", req);
+    console.log("graph-ql request body", req);
     const response = await axios.post(
       "https://95xedsf044.execute-api.ap-south-1.amazonaws.com/dev/api/v1/graphql/getRoomResults/4",
       req,
@@ -110,7 +110,6 @@ export const fetchRoomResultsGraphQlData = createAsyncThunk(
         },
       }
     );
-    console.log(response.status);
     return response.data;
   }
 );
@@ -144,7 +143,6 @@ export const roomResultsConfigDataSlice = createSlice({
       }
     },
     setSortToSend: (state, action) => {
-      console.log("inside set sort to send", action.payload);
       const sortSubStrings = action.payload.split("#");
       const sortName = sortSubStrings[0];
       const sortValue = sortSubStrings[1];
@@ -153,7 +151,6 @@ export const roomResultsConfigDataSlice = createSlice({
       const formData = JSON.parse(localStorage.getItem("formData") || "{}");
       const sortToSend = state.sorts.find((sort) => sort.sortName === sortName);
       if (sortToSend !== undefined) {
-        console.log("set sort to send", `${sortToSend.sendingName}#${sortValue}`);
         formData.sortToSend = `${sortToSend.sendingName}#${sortValue}`;
         localStorage.setItem("formData", JSON.stringify(formData));
         state.sortToSend = `${sortToSend.sendingName}#${sortValue}`;
@@ -166,7 +163,6 @@ export const roomResultsConfigDataSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchResultsConfigData.fulfilled, (state, action) => {
-      console.log(action.payload.roomType);
       state.filters = action.payload.filters;
       state.sorts = action.payload.sorts;
       state.roomType = action.payload.roomType;
@@ -202,7 +198,7 @@ export const roomResultsConfigDataSlice = createSlice({
       }
     });
     builder.addCase(fetchRoomResultsGraphQlData.rejected, (state) => {
-      console.log("Grpah ql call rejected");
+      console.log("grpah ql call rejected");
       state.isError = true;
       state.roomResultsLoading = false;
       state.startPage = 0;

@@ -65,7 +65,6 @@ const BookingConfirmation = (props: Props) => {
   const totalStayDuration = differenceInDays(new Date(endDate), new Date(startDate)) + 1;
 
   const handlePrint = () => {
-    console.log("check in date", booking.checkInDate);
     reduxDispatch(setOpenAllAccordion(true));
     setTimeout(function () {
       window.print();

@@ -17,8 +17,6 @@ const Steps = () => {
     stepNumber = 2;
   }
   const handleClick = (label:string) => {
-    console.log("I am here");
-    console.log(label);
     if(label === "1: Choose room"){
       navigate("/room-search-results");
     }

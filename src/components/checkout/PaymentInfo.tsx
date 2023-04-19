@@ -136,7 +136,6 @@ const PaymentInfo = (props: Props) => {
   const [termsAndConditionsModalOpen, setTermsAndConditionsModalOpen] = useState(false);
 
   const handleTermsAndConditionsClick = () => {
-    console.log("clicked");
     setTermsAndConditionsModalOpen(true);
   };
 

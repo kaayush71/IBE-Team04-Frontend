@@ -61,7 +61,6 @@ export default function Landing() {
   }, [reduxDispatch]);
 
   useEffect(() => {
-    console.log("hello");
     reduxDispatch(fetchCalendarData());
     reduxDispatch(setShowItineraryCard(false));
     const formData = JSON.parse(localStorage.getItem("formData") || "{}");

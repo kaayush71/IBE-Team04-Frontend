@@ -124,7 +124,6 @@ export const landingSearchFormSlice = createSlice({
       state.minimumNightlyPrice = action.payload;
     },
     setIsLandingFormDisbale: (state, action) => {
-      console.log("In landing form disbale");
       state.isLandingFormDisable = action.payload;
     },
     setNumberOfBeds: (state, action) => {
