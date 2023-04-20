@@ -80,7 +80,7 @@ export const checkRatingAdded = createAsyncThunk("checkRatingAdded", async (req:
     "https://95xedsf044.execute-api.ap-south-1.amazonaws.com/dev/api/v1/checkReview",
     {
       params: {
-        ratingId: req.ratingId,
+        bookingId: req.bookingId,
       },
     }
   );
@@ -102,8 +102,8 @@ export const addReview = createAsyncThunk("addReview", async (req: any, thunkAPI
   console.log("req", req);
   const response = await axios.post(
     "https://95xedsf044.execute-api.ap-south-1.amazonaws.com/dev/api/v1/addReviews",
-    {},
-    { params: req }
+    req
+    // { params: req }
   );
   console.log(response.data);
   return response.data;

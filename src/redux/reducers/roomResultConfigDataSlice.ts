@@ -156,6 +156,11 @@ export const roomResultsConfigDataSlice = createSlice({
         state.sortToSend = `${sortToSend.sendingName}#${sortValue}`;
       }
     },
+    resetSort: (state) => {
+      state.sortToSend = "";
+      state.selectedSortName = "";
+      state.selectedSortValue = "";
+    },
     setPageNumber: (state, action) => {
       state.selectedPage = action.payload;
     },
@@ -208,6 +213,6 @@ export const roomResultsConfigDataSlice = createSlice({
   },
 });
 
-export const { setSortToSend, setFilter, setExistingFilters, setPageNumber, setPage } =
+export const { setSortToSend, setFilter, setExistingFilters, setPageNumber, setPage, resetSort } =
   roomResultsConfigDataSlice.actions;
 export default roomResultsConfigDataSlice.reducer;

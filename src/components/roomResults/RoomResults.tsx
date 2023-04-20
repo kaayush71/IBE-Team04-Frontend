@@ -21,6 +21,7 @@ import Banner from "./Banner/Banner";
 import ResultSection from "./ResultSection/ResultSection";
 import "./roomResults.scss";
 import Stepper from "./Stepper/Steps";
+import ReactGA from "react-ga";
 
 export default function RoomResults() {
   const reduxDispatch = useAppDispatch();
@@ -136,9 +137,11 @@ export default function RoomResults() {
   }, [navigate, reduxDispatch, params]);
 
   useEffect(() => {
+    ReactGA.pageview(window.location.pathname);
     localStorage.removeItem("remainingTime");
     async function fetchData() {
       try {
+        console.log("Sort to send inside try catch", sortToSend);
         landingFormData.landingConfig.searchForm.guest.guestTypes.length === 0 &&
           (await reduxDispatch(fetchLandingConfigData()));
         resultConfig.filters.length === 0 && (await reduxDispatch(fetchResultsConfigData()));
@@ -163,9 +166,7 @@ export default function RoomResults() {
             requestBody.filters[filter.sendingName] = filter.selectedOptions;
           }
         });
-        if (sortToSend !== "") {
-          await reduxDispatch(fetchRoomResultsGraphQlData(requestBody));
-        }
+        await reduxDispatch(fetchRoomResultsGraphQlData(requestBody));
       } catch (error) {
         console.log(error);
       }

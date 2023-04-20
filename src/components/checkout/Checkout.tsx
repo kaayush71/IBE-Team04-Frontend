@@ -12,6 +12,7 @@ import ItineraryCard from "./itinerary/ItineraryCard";
 import PaymentInfo from "./PaymentInfo";
 import TravelerInfo from "./TravelerInfo";
 import { useNavigate } from "react-router-dom";
+import ReactGA from "react-ga";
 
 type Props = {};
 
@@ -50,6 +51,7 @@ const Checkout = (props: Props) => {
     }
   }, [remainingTime, navigate]);
   useEffect(() => {
+    ReactGA.pageview(window.location.pathname);
     const storedTime = localStorage.getItem(KEY);
     if (storedTime) {
       setRemainingTime(parseInt(storedTime));
@@ -76,9 +78,12 @@ const Checkout = (props: Props) => {
               <Typography
                 sx={{ backgroundColor: "#26266D", color: "#fff", padding: "0 1rem" }}
                 fontWeight={700}
-              >{`${Math.floor(remainingTime / 60)}:${remainingTime % 60 < 10 ? "0" : ""}${
-                remainingTime % 60
-              }`}</Typography>
+              >
+                {"Remaining Time : "}
+                {`${Math.floor(remainingTime / 60)}:${remainingTime % 60 < 10 ? "0" : ""}${
+                  remainingTime % 60
+                }`}
+              </Typography>
             </Box>
             {loading ? (
               <CircularProgress />

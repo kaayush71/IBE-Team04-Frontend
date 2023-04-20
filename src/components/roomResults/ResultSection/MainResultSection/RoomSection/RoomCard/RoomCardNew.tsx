@@ -18,6 +18,7 @@ import { StyledButton } from "../../../../../styledComponents/styledComponents";
 import { fetchPromotions } from "../../../../../../redux/reducers/promotionsDataSlice";
 import { format } from "date-fns";
 import BookMark from "../BookMark/BookMark";
+import ReactGA from "react-ga";
 
 interface RoomCardProps {
   room: RoomType;
@@ -38,6 +39,10 @@ const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
   const startDate = useAppSelector((state) => state.landingForm.startDate);
   const endDate = useAppSelector((state) => state.landingForm.endDate);
   const handleOpen = () => {
+    ReactGA.event({
+      category: room.roomTypeName,
+      action: `${room.roomTypeName} selected`,
+    });
     reduxDispatch(
       fetchPromotions({
         startDate: format(new Date(startDate), "yyyy-MM-dd"),
@@ -86,30 +91,64 @@ const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
           <Box className={"title"}>
             <Typography fontWeight={700}>{t(room.roomTypeName.replaceAll("_", " "))}</Typography>
           </Box>
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "1fr",
-              placeSelf: "end",
-            }}
-            className={"review-section"}
-          >
-            <Box sx={{ placeSelf: "end" }} className={"average-ratings"}>
-              <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-                <Box className="rating-star">
-                  {<StarRateIcon sx={{ color: "#26266D" }} fontSize="small" />}
-                </Box>
-                <Box className="rating-number">
-                  {room.ratingAndReviews.averageRatingValue.toFixed(1)}
+          {room.ratingAndReviews.showRatingsAndReviews ? (
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "1fr",
+                placeSelf: "end",
+              }}
+              className={"review-section"}
+            >
+              <Box sx={{ placeSelf: "end" }} className={"average-ratings"}>
+                <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+                  <Box className="rating-star">
+                    {<StarRateIcon sx={{ color: "#26266D" }} fontSize="small" />}
+                  </Box>
+                  <Box className="rating-number">
+                    {room.ratingAndReviews.averageRatingValue?.toFixed(1)}
+                  </Box>
                 </Box>
               </Box>
+              <Box className={"total-reviews"}>
+                <Typography fontSize={"0.875rem"} color={"#5D5D5D"} fontWeight={400}>
+                  {room.ratingAndReviews?.numberOfRatings} {t("reviews")}
+                </Typography>
+              </Box>
             </Box>
-            <Box className={"total-reviews"}>
-              <Typography fontSize={"0.875rem"} color={"#5D5D5D"} fontWeight={400}>
-                {room.ratingAndReviews.numberOfRatings} {t("reviews")}
-              </Typography>
+          ) : (
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "1fr",
+                placeSelf: "end",
+              }}
+              className={"review-section"}
+            >
+              <Box sx={{ placeSelf: "end" }} className={"average-ratings"}>
+                <Box sx={{ display: "grid", gridTemplateColumns: "1fr" }}>
+                  <Typography
+                    color={"#fff"}
+                    fontSize={"0.8rem"}
+                    sx={{ backgroundColor: "#5757C4", padding: "0 0.5rem" }}
+                    className="rating-number"
+                  >
+                    {"New Property"}
+                  </Typography>
+                </Box>
+              </Box>
+              <Box mt={"0.5rem"} className={"total-reviews"}>
+                <Typography
+                  sx={{ visibility: "hidden" }}
+                  fontSize={"0.875rem"}
+                  color={"#5D5D5D"}
+                  fontWeight={400}
+                >
+                  {" 1 reviews "}
+                </Typography>
+              </Box>
             </Box>
-          </Box>
+          )}
         </Box>
         <Box
           sx={{

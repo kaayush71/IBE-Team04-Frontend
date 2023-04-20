@@ -12,7 +12,6 @@ import { makeBooking, setFormToShow } from "../../redux/reducers/checkoutFormDat
 import { useCustomHook } from "../../constants/calculateRoomRates";
 import { AES } from "crypto-js";
 import { useNavigate } from "react-router-dom";
-import { setShowItineraryCard } from "../../redux/reducers/checkoutDataSlice";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { useTranslation } from "react-i18next";
@@ -155,7 +154,6 @@ const PaymentInfo = (props: Props) => {
 
   useEffect(() => {
     if (makeBookingStatus === "success" && bookingId !== "") {
-      reduxDispatch(setShowItineraryCard(false));
       navigate(`/confirm-booking/${bookingId}`);
     }
   }, [makeBookingStatus, bookingId, navigate, reduxDispatch]);
