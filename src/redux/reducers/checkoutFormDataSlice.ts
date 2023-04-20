@@ -91,7 +91,6 @@ export const fetchCheckoutConfig = createAsyncThunk(
 
 // ------------------------------------------------------ make booking ----------------------------------------------
 export const makeBooking = createAsyncThunk("makeBooking", async (req: any, thunkAPI) => {
-  console.log("req", req);
   const response = await axios.post(
     "https://95xedsf044.execute-api.ap-south-1.amazonaws.com/dev/api/v1/booking",
     req,
@@ -114,11 +113,9 @@ export const checkoutConfigDataSlice = createSlice({
       state.formToShow = action.payload;
     },
     setBillingInfo: (state, action) => {
-      console.log("Billing info form data in slice", action.payload);
       state.billingFormInfo = action.payload;
     },
     setTravellerInfo: (state, action) => {
-      console.log("Traveller Info in slice", action.payload);
       state.travellerFormInfo = action.payload;
     },
     setPaymentInfo: (state, action) => {

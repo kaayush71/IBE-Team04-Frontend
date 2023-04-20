@@ -37,7 +37,6 @@ const TravelerInfo = (props: Props) => {
     reset(travellerFormInfo);
   }, [reset, travellerFormInfo]);
   const onSubmit = (data: any) => {
-    console.log("traveller data", data);
     reduxDispatch(setTravellerInfo(data));
     reduxDispatch(setFormToShow("billingInfo"));
   };

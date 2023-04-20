@@ -22,6 +22,7 @@ import VerifyOtpModal from "./emailModal/VerifyOtpModal";
 import ConfirmDeleteModal from "./emailModal/ConfirmDeleteModal";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { setShowItineraryCard } from "../../redux/reducers/checkoutDataSlice";
 
 type Props = {};
 
@@ -56,6 +57,7 @@ const BookingConfirmation = (props: Props) => {
   const { id } = useParams();
   const reduxDispatch = useAppDispatch();
   useEffect(() => {
+    reduxDispatch(setShowItineraryCard(false));
     reduxDispatch(setMakeBookingStatus());
     reduxDispatch(getBookingData(id));
   }, [id, reduxDispatch]);
@@ -65,7 +67,6 @@ const BookingConfirmation = (props: Props) => {
   const totalStayDuration = differenceInDays(new Date(endDate), new Date(startDate)) + 1;
 
   const handlePrint = () => {
-    console.log("check in date", booking.checkInDate);
     reduxDispatch(setOpenAllAccordion(true));
     setTimeout(function () {
       window.print();

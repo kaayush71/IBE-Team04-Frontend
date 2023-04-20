@@ -18,6 +18,10 @@ import Login from "./components/login/Login";
 import Checkout from "./components/checkout/Checkout";
 import RatingPage from "./components/rating/Rating";
 import BookingConfirmation from "./components/bookingConfirmation/BookingConfirmation";
+import ReactGA from "react-ga";
+
+const trackingId = "UA-259499148-2"; // Google Analytics tracking id
+ReactGA.initialize(trackingId);
 
 const theme = createTheme({
   typography: {

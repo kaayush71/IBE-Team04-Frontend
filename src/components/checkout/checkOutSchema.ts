@@ -57,6 +57,14 @@ export const paymentInfoSchema = yup.object({
     .string()
     .length(2, "Please enter valid expiry month")
     .matches(/^(0[1-9]|1[0-2])$/, "Expiry month is not valid")
+    .test("expiration-month", "Expiry month is not valid", function (value: any) {
+      const currentMonth = new Date().getMonth() + 1;
+      const selectedMonth = parseInt(value, 10);
+      if (selectedMonth < currentMonth) {
+        return false;
+      }
+      return true;
+    })
     .required("Expiry month is required"),
   expYY: yup
     .string()

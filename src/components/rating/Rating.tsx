@@ -1,5 +1,5 @@
 import { Box, Typography, Rating, TextareaAutosize } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import {
   addReview,
@@ -48,13 +48,12 @@ const RatingPage = (props: Props) => {
   const [open, setOpen] = React.useState(false);
   const { addReviewStatus } = useAppSelector((state) => state.checkout);
   const ratingAdded = useAppSelector((state) => state.checkout.ratingAdded);
-  console.log(addReviewStatus);
-  console.log(ratingAdded);
+  const inputRef = useRef<HTMLTextAreaElement>(null); // Ref for TextareaAutosize
   useEffect(() => {
     reduxDispatch(setAddReviewStatus());
     reduxDispatch(
       checkRatingAdded({
-        ratingId: id,
+        bookingId: id,
       })
     );
   }, [id, reduxDispatch]);
@@ -66,8 +65,9 @@ const RatingPage = (props: Props) => {
     setOpen(true);
     reduxDispatch(
       addReview({
-        ratingId: id,
+        bookingId: id,
         ratingValue: value,
+        description: inputRef?.current?.value,
       })
     );
   };
@@ -94,6 +94,7 @@ const RatingPage = (props: Props) => {
             minLength={3}
             maxRows={3}
             placeholder="Please provide feedback comments."
+            ref={inputRef}
           />
           <StyledButton
             onClick={handleSubmit}

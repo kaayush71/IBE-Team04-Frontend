@@ -20,6 +20,8 @@ import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { setShowItineraryCard } from "../../redux/reducers/checkoutDataSlice";
 import { fetchCalendarData } from "../../redux/reducers/calendarDataSlice";
+import { resetSort } from "../../redux/reducers/roomResultConfigDataSlice";
+import ReactGA from "react-ga";
 
 // styles
 
@@ -61,9 +63,10 @@ export default function Landing() {
   }, [reduxDispatch]);
 
   useEffect(() => {
-    console.log("hello");
+    ReactGA.pageview(window.location.pathname);
     reduxDispatch(fetchCalendarData());
     reduxDispatch(setShowItineraryCard(false));
+    reduxDispatch(resetSort());
     const formData = JSON.parse(localStorage.getItem("formData") || "{}");
     if (JSON.stringify(formData) === "{}") {
       reduxDispatch(setIsLandingFormDisbale(true));
@@ -75,6 +78,12 @@ export default function Landing() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // ReactGA interaction
+    ReactGA.event({
+      category: "Landing Page Search",
+      action: "Search clicked on landing Page",
+    });
+
     const searchParams = new URLSearchParams();
     localStorage.setItem("isFormDisable", String(landingFormData.isLandingFormDisable));
     const formData = {
