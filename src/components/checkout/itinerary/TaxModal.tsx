@@ -14,7 +14,7 @@ type Props = {
 };
 
 // style
-const promotionModalStyle = {
+const taxModalStyle = {
   position: "absolute" as "absolute",
   top: "26.25rem",
   left: "50%",
@@ -75,7 +75,7 @@ const TaxModal = (props: Props) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={promotionModalStyle}>
+        <Box sx={taxModalStyle}>
           <IconButton
             sx={{
               top: "0.2rem",

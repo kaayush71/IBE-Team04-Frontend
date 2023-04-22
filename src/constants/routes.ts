@@ -8,4 +8,5 @@ export const routesPath = {
   checkout: "/checkout",
   rating: "/rating",
   confirmBooking: "/confirm-booking",
+  myBookings: "/mybookings",
 };

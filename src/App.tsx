@@ -19,6 +19,7 @@ import Checkout from "./components/checkout/Checkout";
 import RatingPage from "./components/rating/Rating";
 import BookingConfirmation from "./components/bookingConfirmation/BookingConfirmation";
 import ReactGA from "react-ga";
+import MyBookings from "./components/mybookings/MyBookings";
 
 const trackingId = "UA-259499148-2"; // Google Analytics tracking id
 ReactGA.initialize(trackingId);
@@ -73,6 +74,7 @@ function App() {
             <Route path={routesPath.checkout} element={<Checkout />} />
             <Route path={`${routesPath.rating}/:id`} element={<RatingPage />} />
             <Route path={`${routesPath.confirmBooking}/:id`} element={<BookingConfirmation />} />
+            <Route path={`${routesPath.myBookings}`} element={<MyBookings />} />
           </Routes>
           <Footer />
         </BrowserRouter>

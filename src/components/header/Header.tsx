@@ -74,7 +74,14 @@ export default function Header() {
           </Box>
           <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: "1.34rem" }}>
             <Button
-              sx={{ fontWeight: "600", cursor: "pointer", color: "black", fontSize: "0.875rem" }}
+              onClick={() => navigate("/mybookings")}
+              sx={{
+                fontWeight: "600",
+                cursor: "pointer",
+                color: "black",
+                fontSize: "0.875rem",
+                display: userId === "" ? "none" : "block",
+              }}
             >
               {t("MY BOOKINGS")}
             </Button>
