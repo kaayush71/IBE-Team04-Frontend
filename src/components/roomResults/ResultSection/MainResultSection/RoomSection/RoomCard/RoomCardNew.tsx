@@ -1,6 +1,6 @@
 import { Modal, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useState } from "react";
 import "./roomCard.scss";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -19,6 +19,7 @@ import { fetchPromotions } from "../../../../../../redux/reducers/promotionsData
 import { format } from "date-fns";
 import BookMark from "../BookMark/BookMark";
 import ReactGA from "react-ga";
+import RatingsModal from "./RatingsModal";
 
 interface RoomCardProps {
   room: RoomType;
@@ -35,6 +36,7 @@ const modalContainerStyle = {
 
 const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
   const [open, setOpen] = React.useState(false);
+  const [ratingOpen, setRatingOpen] = useState(false);
   const reduxDispatch = useAppDispatch();
   const startDate = useAppSelector((state) => state.landingForm.startDate);
   const endDate = useAppSelector((state) => state.landingForm.endDate);
@@ -52,6 +54,16 @@ const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
+
+  const handleRatingOpen = () => {
+    console.log("handleRatingOpen");
+    setRatingOpen(true);
+  };
+
+  const handleRatingClose = () => {
+    console.log("handleRatingClose");
+    setRatingOpen(false);
+  };
 
   const roomTypeImages = useAppSelector((state) => state.resultsConfiguration.roomType);
   const selectedCurrency = useAppSelector((state) => state.currency.selectedCurrency);
@@ -93,10 +105,12 @@ const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
           </Box>
           {room.ratingAndReviews.showRatingsAndReviews ? (
             <Box
+              onClick={handleRatingOpen}
               sx={{
                 display: "grid",
                 gridTemplateColumns: "1fr",
                 placeSelf: "end",
+                cursor: "pointer",
               }}
               className={"review-section"}
             >
@@ -256,6 +270,11 @@ const RoomCardNew: React.FC<RoomCardProps> = ({ room }) => {
           </Box>
         </Modal>
       </Box>
+      <RatingsModal
+        roomTypeId={room.roomTypeId}
+        open={ratingOpen}
+        handleClose={handleRatingClose}
+      />
     </Box>
   );
 };

@@ -17,6 +17,7 @@ import {
 import { RoomType } from "../../../../redux/reducers/roomResultConfigDataSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 import { StyledButton } from "../../../styledComponents/styledComponents";
+import ReactGA from "react-ga";
 
 type Props = {
   room: RoomType;
@@ -45,6 +46,10 @@ const PromotionCard = ({ room, promotion }: Props) => {
     (state) => state.landingForm.landingConfig.searchForm.guest.guestTypes
   );
   const handleSubmit = () => {
+    ReactGA.event({
+      category: promotion.promotionTitle,
+      action: `${promotion.promotionTitle} selected`,
+    });
     reduxDispatch(
       setDates({
         startDate,

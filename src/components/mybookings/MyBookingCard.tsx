@@ -1,32 +1,17 @@
-import { Box, Button, CircularProgress, Divider, Typography, Modal } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { Box, Button, Modal, Typography } from "@mui/material";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import { format } from "date-fns";
-import RoomTotalSummary from "./RoomTotalSummary";
-import GuestInformation from "./GuestInformation";
-import BillingAddress from "./BillingAddress";
-import PayementInformation from "./PaymentInformation";
-import { useParams } from "react-router-dom";
-import {
-  getBookingData,
-  sendConfirmBookingMail,
-  sendOtpMail,
-  setOpenAllAccordion,
-} from "../../redux/reducers/confirmBookingSlice";
-import NotFoundPage from "./NotFoundPage";
-import { differenceInDays } from "date-fns";
-import { setMakeBookingStatus } from "../../redux/reducers/checkoutFormDataSlice";
-import VerifyOtpModal from "./emailModal/VerifyOtpModal";
-import ConfirmDeleteModal from "./emailModal/ConfirmDeleteModal";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import { setShowItineraryCard } from "../../redux/reducers/checkoutDataSlice";
+import { useAppSelector } from "../../redux/store";
+import { Booking } from "../../constants/types";
+import { format, differenceInDays } from "date-fns";
+import { useNavigate } from "react-router-dom";
+import CancelBookingModal from "./modal/CancelBookingModal";
 
-type Props = {};
+type Props = {
+  booking: Booking;
+};
 
-// styles
 const dateBoxStyle = {
   maxWidth: "125px",
   border: "1px solid #858685",
@@ -48,93 +33,41 @@ const modalContainerStyle = {
   padding: "1rem 1.5rem",
 };
 
-const BookingConfirmation = (props: Props) => {
-  const { userId } = useAppSelector((state) => state.checkout);
-  const { selectedCurrency } = useAppSelector((state) => state.currency);
-  const { loading, booking, getBookingStatus, sendOtpMailStatus, confirmBookingMailStatus } =
-    useAppSelector((state) => state.confirmBooking);
+const MyBookingCard = ({ booking }: Props) => {
   const { t } = useTranslation();
-  const { id } = useParams();
-  const reduxDispatch = useAppDispatch();
-  useEffect(() => {
-    reduxDispatch(setShowItineraryCard(false));
-    reduxDispatch(setMakeBookingStatus());
-    reduxDispatch(getBookingData(id));
-  }, [id, reduxDispatch]);
-
+  const { selectedCurrency } = useAppSelector((state) => state.currency);
   const startDate = booking.checkInDate.substring(0, 10);
   const endDate = booking.checkOutDate.substring(0, 10);
   const totalStayDuration = differenceInDays(new Date(endDate), new Date(startDate));
-
-  const handlePrint = () => {
-    reduxDispatch(setOpenAllAccordion(true));
-    setTimeout(function () {
-      window.print();
-      reduxDispatch(setOpenAllAccordion(false));
-    }, 0);
-  };
-
-  // for modals
-  const [emailModalOpen, setEmailModalOpen] = React.useState(false);
+  const navigate = useNavigate();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const handleConfirmDeleteClose = () => setConfirmDelete(false);
-  const handleEmailModalClose = () => setEmailModalOpen(false);
 
   const handleCancelRoomClick = () => {
-    if (userId !== "") {
-      setConfirmDelete(true);
-    } else {
-      setEmailModalOpen(true);
-      reduxDispatch(
-        sendOtpMail({
-          bookingId: booking.bookingId,
-          emailId: booking.travellerEmail,
-        })
-      );
+    console.log("hello");
+    setConfirmDelete(true);
+  };
+
+  const handleClick = () => {
+    console.log("clicked");
+    if (booking.isCancelled !== true) {
+      navigate(`/confirm-booking/${booking.bookingId}`);
     }
   };
-
-  const handleSendConfirmationEmail = () => {
-    reduxDispatch(sendConfirmBookingMail(booking.bookingId));
-    setOpen(true);
-  };
-
-  // for snackbar
-  const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
-    return (
-      <MuiAlert elevation={6} ref={ref} variant="filled" {...props}>
-        {props.children}
-      </MuiAlert>
-    );
-  });
-
-  const [open, setOpen] = useState(false);
-  const handleClosed = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    setOpen(false);
-  };
-
-  return loading ? (
-    <Box
-      sx={{ minHeight: "85vh", display: "flex", justifyContent: "center", alignItems: "center" }}
-    >
-      <CircularProgress />
-    </Box>
-  ) : getBookingStatus === "rejected" ? (
-    <NotFoundPage />
-  ) : (
+  return (
     <Box sx={{ width: "100%", position: "relative" }} className="checkout">
       <Box sx={{ padding: "0 3.375rem", width: "100%", position: "relative" }}>
-        <Box sx={{ width: "100%", padding: "2.18rem 6.9rem", minHeight: "82.9vh" }}>
+        <Box sx={{ width: "100%", padding: "2.18rem 6.9rem" }}>
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <Typography fontSize={"1.5rem"} fontWeight={"700"}>
-              {t("Upcoming reservation")} #{booking.bookingId}
-            </Typography>
-            <Box>
-              <Button onClick={handlePrint} color="primary">
-                {t("Print")}
-              </Button>
-              <Button onClick={handleSendConfirmationEmail}>{t("Email")}</Button>
-            </Box>
+            {booking.isCancelled ? (
+              <Typography color={"red"} fontSize={"1.5rem"} fontWeight={"700"}>
+                {t("Cancelled reservation")} #{booking.bookingId}
+              </Typography>
+            ) : (
+              <Typography fontSize={"1.5rem"} fontWeight={"700"}>
+                {t("Upcoming reservation")} #{booking.bookingId}
+              </Typography>
+            )}
           </Box>
           {/* -------------------------------------------------- Rooom Details Container ---------------------------------------- */}
           <Box
@@ -143,6 +76,8 @@ const BookingConfirmation = (props: Props) => {
               borderRadius: "0.3rem",
               margin: "0.8rem 0",
               padding: "1.8rem",
+              boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+              backgroundColor: booking.isCancelled ? "#F0F0F2" : "#fff",
             }}
           >
             {/* ---------------------------------------------------------- First row --------------------------------------------- */}
@@ -168,31 +103,31 @@ const BookingConfirmation = (props: Props) => {
                   </Typography>
                 </Box>
               </Box>
-              <Button onClick={handleCancelRoomClick} color="primary">
-                {t("Cancel Room")}
-              </Button>
-              <Modal
-                open={emailModalOpen && sendOtpMailStatus === "success"}
-                // open={emailModalOpen}
-                onClose={handleEmailModalClose}
-              >
-                <Box sx={modalContainerStyle}>
-                  <VerifyOtpModal handleClose={handleEmailModalClose} />
-                </Box>
-              </Modal>
+              {booking.isCancelled ? (
+                <></>
+              ) : (
+                <Button onClick={handleCancelRoomClick} color="primary">
+                  {t("Cancel Room")}
+                </Button>
+              )}
               <Modal open={confirmDelete} onClose={handleConfirmDeleteClose}>
                 <Box sx={modalContainerStyle}>
-                  <ConfirmDeleteModal handleClose={handleConfirmDeleteClose} />
+                  <CancelBookingModal
+                    bookingId={booking.bookingId}
+                    handleClose={handleConfirmDeleteClose}
+                  />
                 </Box>
               </Modal>
             </Box>
             {/* --------------------------------------------------------- Second row -------------------------------------------- */}
             <Box
+              onClick={handleClick}
               sx={{
                 display: "grid",
                 gridTemplateColumns: { md: "1fr", lg: "20.5rem 1fr" },
                 gap: "1.375rem",
                 margin: "1.875rem 0 2.5rem 0",
+                cursor: booking.isCancelled ? "" : "pointer",
               }}
             >
               <Box sx={{ height: "14rem", width: "20.5rem" }}>
@@ -252,47 +187,11 @@ const BookingConfirmation = (props: Props) => {
                 </Box>
               </Box>
             </Box>
-            {/* --------------------------------------------------------------------------------------------------------- */}
-            <Divider sx={{ borderWidth: "1px" }} />
-            {/* ----------------------------------------------------- Room Summary -------------------------------------- */}
-            <RoomTotalSummary />
-            <Divider sx={{ borderWidth: "1px" }} />
-            {/* ----------------------------------------------------- Guest Info -------------------------------------- */}
-            <GuestInformation />
-            <Divider sx={{ borderWidth: "1px" }} />
-            {/* ----------------------------------------------------- Billing Address -------------------------------------- */}
-            <BillingAddress />
-            <Divider sx={{ borderWidth: "1px" }} />
-            {/* ----------------------------------------------------- Payment Info -------------------------------------- */}
-            <PayementInformation />
           </Box>
         </Box>
       </Box>
-      <Snackbar
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        sx={{ marginTop: "5rem", position: "absolute", bottom: "0" }}
-        open={confirmBookingMailStatus !== "" && open}
-        autoHideDuration={1000}
-        onClose={handleClosed}
-      >
-        {confirmBookingMailStatus === "success" ? (
-          <Box>
-            <Alert onClose={handleClosed} severity="success" sx={{ width: "100%" }}>
-              Booking Confirmation Email Sent Successfully.
-            </Alert>
-          </Box>
-        ) : confirmBookingMailStatus === "rejected" ? (
-          <Box>
-            <Alert onClose={handleClosed} severity="error" sx={{ width: "100%" }}>
-              Unable to send Booking confirmation email. Please try again later.
-            </Alert>
-          </Box>
-        ) : (
-          <></>
-        )}
-      </Snackbar>
     </Box>
   );
 };
 
-export default BookingConfirmation;
+export default MyBookingCard;

@@ -22,6 +22,7 @@ import checkoutDataSlice from "./reducers/checkoutDataSlice";
 import promotionsDataSlice from "./reducers/promotionsDataSlice";
 import checkoutConfigDataSlice from "./reducers/checkoutFormDataSlice";
 import confirmBookingSlice from "./reducers/confirmBookingSlice";
+import ratingsDataSlice from "./reducers/ratingsDataSlice";
 
 // for currency conversion
 const persistConfig = {
@@ -55,6 +56,7 @@ const reducers = combineReducers({
   promotions: promotionsDataSlice,
   checkoutConfig: checkoutConfigDataSlice,
   confirmBooking: confirmBookingSlice,
+  ratings: ratingsDataSlice,
 });
 
 // using redux persist to persist specific

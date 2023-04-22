@@ -4,6 +4,7 @@ import axios from "axios";
 
 interface InitialState {
   booking: Booking;
+  allBookings: Booking[];
   loading: boolean;
   getBookingStatus: string;
   openAllAccordion: boolean;
@@ -15,6 +16,7 @@ interface InitialState {
   verifyOtpMailStatus: string;
   deleteForLoginUserStatus: string;
   confirmBookingMailStatus: string;
+  getAllBookingStatus: string;
 }
 
 const initialState: InitialState = {
@@ -69,9 +71,11 @@ const initialState: InitialState = {
     childCount: 0,
     teenCount: 0,
     isSendOffers: true,
+    isCancelled:false,
     tax: 0,
     vat: 0,
   },
+  allBookings: [],
   loading: true,
   getBookingStatus: "",
   openAllAccordion: false,
@@ -83,7 +87,24 @@ const initialState: InitialState = {
   verifyOtpMailStatus: "",
   deleteForLoginUserStatus: "",
   confirmBookingMailStatus: "",
+  getAllBookingStatus: "",
 };
+
+export const getAllBookingData = createAsyncThunk(
+  "getAllBookingData",
+  async (req: any, thunkAPI) => {
+    const response = await axios.get(
+      "https://95xedsf044.execute-api.ap-south-1.amazonaws.com/dev/api/v1/getAllBooking",
+      {
+        params: {
+          billingEmailAddress: req,
+        },
+      }
+    );
+    console.log(response.data);
+    return response.data;
+  }
+);
 
 export const getBookingData = createAsyncThunk("getBookingData", async (req: any, thunkAPI) => {
   console.log("getBookingData", req);
@@ -214,6 +235,17 @@ export const confirmBookingSlice = createSlice({
     builder.addCase(sendConfirmBookingMail.rejected, (state) => {
       console.log("verify otp status rejected");
       state.confirmBookingMailStatus = "rejected";
+    });
+    builder.addCase(getAllBookingData.pending, (state) => {
+      state.getAllBookingStatus = "";
+    });
+    builder.addCase(getAllBookingData.fulfilled, (state, action) => {
+      state.getAllBookingStatus = "success";
+      state.allBookings = action.payload;
+    });
+    builder.addCase(getAllBookingData.rejected, (state) => {
+      console.log("verify otp status rejected");
+      state.getAllBookingStatus = "rejected";
     });
   },
 });

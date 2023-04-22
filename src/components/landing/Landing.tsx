@@ -64,6 +64,7 @@ export default function Landing() {
 
   useEffect(() => {
     ReactGA.pageview(window.location.pathname);
+    localStorage.removeItem("remainingTime");
     reduxDispatch(fetchCalendarData());
     reduxDispatch(setShowItineraryCard(false));
     reduxDispatch(resetSort());

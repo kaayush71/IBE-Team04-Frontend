@@ -182,6 +182,17 @@ export interface Booking {
   childCount: number;
   teenCount: number;
   isSendOffers: boolean;
+  isCancelled: boolean;
   tax: number;
   vat: number;
+}
+
+export interface Ratings {
+  ratingId: string;
+  roomTypeId: number;
+  ratingValue: number;
+  email: string;
+  reviewDescription: string;
+  roomTypeName: string;
+  travellerName: string;
 }
