@@ -39,7 +39,17 @@ const RoomTotalSummary = (props: Props) => {
             <TypographyGrey>{t("Nightly rate")}</TypographyGrey>
             <Typography>
               {selectedCurrency.symbol}
-              {(selectedCurrency.rate * booking.nightlyRate).toFixed(1)}
+              {booking.customPromotion === null
+                ? (
+                    selectedCurrency.rate *
+                    booking.nightlyRate *
+                    (booking.graphQlPromotion !== null ? booking.graphQlPromotion.priceFactor : 1)
+                  ).toFixed(1)
+                : (
+                    selectedCurrency.rate *
+                    booking.nightlyRate *
+                    booking.customPromotion?.priceFactor
+                  ).toFixed(1)}
             </Typography>
           </Box>
         </AccordionDetails>

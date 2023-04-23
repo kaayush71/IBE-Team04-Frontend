@@ -135,7 +135,7 @@ const RoomCardModal = ({ room, handleClose }: Props) => {
                 </Typography>
               </Box>
             </Box>
-            <Typography mt={"1.375rem"}>
+            <Typography textAlign={{ xs: "justify", sm: "initial" }} mt={"1.375rem"}>
               {t(`${roomType[`${room.roomTypeName}`].description}`)}
             </Typography>
 

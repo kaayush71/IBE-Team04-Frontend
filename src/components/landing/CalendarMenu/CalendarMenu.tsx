@@ -28,7 +28,7 @@ export default function CalendarMenu(props: Props) {
             >
               {t("Check in between")}
             </Typography>
-            <Typography fontWeight={700}>
+            <Typography fontSize={{ xs: "0.875rem", sm: "1rem" }} fontWeight={700}>
               {landingForm.startDate !== landingForm.endDate
                 ? format(new Date(landingForm.startDate), "yyyy-MM-dd")
                 : t("Any Date")}
@@ -50,7 +50,7 @@ export default function CalendarMenu(props: Props) {
             >
               {t("Check out between")}
             </Typography>
-            <Typography fontWeight={700}>
+            <Typography fontSize={{ xs: "0.875rem", sm: "1rem" }} fontWeight={700}>
               {landingForm.endDate && landingForm.endDate !== landingForm.startDate
                 ? format(new Date(landingForm.endDate), "yyyy-MM-dd")
                 : t("Any Date")}
@@ -62,13 +62,13 @@ export default function CalendarMenu(props: Props) {
     } else {
       return (
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Typography>
+          <Typography fontSize={{ xs: "0.875rem", sm: "1rem" }}>
             {landingForm.startDate !== landingForm.endDate
               ? format(new Date(landingForm.startDate), "yyyy-MM-dd")
               : t("Check In")}
           </Typography>
           <ArrowForwardIcon fontSize="small" />
-          <Typography>
+          <Typography fontSize={{ xs: "0.875rem", sm: "1rem" }}>
             {landingForm.endDate && landingForm.endDate !== landingForm.startDate
               ? format(new Date(landingForm.endDate), "yyyy-MM-dd")
               : t("Check Out")}

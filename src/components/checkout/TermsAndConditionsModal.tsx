@@ -10,7 +10,7 @@ type Props = { open: boolean; handleClose: any };
 // style
 const termsAndConditionModalStyle = {
   position: "absolute" as "absolute",
-  top: "13.25rem",
+  top: "40%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "70vw",

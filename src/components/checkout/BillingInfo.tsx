@@ -83,7 +83,13 @@ const BillingInfo = (props: Props) => {
       <Box sx={{ display: formToShow === "billingInfo" ? "initial" : "none" }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* ------------------------------------------- first row ----------------------------------------------------- */}
-          <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.4rem" }}>
+          <Box
+            sx={{
+              display: { xs: "initial", sm: "grid" },
+              gridTemplateColumns: "1fr 1fr",
+              gap: "2.4rem",
+            }}
+          >
             <Box display={"grid"}>
               <TypographyGrey>{t("First Name")}</TypographyGrey>
               <TextField
@@ -106,7 +112,13 @@ const BillingInfo = (props: Props) => {
             </Box>
           </Box>
           {/* ------------------------------------------- second row ----------------------------------------------------- */}
-          <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.4rem" }}>
+          <Box
+            sx={{
+              display: { xs: "initial", sm: "grid" },
+              gridTemplateColumns: "1fr 1fr",
+              gap: "2.4rem",
+            }}
+          >
             <Box display={"grid"}>
               <TypographyGrey>{t("Mailing Address1")}</TypographyGrey>
               <TextField
@@ -133,7 +145,13 @@ const BillingInfo = (props: Props) => {
             </Box>
           </Box>
           {/* ------------------------------------------------------ third row ------------------------------------------------ */}
-          <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.4rem" }}>
+          <Box
+            sx={{
+              display: { xs: "initial", sm: "grid" },
+              gridTemplateColumns: "1fr 1fr",
+              gap: "2.4rem",
+            }}
+          >
             <Box display={"grid"}>
               <TypographyGrey>{t("Country")}</TypographyGrey>
               <FormControl fullWidth error={!!errors.billingCountry}>
@@ -164,7 +182,13 @@ const BillingInfo = (props: Props) => {
             </Box>
           </Box>
           {/* ------------------------------------------------------ fourth row ------------------------------------------------ */}
-          <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.4rem" }}>
+          <Box
+            sx={{
+              display: { xs: "initial", sm: "grid" },
+              gridTemplateColumns: "1fr 1fr",
+              gap: "2.4rem",
+            }}
+          >
             <Box display={"grid"}>
               <TypographyGrey>{t("City")}</TypographyGrey>
               <TextField
@@ -174,7 +198,13 @@ const BillingInfo = (props: Props) => {
               />
             </Box>
             {/* ---------------------------------------------------------- right side --------------------------------------------- */}
-            <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <Box
+              sx={{
+                display: { xs: "initial", sm: "grid" },
+                gridTemplateColumns: "1fr 1fr",
+                gap: "1rem",
+              }}
+            >
               <Box display={"grid"}>
                 <TypographyGrey>{t("State")}</TypographyGrey>
                 <FormControl fullWidth error={!!errors.billingState}>
@@ -224,7 +254,13 @@ const BillingInfo = (props: Props) => {
             </Box>
           </Box>
           {/* ------------------------------------------------------ fifth row ------------------------------------------------ */}
-          <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.4rem" }}>
+          <Box
+            sx={{
+              display: { xs: "initial", sm: "grid" },
+              gridTemplateColumns: "1fr 1fr",
+              gap: "2.4rem",
+            }}
+          >
             <Box display={"grid"}>
               <TypographyGrey>{t("Phone")}</TypographyGrey>
               <TextField
@@ -237,7 +273,13 @@ const BillingInfo = (props: Props) => {
             </Box>
           </Box>
           {/* ------------------------------------------------------ sixth row ------------------------------------------------ */}
-          <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.4rem" }}>
+          <Box
+            sx={{
+              display: { xs: "initial", sm: "grid" },
+              gridTemplateColumns: "1fr 1fr",
+              gap: "2.4rem",
+            }}
+          >
             <Box display={"grid"}>
               <TypographyGrey>{t("Email")}</TypographyGrey>
               <TextField
@@ -248,8 +290,16 @@ const BillingInfo = (props: Props) => {
             </Box>
           </Box>
           {/* ------------------------------------------------------ Submit Button --------------------------------------------- */}
-          <Box sx={{ display: "grid", margin: "0.5rem 0" }}>
-            <Box sx={{ placeSelf: "end", display: "flex", gap: "2rem", alignItems: "center" }}>
+          <Box sx={{ display: { xs: "initial", sm: "grid" }, margin: "0.5rem 0" }}>
+            <Box
+              sx={{
+                placeSelf: "end",
+                display: "flex",
+                gap: { xs: "0rem", sm: "2rem" },
+                alignItems: "center",
+                flexDirection: { xs: "column", sm: "row" },
+              }}
+            >
               <Button
                 onClick={handleClick}
                 sx={{ cursor: "pointer", color: "#26266d", width: "9rem", fontSize: "0.875rem" }}

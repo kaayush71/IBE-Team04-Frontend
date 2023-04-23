@@ -27,7 +27,9 @@ const RoomsMenu = (props: Props) => {
           <Typography fontSize={{ md: "0.7rem", xs: "0.875rem", lg: "0.875rem" }} color={"#858685"}>
             {t("Rooms")}
           </Typography>
-          <Typography fontWeight={700}>{numberOfRoomsSelected}</Typography>
+          <Typography fontSize={{ xs: "0.875rem", sm: "1rem" }} fontWeight={700}>
+            {numberOfRoomsSelected}
+          </Typography>
         </Box>
       );
     } else {
@@ -61,7 +63,11 @@ const RoomsMenu = (props: Props) => {
               key={room}
               value={room}
             >
-              <Typography data-testid="room-count" id="room-count">
+              <Typography
+                fontSize={{ xs: "0.875rem", sm: "1rem" }}
+                data-testid="room-count"
+                id="room-count"
+              >
                 {room}
               </Typography>
             </MenuItem>

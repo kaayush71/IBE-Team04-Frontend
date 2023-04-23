@@ -86,7 +86,12 @@ const PropertyMenu = (props: Props) => {
         renderValue={
           selectedProperty === ""
             ? () => (
-                <Typography sx={{ padding: "0" }} fontStyle={"italic"} fontWeight={400}>
+                <Typography
+                  sx={{ padding: "0" }}
+                  fontSize={{ xs: "0.875rem", sm: "1rem" }}
+                  fontStyle={"italic"}
+                  fontWeight={400}
+                >
                   {t("Search All Properties")}
                 </Typography>
               )

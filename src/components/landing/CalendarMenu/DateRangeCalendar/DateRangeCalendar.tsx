@@ -99,7 +99,7 @@ const DateRangeCalendar = () => {
 
   return (
     <React.Fragment>
-      <Box>
+      <Box sx={{ overflow: { xs: "scroll", sm: "auto" } }}>
         <DateRange
           editableDateInputs={true}
           onChange={handleSelect}
