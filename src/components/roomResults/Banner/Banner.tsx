@@ -9,8 +9,8 @@ const Banner = () => {
     <Box
       sx={{
         backgroundImage: `url(${bannerImage})`,
-        backgroundSize: "cover",
-        backgroundPosition:"100% 60%",
+        backgroundSize: "auto",
+        backgroundPosition: "100% 30%",
         backgroundRepeat: "no-repeat",
       }}
       className={"main-banner-section"}

@@ -101,10 +101,13 @@ const ItineraryCard = ({ buttonText }: Props) => {
   return (
     <Box sx={{ background: "#EFF0F1", padding: "1.43rem" }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Typography fontWeight={"700"} fontSize={"1.5rem"}>
+        <Typography fontWeight={"700"} fontSize={{ xs: "0.875rem", sm: "1.5rem" }}>
           {t("Your Trip Itinerary")}
         </Typography>
-        <Button onClick={handleRemove} sx={{ cursor: "pointer", color: "#006EFF" }}>
+        <Button
+          onClick={handleRemove}
+          sx={{ cursor: "pointer", color: "#006EFF", fontSize: { xs: "0.875rem", sm: "1rem" } }}
+        >
           {t("Remove")}
         </Button>
       </Box>
@@ -112,20 +115,24 @@ const ItineraryCard = ({ buttonText }: Props) => {
         <Typography textTransform={"capitalize"} fontWeight={"700"} fontSize={"20px"}>
           {t("Property")} 4
         </Typography>
-        <TypographyGrey>
+        <TypographyGrey fontSize={{ xs: "0.875rem", sm: "1rem" }}>
           {format(new Date(startDate), "MMM dd")}
           {` - `}
           {format(new Date(endDate), "MMM dd")}
           {` `} {format(new Date(), "yyyy")} {` | `}
           {guestInformation}
         </TypographyGrey>
-        <TypographyGrey>{t(checkoutRoom.roomTypeName.replaceAll("_", " "))}</TypographyGrey>
+        <TypographyGrey fontSize={{ xs: "0.875rem", sm: "1rem" }}>
+          {t(checkoutRoom.roomTypeName.replaceAll("_", " "))}
+        </TypographyGrey>
 
-        <TypographyGrey>
+        <TypographyGrey fontSize={{ xs: "0.875rem", sm: "1rem" }}>
           {`${selectedCurrency.symbol} ${selectedCurrency.rate * checkoutRoom.roomRate}`}{" "}
           {t("per night")}
         </TypographyGrey>
-        <TypographyGrey>{numberOfRoomSelected} room</TypographyGrey>
+        <TypographyGrey fontSize={{ xs: "0.875rem", sm: "1rem" }}>
+          {numberOfRoomSelected} room
+        </TypographyGrey>
         {/* ----------------------------------------------- Room Type Rates With Day ------------------------------------------- */}
         {location.pathname === "/room-search-results" &&
           roomTypeRates.map((roomTypeRate) => {
@@ -134,26 +141,28 @@ const ItineraryCard = ({ buttonText }: Props) => {
                 key={roomTypeRate.date}
                 sx={{ display: "flex", justifyContent: "space-between" }}
               >
-                <TypographyGrey>
+                <TypographyGrey fontSize={{ xs: "0.875rem", sm: "1rem" }}>
                   {format(new Date(roomTypeRate.date), "EEEE do MMMM")}
                 </TypographyGrey>
-                <Typography>{`${selectedCurrency.symbol} ${(
+                <Typography fontSize={{ xs: "0.875rem", sm: "1.25rem" }}>{`${
+                  selectedCurrency.symbol
+                } ${(
                   selectedCurrency.rate *
                   roomTypeRate.roomTypeRate *
                   selectedPromotion.priceFactor
-                ).toFixed(1)}`}</Typography>
+                ).toFixed(2)}`}</Typography>
               </Box>
             );
           })}
         {/* -------------------------------------------------------------------------------------------------------------------- */}
 
-        <TypographyGrey textTransform={"capitalize"}>
+        <TypographyGrey fontSize={{ xs: "0.875rem", sm: "1rem" }} textTransform={"capitalize"}>
           {`${selectedPromotion.promotionTitle.replaceAll("_", " ").toLowerCase()}, ${
             selectedCurrency.symbol
           }${(
             selectedCurrency.rate *
             (checkoutRoom.roomRate * selectedPromotion.priceFactor)
-          ).toFixed(1)}/night `}
+          ).toFixed(2)}/night `}
           <InfoOutlinedIcon
             sx={{ cursor: "pointer" }}
             onClick={handlePromotionModelOpen}
@@ -166,14 +175,14 @@ const ItineraryCard = ({ buttonText }: Props) => {
       </Box>
       <StyledDivider></StyledDivider>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <TypographyGrey>{t("Subtotal")}</TypographyGrey>
-        <Typography fontSize={"1.25rem"}>{`${selectedCurrency.symbol}${(
+        <TypographyGrey fontSize={{ xs: "0.875rem", sm: "1rem" }}>{t("Subtotal")}</TypographyGrey>
+        <Typography fontSize={{ xs: "0.875rem", sm: "1.25rem" }}>{`${selectedCurrency.symbol}${(
           selectedCurrency.rate *
           (totalCostOfStay * selectedPromotion.priceFactor)
         ).toFixed(1)}`}</Typography>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <TypographyGrey>
+        <TypographyGrey fontSize={{ xs: "0.875rem", sm: "1rem" }}>
           {t("Taxes, Surcharges, Fees")}
           <InfoOutlinedIcon
             sx={{ cursor: "pointer" }}
@@ -182,29 +191,31 @@ const ItineraryCard = ({ buttonText }: Props) => {
           />
         </TypographyGrey>
         {isTaxModalOpen && <TaxModal open={isTaxModalOpen} handleClose={handleTaxModelClose} />}
-        <Typography fontSize={"1.25rem"}>
+        <Typography fontSize={{ xs: "0.875rem", sm: "1.25rem" }}>
           {selectedCurrency.symbol}
           {calculateTaxes().toFixed(1)}
         </Typography>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <TypographyGrey>{t("VAT")}</TypographyGrey>
-        <Typography fontSize={"1.25rem"}>
+        <TypographyGrey fontSize={{ xs: "0.875rem", sm: "1rem" }}>{t("VAT")}</TypographyGrey>
+        <Typography fontSize={{ xs: "0.875rem", sm: "1.25rem" }}>
           {selectedCurrency.symbol}
           {calculateVat().toFixed(1)}
         </Typography>
       </Box>
       <StyledDivider></StyledDivider>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <TypographyGrey>{t("Due now")}</TypographyGrey>
-        <Typography fontSize={"1.25rem"}>
+        <TypographyGrey fontSize={{ xs: "0.875rem", sm: "1rem" }}>{t("Due now")}</TypographyGrey>
+        <Typography fontSize={{ xs: "0.875rem", sm: "1.25rem" }}>
           {selectedCurrency.symbol}
           {dueNowAmount().toFixed(1)}
         </Typography>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <TypographyGrey>{t("Due at resort")}</TypographyGrey>
-        <Typography fontSize={"1.25rem"}>
+        <TypographyGrey fontSize={{ xs: "0.875rem", sm: "1rem" }}>
+          {t("Due at resort")}
+        </TypographyGrey>
+        <Typography fontSize={{ xs: "0.875rem", sm: "1.25rem" }}>
           {selectedCurrency.symbol}
           {dueAtResortAmount().toFixed(1)}
         </Typography>

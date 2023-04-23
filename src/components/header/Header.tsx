@@ -1,4 +1,4 @@
-import { AppBar, Box, Divider, Drawer, IconButton, Typography } from "@mui/material";
+import { AppBar, Box, Divider, Drawer, IconButton, Modal, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useState } from "react";
 import "./Header.scss";
@@ -12,11 +12,27 @@ import CurrencyMenu from "./currecnyMenu/CurrencyMenu";
 import { Link, useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { setUserId } from "../../redux/reducers/checkoutDataSlice";
+import ContactUsModal from "../contact/ContactUsModal";
+
+const modalContainerStyle = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "70vw",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  padding: "1rem 1.5rem",
+};
 
 export default function Header() {
   const [t] = useTranslation();
   const navigate = useNavigate();
   const reduxDispatch = useAppDispatch();
+
+  const [openContact, setOpenContact] = useState(false);
+  const handleOpenContact = () => setOpenContact(true);
+  const handleCloseContact = () => setOpenContact(false);
 
   // navigating the user to login page
   const handleClick = () => {
@@ -77,13 +93,18 @@ export default function Header() {
               onClick={() => navigate("/mybookings")}
               sx={{
                 fontWeight: "600",
-                cursor: "pointer",
                 color: "black",
                 fontSize: "0.875rem",
                 display: userId === "" ? "none" : "block",
               }}
             >
               {t("MY BOOKINGS")}
+            </Button>
+            <Button
+              onClick={handleOpenContact}
+              sx={{ fontWeight: "600", cursor: "pointer", color: "black", fontSize: "0.875rem" }}
+            >
+              {t("CONTACT")}
             </Button>
             <LanguageMenu />
             <CurrencyMenu />
@@ -162,6 +183,11 @@ export default function Header() {
           </Box>
         </Container>
       </Box>
+      <Modal open={openContact}>
+        <Box sx={modalContainerStyle}>
+          <ContactUsModal handleClose={handleCloseContact} />
+        </Box>
+      </Modal>
     </AppBar>
   );
 }

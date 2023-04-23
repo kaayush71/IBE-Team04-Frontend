@@ -55,7 +55,7 @@ const TravelerInfo = (props: Props) => {
           {/* ------------------------------------------- first row ----------------------------------------------------- */}
           <Box
             sx={{
-              display: "grid",
+              display: { xs: "initial", sm: "grid" },
               gridTemplateColumns: "1fr 1fr",
               gap: "2.4rem",
             }}
@@ -81,7 +81,13 @@ const TravelerInfo = (props: Props) => {
             })}
           </Box>
           {/* -------------------------------------------- second row ------------------------------------------------------*/}
-          <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.4rem" }}>
+          <Box
+            sx={{
+              display: { xs: "initial", sm: "grid" },
+              gridTemplateColumns: "1fr 1fr",
+              gap: "2.4rem",
+            }}
+          >
             {travelerInfo[1].map((item) => {
               return (
                 item.show && (
@@ -101,7 +107,13 @@ const TravelerInfo = (props: Props) => {
           </Box>
           {/* ---------------------------------------------------------------------------------------------------------------*/}
           {/* -------------------------------------------- third row ------------------------------------------------------*/}
-          <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.4rem" }}>
+          <Box
+            sx={{
+              display: { xs: "initial", sm: "grid" },
+              gridTemplateColumns: "1fr 1fr",
+              gap: "2.4rem",
+            }}
+          >
             {travelerInfo[2].map((item) => {
               return (
                 item.show && (

@@ -170,7 +170,13 @@ const PaymentInfo = (props: Props) => {
       {formToShow === "paymentInfo" ? (
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* --------------------------------------------------------- First Row -------------------------------------------- */}
-          <Box sx={{ display: "grid", gridTemplateColumns: "45.4% 1fr", gap: "2.4rem" }}>
+          <Box
+            sx={{
+              display: { xs: "initial", sm: "grid" },
+              gridTemplateColumns: "45.4% 1fr",
+              gap: "2.4rem",
+            }}
+          >
             <Box display={"grid"}>
               <TypographyGrey>{t("Card Number")}</TypographyGrey>
               <TextField
@@ -198,7 +204,13 @@ const PaymentInfo = (props: Props) => {
               />
             </Box>
             {/* --------------------------------------------- ExpMonth and ExpYear ------------------------------------------ */}
-            <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <Box
+              sx={{
+                display: { xs: "initial", sm: "grid" },
+                gridTemplateColumns: "1fr 1fr",
+                gap: "1rem",
+              }}
+            >
               <Box display={"grid"}>
                 <TypographyGrey>{t("Exp MM")}</TypographyGrey>
                 <TextField
@@ -218,7 +230,9 @@ const PaymentInfo = (props: Props) => {
             </Box>
           </Box>
           {/* --------------------------------------------------------- Second Row --------------------------------------- */}
-          <Box sx={{ display: "grid", gridTemplateColumns: "22%", gap: "1rem" }}>
+          <Box
+            sx={{ display: { xs: "initial", sm: "grid" }, gridTemplateColumns: "22%", gap: "1rem" }}
+          >
             <Box display={"grid"}>
               <TypographyGrey>{t("CVV")}</TypographyGrey>
               <TextField
@@ -260,7 +274,15 @@ const PaymentInfo = (props: Props) => {
           }
           {/* ------------------------------------------------------ Submit Button --------------------------------------------- */}
           <Box sx={{ display: "grid", margin: "0.5rem 0" }}>
-            <Box sx={{ placeSelf: "end", display: "flex", gap: "2rem", alignItems: "center" }}>
+            <Box
+              sx={{
+                placeSelf: "end",
+                display: "flex",
+                gap: { xs: "0rem", sm: "2rem" },
+                alignItems: "center",
+                flexDirection: { xs: "column", sm: "row" },
+              }}
+            >
               <Button
                 onClick={handleClick}
                 sx={{ cursor: "pointer", color: "#26266d", width: "15rem", fontSize: "0.875rem" }}

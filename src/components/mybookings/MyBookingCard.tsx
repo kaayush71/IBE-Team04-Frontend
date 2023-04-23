@@ -77,7 +77,7 @@ const MyBookingCard = ({ booking }: Props) => {
               margin: "0.8rem 0",
               padding: "1.8rem",
               boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-              backgroundColor: booking.isCancelled ? "#F0F0F2" : "#fff",
+              backgroundColor: booking.isCancelled ? "#F3D7D7" : "#fff",
             }}
           >
             {/* ---------------------------------------------------------- First row --------------------------------------------- */}
