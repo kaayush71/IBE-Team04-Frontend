@@ -44,15 +44,22 @@ const TermsAndConditionsModal = (props: Props) => {
             Terms and Conditions
           </Typography>
           <Typography>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas quis neque, beatae
-            nostrum expedita eaque asperiores similique sit voluptatem modi odio blanditiis enim
-            accusamus, in officiis. Tenetur alias ad consequuntur? Rem nesciunt harum pariatur omnis
-            labore odio sint totam dolores. Exercitationem, quam reprehenderit? Facere, veniam
-            explicabo. Quas numquam, recusandae voluptas natus dolor doloribus qui tempore dolores
-            sint perspiciatis, sequi molestias, voluptate consequatur blanditiis magni delectus
-            repellat! Accusamus qui magnam culpa facere vero, a soluta porro dolor suscipit rerum
-            distinctio excepturi fuga nostrum aut. Doloribus repellat deserunt nulla rem dolore?
-            Doloribus saepe pariatur natus voluptatum repellendus, illo quis quos possimus dolores.
+            Welcome to our hotel booking website. By accessing and using our services, you agree to
+            the following terms and conditions:When making a reservation on our website, you will be
+            required to provide certain personal information, including your full name, email
+            address, billing address, and credit card details. We guarantee that all personal
+            information provided will be kept confidential and secure. We will use your personal
+            information only for the purpose of processing your reservation and communicating with
+            you regarding your stay.By making a reservation on our website, you confirm that you are
+            over 18 years of age and that you have the legal capacity to enter into a binding
+            agreement. You also agree to pay all charges incurred during your stay, including room
+            charges, taxes, and any additional fees for services or amenities requested.Cancellation
+            policies may vary depending on the type of room and rate selected. Please review the
+            cancellation policy before making your reservation.We reserve the right to modify,
+            suspend or discontinue any aspect of our services at any time without notice. We also
+            reserve the right to refuse service to anyone for any reason at any time.By using our
+            website, you agree to indemnify and hold us harmless from any claims, damages, or losses
+            arising from your use of our services.
           </Typography>
         </Box>
       </Modal>
